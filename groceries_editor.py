@@ -14,8 +14,10 @@ groceries = {}
 groceries["Beans, rice and cheese (~5 servings)"] = []
 
 groceries["Beans, rice and cheese (~5 servings)"].append({
-    "ingredients":["1/2-3/4 1lb bag brown or black beans (3/4-1 yellow thing)",
-                   "8/10 1 lb bag of rice (2 cups @ 1lb/2.5 cups)"],
+    "ingredients":[["1/2-3/4 1lb bag brown or black beans (3/4-1 yellow thing)",
+                    "rice, beans, etc."],
+                   ["8/10 1 lb bag of rice (2 cups @ 1lb/2.5 cups)",
+                   "rice, beans, ect."]],
     "id":"0001",
     "this_time":0,
     "last_time":1
