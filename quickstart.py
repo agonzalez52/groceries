@@ -1,6 +1,7 @@
 from __future__ import print_function
 import pickle
 import os.path
+import json
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -50,8 +51,73 @@ def create_document(service):
     doc = service.documents().create(body=body).execute()
     print('Created document with title: {0}'.format(doc.get('title')))
 
+    return doc
+
+def get_text_range_idx(service, doc_id, match_text):
+    """
+    Find text and their start and end index.
+    """
+
+    # Do a document "get" request and print the results as formatted JSON
+    result = service.documents().get(documentId=doc_id).execute()
+
+    with open('data.json', 'w') as f:
+        json.dump(result, f, indent=4)
+    data = result.get('body').get('content')
+    startIdx = 0
+    endIdx = 0
+
+    for d in data:
+        para = d.get('paragraph')
+        if para is None:
+            continue
+        else:
+            elements = para.get('elements')
+            for e in elements:
+                if e.get('textRun'):
+                    content = e.get('textRun').get('content')
+                    #print(' {}'.format(content))
+                    if match_text in content:
+                        print('matched')
+                        startIdx = e.get('startIndex')
+                        endIdx = e.get('endIndex')
+
+    return startIdx, endIdx
+
+def insert_text(service, doc_id, startIndex, item):
+    """
+    Inserts texts followed by newline
+    Use case: startIndex should be endIndex of the name of the section
+    """
+    requests = [
+         {
+            'insertText': {
+                'location': {
+                    'index': startIndex,
+                },
+                'text': item+'\n'
+            }
+        }
+    ]
+    result = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
+
+
+
 
 if __name__ == '__main__':
     service = main()
-    create_document(service)
+    #doc = create_document(service)
+    doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+    start_h, end_h = get_text_range_idx(service, doc, "Health")
+    print('end_h: '+str(end_h))
+    insert_text(service, doc, end_h, 'floss')
+
+    start_c, end_c = get_text_range_idx(service, doc, "Carne")
+    print('end_c: '+str(end_c))
+    insert_text(service, doc, end_c, 'chicken (3lb)')
+
+    start_cagain, end_cagain = get_text_range_idx(service, doc, "Carne")
+    insert_text(service, doc, end_cagain, 'ground beef')
+
+
     print('done')

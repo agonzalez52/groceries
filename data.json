@@ -1,0 +1,1640 @@
+{
+    "title": "Automated Groceries",
+    "body": {
+        "content": [
+            {
+                "endIndex": 1,
+                "sectionBreak": {
+                    "sectionStyle": {
+                        "columnSeparatorStyle": "NONE",
+                        "contentDirection": "LEFT_TO_RIGHT",
+                        "sectionType": "CONTINUOUS"
+                    }
+                }
+            },
+            {
+                "startIndex": 1,
+                "endIndex": 2,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 1,
+                            "endIndex": 2,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 2,
+                "endIndex": 4,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 2,
+                            "endIndex": 3,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 3,
+                            "endIndex": 4,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 4,
+                "endIndex": 11,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 4,
+                            "endIndex": 11,
+                            "textRun": {
+                                "content": "Health\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 11,
+                "endIndex": 17,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 11,
+                            "endIndex": 17,
+                            "textRun": {
+                                "content": "floss\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 17,
+                "endIndex": 18,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 17,
+                            "endIndex": 18,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 18,
+                "endIndex": 20,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 18,
+                            "endIndex": 19,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 19,
+                            "endIndex": 20,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 20,
+                "endIndex": 38,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 20,
+                            "endIndex": 38,
+                            "textRun": {
+                                "content": "Fruits/Vegetables\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 38,
+                "endIndex": 39,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 38,
+                            "endIndex": 39,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 39,
+                "endIndex": 40,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 39,
+                            "endIndex": 40,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 40,
+                "endIndex": 42,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 40,
+                            "endIndex": 41,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 41,
+                            "endIndex": 42,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 42,
+                "endIndex": 48,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 42,
+                            "endIndex": 48,
+                            "textRun": {
+                                "content": "Carne\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 48,
+                "endIndex": 62,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 48,
+                            "endIndex": 62,
+                            "textRun": {
+                                "content": "chicken (3lb)\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 62,
+                "endIndex": 63,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 62,
+                            "endIndex": 63,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 63,
+                "endIndex": 65,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 63,
+                            "endIndex": 64,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 64,
+                            "endIndex": 65,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 65,
+                "endIndex": 79,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 65,
+                            "endIndex": 79,
+                            "textRun": {
+                                "content": "Bread/Cookies\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 79,
+                "endIndex": 80,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 79,
+                            "endIndex": 80,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 80,
+                "endIndex": 81,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 80,
+                            "endIndex": 81,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 81,
+                "endIndex": 83,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 81,
+                            "endIndex": 82,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 82,
+                            "endIndex": 83,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 83,
+                "endIndex": 119,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 83,
+                            "endIndex": 119,
+                            "textRun": {
+                                "content": "Candy/snack cakes/condiments/spices\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 119,
+                "endIndex": 120,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 119,
+                            "endIndex": 120,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 120,
+                "endIndex": 121,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 120,
+                            "endIndex": 121,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 121,
+                "endIndex": 123,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 121,
+                            "endIndex": 122,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 122,
+                            "endIndex": 123,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 123,
+                "endIndex": 145,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 123,
+                            "endIndex": 145,
+                            "textRun": {
+                                "content": "Rice/beans/pasta/soup\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 145,
+                "endIndex": 146,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 145,
+                            "endIndex": 146,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 146,
+                "endIndex": 147,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 146,
+                            "endIndex": 147,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 147,
+                "endIndex": 149,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 147,
+                            "endIndex": 148,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 148,
+                            "endIndex": 149,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 149,
+                "endIndex": 162,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 149,
+                            "endIndex": 162,
+                            "textRun": {
+                                "content": "Chips/snacks\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 162,
+                "endIndex": 163,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 162,
+                            "endIndex": 163,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 163,
+                "endIndex": 164,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 163,
+                            "endIndex": 164,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 164,
+                "endIndex": 166,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 164,
+                            "endIndex": 165,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 165,
+                            "endIndex": 166,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 166,
+                "endIndex": 185,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 166,
+                            "endIndex": 185,
+                            "textRun": {
+                                "content": "Refrigerated stuff\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 185,
+                "endIndex": 186,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 185,
+                            "endIndex": 186,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 186,
+                "endIndex": 187,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 186,
+                            "endIndex": 187,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 187,
+                "endIndex": 189,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 187,
+                            "endIndex": 188,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 188,
+                            "endIndex": 189,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 189,
+                "endIndex": 201,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 189,
+                            "endIndex": 201,
+                            "textRun": {
+                                "content": "Jugos/water\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 201,
+                "endIndex": 202,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 201,
+                            "endIndex": 202,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 202,
+                "endIndex": 203,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 202,
+                            "endIndex": 203,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 203,
+                "endIndex": 205,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 203,
+                            "endIndex": 204,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 204,
+                            "endIndex": 205,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 205,
+                "endIndex": 218,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 205,
+                            "endIndex": 218,
+                            "textRun": {
+                                "content": "Frozen stuff\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 218,
+                "endIndex": 219,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 218,
+                            "endIndex": 219,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 219,
+                "endIndex": 220,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 219,
+                            "endIndex": 220,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 220,
+                "endIndex": 222,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 220,
+                            "endIndex": 221,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 221,
+                            "endIndex": 222,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 222,
+                "endIndex": 237,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 222,
+                            "endIndex": 237,
+                            "textRun": {
+                                "content": "Dairy and eggs\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 237,
+                "endIndex": 238,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 237,
+                            "endIndex": 238,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 238,
+                "endIndex": 239,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 238,
+                            "endIndex": 239,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 239,
+                "endIndex": 241,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 239,
+                            "endIndex": 240,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 240,
+                            "endIndex": 241,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 241,
+                "endIndex": 251,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 241,
+                            "endIndex": 251,
+                            "textRun": {
+                                "content": "Hot stuff\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 251,
+                "endIndex": 252,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 251,
+                            "endIndex": 252,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 252,
+                "endIndex": 253,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 252,
+                            "endIndex": 253,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 253,
+                "endIndex": 255,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 253,
+                            "endIndex": 254,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 254,
+                            "endIndex": 255,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 255,
+                "endIndex": 261,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 255,
+                            "endIndex": 261,
+                            "textRun": {
+                                "content": "Other\n",
+                                "textStyle": {
+                                    "bold": true
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            }
+        ]
+    },
+    "documentStyle": {
+        "background": {
+            "color": {}
+        },
+        "pageNumberStart": 1,
+        "marginTop": {
+            "magnitude": 72,
+            "unit": "PT"
+        },
+        "marginBottom": {
+            "magnitude": 72,
+            "unit": "PT"
+        },
+        "marginRight": {
+            "magnitude": 72,
+            "unit": "PT"
+        },
+        "marginLeft": {
+            "magnitude": 72,
+            "unit": "PT"
+        },
+        "pageSize": {
+            "height": {
+                "magnitude": 792,
+                "unit": "PT"
+            },
+            "width": {
+                "magnitude": 612,
+                "unit": "PT"
+            }
+        },
+        "marginHeader": {
+            "magnitude": 36,
+            "unit": "PT"
+        },
+        "marginFooter": {
+            "magnitude": 36,
+            "unit": "PT"
+        },
+        "useCustomHeaderFooterMargins": true
+    },
+    "namedStyles": {
+        "styles": [
+            {
+                "namedStyleType": "NORMAL_TEXT",
+                "textStyle": {
+                    "bold": false,
+                    "italic": false,
+                    "underline": false,
+                    "strikethrough": false,
+                    "smallCaps": false,
+                    "backgroundColor": {},
+                    "foregroundColor": {
+                        "color": {
+                            "rgbColor": {}
+                        }
+                    },
+                    "fontSize": {
+                        "magnitude": 11,
+                        "unit": "PT"
+                    },
+                    "weightedFontFamily": {
+                        "fontFamily": "Arial",
+                        "weight": 400
+                    },
+                    "baselineOffset": "NONE"
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "alignment": "START",
+                    "lineSpacing": 115,
+                    "direction": "LEFT_TO_RIGHT",
+                    "spacingMode": "COLLAPSE_LISTS",
+                    "spaceAbove": {
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "unit": "PT"
+                    },
+                    "borderBetween": {
+                        "color": {},
+                        "width": {
+                            "unit": "PT"
+                        },
+                        "padding": {
+                            "unit": "PT"
+                        },
+                        "dashStyle": "SOLID"
+                    },
+                    "borderTop": {
+                        "color": {},
+                        "width": {
+                            "unit": "PT"
+                        },
+                        "padding": {
+                            "unit": "PT"
+                        },
+                        "dashStyle": "SOLID"
+                    },
+                    "borderBottom": {
+                        "color": {},
+                        "width": {
+                            "unit": "PT"
+                        },
+                        "padding": {
+                            "unit": "PT"
+                        },
+                        "dashStyle": "SOLID"
+                    },
+                    "borderLeft": {
+                        "color": {},
+                        "width": {
+                            "unit": "PT"
+                        },
+                        "padding": {
+                            "unit": "PT"
+                        },
+                        "dashStyle": "SOLID"
+                    },
+                    "borderRight": {
+                        "color": {},
+                        "width": {
+                            "unit": "PT"
+                        },
+                        "padding": {
+                            "unit": "PT"
+                        },
+                        "dashStyle": "SOLID"
+                    },
+                    "indentFirstLine": {
+                        "unit": "PT"
+                    },
+                    "indentStart": {
+                        "unit": "PT"
+                    },
+                    "indentEnd": {
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": false,
+                    "keepWithNext": false,
+                    "avoidWidowAndOrphan": true,
+                    "shading": {
+                        "backgroundColor": {}
+                    }
+                }
+            },
+            {
+                "namedStyleType": "HEADING_1",
+                "textStyle": {
+                    "fontSize": {
+                        "magnitude": 20,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "magnitude": 20,
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 6,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "HEADING_2",
+                "textStyle": {
+                    "bold": false,
+                    "fontSize": {
+                        "magnitude": 16,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "magnitude": 18,
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 6,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "HEADING_3",
+                "textStyle": {
+                    "bold": false,
+                    "foregroundColor": {
+                        "color": {
+                            "rgbColor": {
+                                "red": 0.2627451,
+                                "green": 0.2627451,
+                                "blue": 0.2627451
+                            }
+                        }
+                    },
+                    "fontSize": {
+                        "magnitude": 14,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "magnitude": 16,
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 4,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "HEADING_4",
+                "textStyle": {
+                    "foregroundColor": {
+                        "color": {
+                            "rgbColor": {
+                                "red": 0.4,
+                                "green": 0.4,
+                                "blue": 0.4
+                            }
+                        }
+                    },
+                    "fontSize": {
+                        "magnitude": 12,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "magnitude": 14,
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 4,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "HEADING_5",
+                "textStyle": {
+                    "foregroundColor": {
+                        "color": {
+                            "rgbColor": {
+                                "red": 0.4,
+                                "green": 0.4,
+                                "blue": 0.4
+                            }
+                        }
+                    },
+                    "fontSize": {
+                        "magnitude": 11,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "magnitude": 12,
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 4,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "HEADING_6",
+                "textStyle": {
+                    "italic": true,
+                    "foregroundColor": {
+                        "color": {
+                            "rgbColor": {
+                                "red": 0.4,
+                                "green": 0.4,
+                                "blue": 0.4
+                            }
+                        }
+                    },
+                    "fontSize": {
+                        "magnitude": 11,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "magnitude": 12,
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 4,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "TITLE",
+                "textStyle": {
+                    "fontSize": {
+                        "magnitude": 26,
+                        "unit": "PT"
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 3,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            },
+            {
+                "namedStyleType": "SUBTITLE",
+                "textStyle": {
+                    "italic": false,
+                    "foregroundColor": {
+                        "color": {
+                            "rgbColor": {
+                                "red": 0.4,
+                                "green": 0.4,
+                                "blue": 0.4
+                            }
+                        }
+                    },
+                    "fontSize": {
+                        "magnitude": 15,
+                        "unit": "PT"
+                    },
+                    "weightedFontFamily": {
+                        "fontFamily": "Arial",
+                        "weight": 400
+                    }
+                },
+                "paragraphStyle": {
+                    "namedStyleType": "NORMAL_TEXT",
+                    "direction": "LEFT_TO_RIGHT",
+                    "spaceAbove": {
+                        "unit": "PT"
+                    },
+                    "spaceBelow": {
+                        "magnitude": 16,
+                        "unit": "PT"
+                    },
+                    "keepLinesTogether": true,
+                    "keepWithNext": true
+                }
+            }
+        ]
+    },
+    "revisionId": "ALm37BXcKyoWx6pw4ESa0ImxYNTcBFgvPcwG1pC9vFd07JXjJMjQ6hccA4c5YWb6wfGkuLYDPCe39ZXcU1h1rw",
+    "suggestionsViewMode": "SUGGESTIONS_INLINE",
+    "documentId": "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+}
