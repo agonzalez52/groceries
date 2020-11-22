@@ -1373,9 +1373,9 @@
                     "elements": [
                         {
                             "startIndex": 244,
-                            "endIndex": 254,
+                            "endIndex": 253,
                             "textRun": {
-                                "content": "Hot stuff\n",
+                                "content": "Hot stuff",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -1388,6 +1388,14 @@
                                         }
                                     }
                                 }
+                            }
+                        },
+                        {
+                            "startIndex": 253,
+                            "endIndex": 254,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -1882,7 +1890,7 @@
             }
         ]
     },
-    "revisionId": "ALm37BU7axGsl0BQ91aug96-lh6z-6mupJ9VxhLe03FACcN5Pr1UrN5RCiHPugGWsjQSyT8Lwgj8dfC2iRo-Ag",
+    "revisionId": "ALm37BXzI-nt4UEGJgyJqLkHRe7OVOWCK4QJtL_miSWjwJgoUcBBbTZHdc0ETt7_252CSqs0PabaMyFOAGEPyw",
     "suggestionsViewMode": "SUGGESTIONS_INLINE",
     "documentId": "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 }

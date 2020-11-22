@@ -77,7 +77,8 @@ def get_text_range_idx(service, doc_id, match_text):
                 if e.get('textRun'):
                     content = e.get('textRun').get('content')
                     #print(' {}'.format(content))
-                    if match_text in content:
+                    # added to exactly match section name
+                    if match_text == content or match_text == content+'\n':
                         print('matched '+match_text)
                         startIdx = e.get('startIndex')
                         endIdx = e.get('endIndex')
