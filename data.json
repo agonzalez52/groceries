@@ -22,7 +22,17 @@
                             "endIndex": 2,
                             "textRun": {
                                 "content": "\n",
-                                "textStyle": {}
+                                "textStyle": {
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     ],
@@ -42,7 +52,16 @@
                             "endIndex": 3,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -52,7 +71,16 @@
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -70,12 +98,29 @@
                     "elements": [
                         {
                             "startIndex": 4,
+                            "endIndex": 10,
+                            "textRun": {
+                                "content": "Health",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 10,
                             "endIndex": 11,
                             "textRun": {
-                                "content": "Health\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
+                                "content": "\n",
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -95,9 +140,7 @@
                             "endIndex": 17,
                             "textRun": {
                                 "content": "floss\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -117,9 +160,7 @@
                             "endIndex": 18,
                             "textRun": {
                                 "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -139,7 +180,16 @@
                             "endIndex": 19,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -149,7 +199,16 @@
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -171,7 +230,16 @@
                             "textRun": {
                                 "content": "Fruits/Vegetables\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -193,7 +261,16 @@
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -206,47 +283,43 @@
             },
             {
                 "startIndex": 39,
-                "endIndex": 40,
+                "endIndex": 41,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 39,
                             "endIndex": 40,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 40,
-                "endIndex": 42,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 40,
-                            "endIndex": 41,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 41,
-                            "endIndex": 42,
+                            "startIndex": 40,
+                            "endIndex": 41,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -258,17 +331,57 @@
                 }
             },
             {
-                "startIndex": 42,
+                "startIndex": 41,
+                "endIndex": 47,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 41,
+                            "endIndex": 47,
+                            "textRun": {
+                                "content": "Carne\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 47,
                 "endIndex": 48,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 42,
+                            "startIndex": 47,
                             "endIndex": 48,
                             "textRun": {
-                                "content": "Carne\n",
+                                "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -281,17 +394,35 @@
             },
             {
                 "startIndex": 48,
-                "endIndex": 62,
+                "endIndex": 60,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 48,
-                            "endIndex": 62,
+                            "endIndex": 60,
+                            "textRun": {
+                                "content": "ground beef\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 60,
+                "endIndex": 74,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 60,
+                            "endIndex": 74,
                             "textRun": {
                                 "content": "chicken (3lb)\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -302,48 +433,44 @@
                 }
             },
             {
-                "startIndex": 62,
-                "endIndex": 63,
+                "startIndex": 74,
+                "endIndex": 76,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 62,
-                            "endIndex": 63,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 63,
-                "endIndex": 65,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 63,
-                            "endIndex": 64,
+                            "startIndex": 74,
+                            "endIndex": 75,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 64,
-                            "endIndex": 65,
+                            "startIndex": 75,
+                            "endIndex": 76,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -355,17 +482,26 @@
                 }
             },
             {
-                "startIndex": 65,
-                "endIndex": 79,
+                "startIndex": 76,
+                "endIndex": 90,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 65,
-                            "endIndex": 79,
+                            "startIndex": 76,
+                            "endIndex": 90,
                             "textRun": {
                                 "content": "Bread/Cookies\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -377,17 +513,26 @@
                 }
             },
             {
-                "startIndex": 79,
-                "endIndex": 80,
+                "startIndex": 90,
+                "endIndex": 91,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 79,
-                            "endIndex": 80,
+                            "startIndex": 90,
+                            "endIndex": 91,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -399,48 +544,44 @@
                 }
             },
             {
-                "startIndex": 80,
-                "endIndex": 81,
+                "startIndex": 91,
+                "endIndex": 93,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 80,
-                            "endIndex": 81,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 81,
-                "endIndex": 83,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 81,
-                            "endIndex": 82,
+                            "startIndex": 91,
+                            "endIndex": 92,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 82,
-                            "endIndex": 83,
+                            "startIndex": 92,
+                            "endIndex": 93,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -452,17 +593,26 @@
                 }
             },
             {
-                "startIndex": 83,
-                "endIndex": 119,
+                "startIndex": 93,
+                "endIndex": 129,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 83,
-                            "endIndex": 119,
+                            "startIndex": 93,
+                            "endIndex": 129,
                             "textRun": {
                                 "content": "Candy/snack cakes/condiments/spices\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -474,17 +624,26 @@
                 }
             },
             {
-                "startIndex": 119,
-                "endIndex": 120,
+                "startIndex": 129,
+                "endIndex": 130,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 119,
-                            "endIndex": 120,
+                            "startIndex": 129,
+                            "endIndex": 130,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -496,48 +655,44 @@
                 }
             },
             {
-                "startIndex": 120,
-                "endIndex": 121,
+                "startIndex": 130,
+                "endIndex": 132,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 120,
-                            "endIndex": 121,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 121,
-                "endIndex": 123,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 121,
-                            "endIndex": 122,
+                            "startIndex": 130,
+                            "endIndex": 131,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 122,
-                            "endIndex": 123,
+                            "startIndex": 131,
+                            "endIndex": 132,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -549,17 +704,26 @@
                 }
             },
             {
-                "startIndex": 123,
-                "endIndex": 145,
+                "startIndex": 132,
+                "endIndex": 154,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 123,
-                            "endIndex": 145,
+                            "startIndex": 132,
+                            "endIndex": 154,
                             "textRun": {
                                 "content": "Rice/beans/pasta/soup\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -571,17 +735,26 @@
                 }
             },
             {
-                "startIndex": 145,
-                "endIndex": 146,
+                "startIndex": 154,
+                "endIndex": 155,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 145,
-                            "endIndex": 146,
+                            "startIndex": 154,
+                            "endIndex": 155,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -593,48 +766,44 @@
                 }
             },
             {
-                "startIndex": 146,
-                "endIndex": 147,
+                "startIndex": 155,
+                "endIndex": 157,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 146,
-                            "endIndex": 147,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 147,
-                "endIndex": 149,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 147,
-                            "endIndex": 148,
+                            "startIndex": 155,
+                            "endIndex": 156,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 148,
-                            "endIndex": 149,
+                            "startIndex": 156,
+                            "endIndex": 157,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -646,17 +815,26 @@
                 }
             },
             {
-                "startIndex": 149,
-                "endIndex": 162,
+                "startIndex": 157,
+                "endIndex": 170,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 149,
-                            "endIndex": 162,
+                            "startIndex": 157,
+                            "endIndex": 170,
                             "textRun": {
                                 "content": "Chips/snacks\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -668,17 +846,26 @@
                 }
             },
             {
-                "startIndex": 162,
-                "endIndex": 163,
+                "startIndex": 170,
+                "endIndex": 171,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 162,
-                            "endIndex": 163,
+                            "startIndex": 170,
+                            "endIndex": 171,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -690,48 +877,44 @@
                 }
             },
             {
-                "startIndex": 163,
-                "endIndex": 164,
+                "startIndex": 171,
+                "endIndex": 173,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 163,
-                            "endIndex": 164,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 164,
-                "endIndex": 166,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 164,
-                            "endIndex": 165,
+                            "startIndex": 171,
+                            "endIndex": 172,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 165,
-                            "endIndex": 166,
+                            "startIndex": 172,
+                            "endIndex": 173,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -743,17 +926,26 @@
                 }
             },
             {
-                "startIndex": 166,
-                "endIndex": 185,
+                "startIndex": 173,
+                "endIndex": 192,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 166,
-                            "endIndex": 185,
+                            "startIndex": 173,
+                            "endIndex": 192,
                             "textRun": {
                                 "content": "Refrigerated stuff\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -765,17 +957,26 @@
                 }
             },
             {
-                "startIndex": 185,
-                "endIndex": 186,
+                "startIndex": 192,
+                "endIndex": 193,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 185,
-                            "endIndex": 186,
+                            "startIndex": 192,
+                            "endIndex": 193,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -787,48 +988,44 @@
                 }
             },
             {
-                "startIndex": 186,
-                "endIndex": 187,
+                "startIndex": 193,
+                "endIndex": 195,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 186,
-                            "endIndex": 187,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 187,
-                "endIndex": 189,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 187,
-                            "endIndex": 188,
+                            "startIndex": 193,
+                            "endIndex": 194,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 188,
-                            "endIndex": 189,
+                            "startIndex": 194,
+                            "endIndex": 195,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -840,17 +1037,26 @@
                 }
             },
             {
-                "startIndex": 189,
-                "endIndex": 201,
+                "startIndex": 195,
+                "endIndex": 207,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 189,
-                            "endIndex": 201,
+                            "startIndex": 195,
+                            "endIndex": 207,
                             "textRun": {
                                 "content": "Jugos/water\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -862,17 +1068,26 @@
                 }
             },
             {
-                "startIndex": 201,
-                "endIndex": 202,
+                "startIndex": 207,
+                "endIndex": 208,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 201,
-                            "endIndex": 202,
+                            "startIndex": 207,
+                            "endIndex": 208,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -884,48 +1099,44 @@
                 }
             },
             {
-                "startIndex": 202,
-                "endIndex": 203,
+                "startIndex": 208,
+                "endIndex": 210,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 202,
-                            "endIndex": 203,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 203,
-                "endIndex": 205,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 203,
-                            "endIndex": 204,
+                            "startIndex": 208,
+                            "endIndex": 209,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 204,
-                            "endIndex": 205,
+                            "startIndex": 209,
+                            "endIndex": 210,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -937,17 +1148,26 @@
                 }
             },
             {
-                "startIndex": 205,
-                "endIndex": 218,
+                "startIndex": 210,
+                "endIndex": 223,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 205,
-                            "endIndex": 218,
+                            "startIndex": 210,
+                            "endIndex": 223,
                             "textRun": {
                                 "content": "Frozen stuff\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -959,17 +1179,26 @@
                 }
             },
             {
-                "startIndex": 218,
-                "endIndex": 219,
+                "startIndex": 223,
+                "endIndex": 224,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 218,
-                            "endIndex": 219,
+                            "startIndex": 223,
+                            "endIndex": 224,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -981,48 +1210,44 @@
                 }
             },
             {
-                "startIndex": 219,
-                "endIndex": 220,
+                "startIndex": 224,
+                "endIndex": 226,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 219,
-                            "endIndex": 220,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 220,
-                "endIndex": 222,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 220,
-                            "endIndex": 221,
+                            "startIndex": 224,
+                            "endIndex": 225,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
                         {
-                            "startIndex": 221,
-                            "endIndex": 222,
+                            "startIndex": 225,
+                            "endIndex": 226,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1034,92 +1259,26 @@
                 }
             },
             {
-                "startIndex": 222,
-                "endIndex": 237,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 222,
-                            "endIndex": 237,
-                            "textRun": {
-                                "content": "Dairy and eggs\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 237,
-                "endIndex": 238,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 237,
-                            "endIndex": 238,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 238,
-                "endIndex": 239,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 238,
-                            "endIndex": 239,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 239,
+                "startIndex": 226,
                 "endIndex": 241,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 239,
-                            "endIndex": 240,
-                            "horizontalRule": {
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        },
-                        {
-                            "startIndex": 240,
+                            "startIndex": 226,
                             "endIndex": 241,
                             "textRun": {
-                                "content": "\n",
+                                "content": "Dairy and eggs\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1132,38 +1291,25 @@
             },
             {
                 "startIndex": 241,
-                "endIndex": 251,
+                "endIndex": 242,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 241,
-                            "endIndex": 251,
-                            "textRun": {
-                                "content": "Hot stuff\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 251,
-                "endIndex": 252,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 251,
-                            "endIndex": 252,
+                            "endIndex": 242,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1175,48 +1321,114 @@
                 }
             },
             {
-                "startIndex": 252,
-                "endIndex": 253,
+                "startIndex": 242,
+                "endIndex": 244,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 252,
-                            "endIndex": 253,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 253,
-                "endIndex": 255,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 253,
-                            "endIndex": 254,
+                            "startIndex": 242,
+                            "endIndex": 243,
                             "horizontalRule": {
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
+                        {
+                            "startIndex": 243,
+                            "endIndex": 244,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 244,
+                "endIndex": 254,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 244,
+                            "endIndex": 253,
+                            "textRun": {
+                                "content": "Hot stuff",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 253,
+                            "endIndex": 254,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 254,
+                "endIndex": 255,
+                "paragraph": {
+                    "elements": [
                         {
                             "startIndex": 254,
                             "endIndex": 255,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1229,16 +1441,74 @@
             },
             {
                 "startIndex": 255,
-                "endIndex": 261,
+                "endIndex": 257,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 255,
-                            "endIndex": 261,
+                            "endIndex": 256,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 256,
+                            "endIndex": 257,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 257,
+                "endIndex": 263,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 257,
+                            "endIndex": 263,
                             "textRun": {
                                 "content": "Other\n",
                                 "textStyle": {
-                                    "bold": true
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1634,7 +1904,7 @@
             }
         ]
     },
-    "revisionId": "ALm37BXcKyoWx6pw4ESa0ImxYNTcBFgvPcwG1pC9vFd07JXjJMjQ6hccA4c5YWb6wfGkuLYDPCe39ZXcU1h1rw",
+    "revisionId": "ALm37BW9uNeTQDBSCnR0EdTEmTbXIZ5vfh0NrTeLAGkVQJyiMAWkvuoBZVeTsSYDDb5-EtHsIQb_611LZ6k3Vg",
     "suggestionsViewMode": "SUGGESTIONS_INLINE",
     "documentId": "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 }

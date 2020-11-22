@@ -78,7 +78,7 @@ def get_text_range_idx(service, doc_id, match_text):
                     content = e.get('textRun').get('content')
                     #print(' {}'.format(content))
                     if match_text in content:
-                        print('matched')
+                        print('matched '+match_text)
                         startIdx = e.get('startIndex')
                         endIdx = e.get('endIndex')
 
@@ -86,20 +86,64 @@ def get_text_range_idx(service, doc_id, match_text):
 
 def insert_text(service, doc_id, startIndex, item):
     """
-    Inserts texts followed by newline
+    Inserts texts followed by newline. Formats text.
     Use case: startIndex should be endIndex of the name of the section
+    Note: Added +1 to index because section titles sometimes have a '\n' at the end of them and sometimes they don't.
+    Not sure why
     """
-    requests = [
+    # Write item under its section
+    requests_insert = [
          {
             'insertText': {
                 'location': {
-                    'index': startIndex,
+                    'index': startIndex+1,
                 },
                 'text': item+'\n'
             }
         }
     ]
-    result = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
+    print('inserted '+item+' at index '+str(startIndex))
+
+    # Format text
+    requests_format = [
+        # Remove bold from item text
+        {
+            'updateTextStyle': {
+                'range':{
+                    'startIndex': startIndex+1,
+                    'endIndex': startIndex+len(item)+2
+                },
+                'textStyle': {
+                    'bold': False
+                },
+                'fields': 'bold'
+            }
+        },
+        # Set item text to black
+        {
+            'updateTextStyle': {
+                'range': {
+                    'startIndex': startIndex+1,
+                    'endIndex': startIndex+len(item)+2
+                },
+                'textStyle': {
+                    'foregroundColor': {
+                        'color': {
+                            'rgbColor': {
+                                'blue': 0.0,
+                                'green': 0.0,
+                                'red': 0.0
+                            }
+                        }
+                    }
+                },
+                'fields': 'foregroundColor'
+            }
+        }   
+    ]
+
+    result1 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_insert}).execute()
+    result2 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
 
 
 
@@ -109,15 +153,18 @@ if __name__ == '__main__':
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
     start_h, end_h = get_text_range_idx(service, doc, "Health")
-    print('end_h: '+str(end_h))
+    #print('end_h: '+str(end_h))
     insert_text(service, doc, end_h, 'floss')
 
     start_c, end_c = get_text_range_idx(service, doc, "Carne")
-    print('end_c: '+str(end_c))
+    #print('end_c: '+str(end_c))
     insert_text(service, doc, end_c, 'chicken (3lb)')
 
     start_cagain, end_cagain = get_text_range_idx(service, doc, "Carne")
     insert_text(service, doc, end_cagain, 'ground beef')
+
+    start_o, end_o = get_text_range_idx(service, doc, "Hot stuff")
+    insert_text(service, doc, end_o, 'chicken wings')
 
 
     print('done')
