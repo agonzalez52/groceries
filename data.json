@@ -337,9 +337,9 @@
                     "elements": [
                         {
                             "startIndex": 41,
-                            "endIndex": 47,
+                            "endIndex": 46,
                             "textRun": {
-                                "content": "Carne\n",
+                                "content": "Carne",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -352,6 +352,14 @@
                                         }
                                     }
                                 }
+                            }
+                        },
+                        {
+                            "startIndex": 46,
+                            "endIndex": 47,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -363,43 +371,12 @@
             },
             {
                 "startIndex": 47,
-                "endIndex": 48,
+                "endIndex": 59,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 47,
-                            "endIndex": 48,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 48,
-                "endIndex": 60,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 48,
-                            "endIndex": 60,
+                            "endIndex": 59,
                             "textRun": {
                                 "content": "ground beef\n",
                                 "textStyle": {}
@@ -413,15 +390,35 @@
                 }
             },
             {
-                "startIndex": 60,
+                "startIndex": 59,
+                "endIndex": 73,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 59,
+                            "endIndex": 73,
+                            "textRun": {
+                                "content": "chicken (3lb)\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 73,
                 "endIndex": 74,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 60,
+                            "startIndex": 73,
                             "endIndex": 74,
                             "textRun": {
-                                "content": "chicken (3lb)\n",
+                                "content": "\n",
                                 "textStyle": {}
                             }
                         }
@@ -1376,9 +1373,9 @@
                     "elements": [
                         {
                             "startIndex": 244,
-                            "endIndex": 253,
+                            "endIndex": 254,
                             "textRun": {
-                                "content": "Hot stuff",
+                                "content": "Hot stuff\n",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -1391,14 +1388,6 @@
                                         }
                                     }
                                 }
-                            }
-                        },
-                        {
-                            "startIndex": 253,
-                            "endIndex": 254,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {}
                             }
                         }
                     ],
@@ -1418,18 +1407,7 @@
                             "endIndex": 255,
                             "textRun": {
                                 "content": "\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
+                                "textStyle": {}
                             }
                         }
                     ],
@@ -1904,7 +1882,7 @@
             }
         ]
     },
-    "revisionId": "ALm37BW9uNeTQDBSCnR0EdTEmTbXIZ5vfh0NrTeLAGkVQJyiMAWkvuoBZVeTsSYDDb5-EtHsIQb_611LZ6k3Vg",
+    "revisionId": "ALm37BU7axGsl0BQ91aug96-lh6z-6mupJ9VxhLe03FACcN5Pr1UrN5RCiHPugGWsjQSyT8Lwgj8dfC2iRo-Ag",
     "suggestionsViewMode": "SUGGESTIONS_INLINE",
     "documentId": "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 }

@@ -81,6 +81,9 @@ def get_text_range_idx(service, doc_id, match_text):
                         print('matched '+match_text)
                         startIdx = e.get('startIndex')
                         endIdx = e.get('endIndex')
+                        # added because sometimes section title and its '\n' are separated into two elements
+                        if len(elements) > 1:
+                            endIdx+=1
 
     return startIdx, endIdx
 
@@ -88,15 +91,13 @@ def insert_text(service, doc_id, startIndex, item):
     """
     Inserts texts followed by newline. Formats text.
     Use case: startIndex should be endIndex of the name of the section
-    Note: Added +1 to index because section titles sometimes have a '\n' at the end of them and sometimes they don't.
-    Not sure why
     """
     # Write item under its section
     requests_insert = [
          {
             'insertText': {
                 'location': {
-                    'index': startIndex+1,
+                    'index': startIndex,
                 },
                 'text': item+'\n'
             }
@@ -110,8 +111,8 @@ def insert_text(service, doc_id, startIndex, item):
         {
             'updateTextStyle': {
                 'range':{
-                    'startIndex': startIndex+1,
-                    'endIndex': startIndex+len(item)+2
+                    'startIndex': startIndex,
+                    'endIndex': startIndex+len(item)
                 },
                 'textStyle': {
                     'bold': False
@@ -123,8 +124,8 @@ def insert_text(service, doc_id, startIndex, item):
         {
             'updateTextStyle': {
                 'range': {
-                    'startIndex': startIndex+1,
-                    'endIndex': startIndex+len(item)+2
+                    'startIndex': startIndex,
+                    'endIndex': startIndex+len(item)
                 },
                 'textStyle': {
                     'foregroundColor': {
