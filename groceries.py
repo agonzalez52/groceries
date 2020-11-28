@@ -5,6 +5,7 @@ import json
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import pandas as pd
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -78,11 +79,14 @@ def get_text_range_idx(service, doc_id, match_text):
                     content = e.get('textRun').get('content')
                     #print(' {}'.format(content))
                     # added to exactly match section name
-                    if match_text == content or match_text == content+'\n':
+                    if match_text == content or match_text == content.strip('\n'):
                         print('matched '+match_text)
                         startIdx = e.get('startIndex')
                         endIdx = e.get('endIndex')
                         # added because sometimes section title and its '\n' are separated into two elements
+                        # if there is one element in the paragraph then the text will be "Health\n"
+                        # if there are two elements in the paragraph then one element will be "Health"
+                        # and the other will be "\n"
                         if len(elements) > 1:
                             endIdx+=1
 
@@ -141,32 +145,85 @@ def insert_text(service, doc_id, startIndex, item):
                 },
                 'fields': 'foregroundColor'
             }
-        }   
+        }
     ]
 
     result1 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_insert}).execute()
     result2 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
 
+# add ingredients to google doc given the id's to the meals
+def update_grocery_list(ids, service, doc):
+    # Open Meals and Ingredients tables
+    Meals = pd.read_csv('Meals Table.csv', index_col='id')
+    Ingredients = pd.read_csv('Ingredients Table.csv')
 
+    for id in ids:
+        # update this_time, last_time variables
+        if Meals.loc[id, 'this_time'] == 1:
+            Meals.loc[id, 'last_time'] = 1
+        else:
+            Meals.loc[id, 'this_time'] = 1
+            Meals.loc[id, 'last_time'] = 0
 
+        # write updated this_time, last_time values to csv
+        Meals.to_csv('Meals Table.csv')
+
+        # get the meal abbreviation
+        Meal_abbrev = Meals.loc[id, 'abbrev']
+
+        # get all the ingredients for the meal and write them to doc
+        for index,row in Ingredients[Ingredients['id']==id].iterrows():
+            # get ingredient and section name
+            ingredient = row['name']
+            section = row['section']
+
+            # insert text to google doc
+            start_i, end_i = get_text_range_idx(service, doc, section)
+            insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev)
 
 if __name__ == '__main__':
     service = main()
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-    start_h, end_h = get_text_range_idx(service, doc, "Health")
-    #print('end_h: '+str(end_h))
-    insert_text(service, doc, end_h, 'floss')
 
-    start_c, end_c = get_text_range_idx(service, doc, "Carne")
-    #print('end_c: '+str(end_c))
-    insert_text(service, doc, end_c, 'chicken (3lb)')
+    update_grocery_list([1,2,3], service, doc)
 
-    start_cagain, end_cagain = get_text_range_idx(service, doc, "Carne")
-    insert_text(service, doc, end_cagain, 'ground beef')
+    # INSERT TEXT TEST
+    # start_h, end_h = get_text_range_idx(service, doc, "Health")
+    # #print('end_h: '+str(end_h))
+    # insert_text(service, doc, end_h, 'floss')
+    #
+    # start_c, end_c = get_text_range_idx(service, doc, "Carne")
+    # #print('end_c: '+str(end_c))
+    # insert_text(service, doc, end_c, 'chicken (3lb)')
+    #
+    # start_cagain, end_cagain = get_text_range_idx(service, doc, "Carne")
+    # insert_text(service, doc, end_cagain, 'ground beef')
+    #
+    # start_o, end_o = get_text_range_idx(service, doc, "Hot stuff")
+    # insert_text(service, doc, end_o, 'chicken wings')
 
-    start_o, end_o = get_text_range_idx(service, doc, "Hot stuff")
-    insert_text(service, doc, end_o, 'chicken wings')
-
+    # CSV TEST
+    # Meals = pd.read_csv('Meals Table.csv', index_col='id')
+    # Ingredients = pd.read_csv('Ingredients Table.csv')
+    #
+    # curr_id = 1;
+    #
+    # # update this_time, last_time variables
+    # if Meals.loc[curr_id, 'this_time'] == 1:
+    #     Meals.loc[curr_id, 'last_time'] = 1
+    # else:
+    #     Meals.loc[curr_id, 'this_time'] = 1
+    #     Meals.loc[curr_id, 'last_time'] = 0
+    #
+    # # get meal name corresponding to the specified id
+    # Meal_name = Meals.loc[curr_id, 'name']
+    #
+    # # loops through rows with specified id and prints out the ingredient name/
+    # # section
+    # for index,row in Ingredients[Ingredients['id']==curr_id].iterrows():
+    #     print('Name: '+row['name']+' Section: '+row['section'])
+    #
+    # Meals.to_csv('Meals Table.csv')
 
     print('done')
