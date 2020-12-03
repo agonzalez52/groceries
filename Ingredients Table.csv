@@ -1,6 +1,6 @@
 id,name,section
-1,1/2-3/4 ~1 lb bag brown or black beans,Rice/beans/pasta/soup
-1,8/10 1 lb bag of rice ,Rice/beans/pasta/soup
+1,1/2-3/4 1 lb bag brown or black beans,Rice/beans/pasta/soup
+1,8/10 1 lb bag of rice,Rice/beans/pasta/soup
 1,2 roma tomatos,Fruits/Vegetables
 1,2 queso ranchero,Dairy and eggs
 2,1/4 1 lb bag brown beans,Rice/beans/pasta/soup
@@ -15,7 +15,7 @@ id,name,section
 4,~2 lbs chicken OR ~8 oz hamon,Carne
 5,3 lbs all natural ground beef,Carne
 5,8 buns,Bread/Cookies
-5,~? 5lbs bag of potatoes (6-10),Fruits/Vegetables
+5,~4/5 5lbs bag of potatoes (6-10),Fruits/Vegetables
 5,~1/10 head of Lettuce,Fruits/Vegetables
 5,Olive oil,Rice/beans/pasta/soup
 5,~1 tomato,Fruits/Vegetables
@@ -24,27 +24,29 @@ id,name,section
 6,~1/5 1lb bag of Carrots,Fruits/Vegetables
 6,1 Roma Tomato,Fruits/Vegetables
 7,~1 pan wonders (24 breads),Bread/Cookies
-7,1 22 oz turkey,Refrigerated stuff
+7,1 22 oz turkey GET LESS,Refrigerated stuff
 7,1 romaine lettuce,Fruits/Vegetables
+7,ASK ARTURO,Fruits/Vegetables
 8,2 6 pack pan bolillo,Bread/Cookies
-8,1 22 oz turkey,Refrigerated stuff
+8,1 22 oz turkey GET LESS,Refrigerated stuff
 8,1 romaine lettuce,Fruits/Vegetables
+8,ASK ARTURO,Fruits/Vegetables
 9,2.5 lbs Chicken,Carne
 9,1 roma tomato,Fruits/Vegetables
 9,~1/2 5 lbs of potato bag,Fruits/Vegetables
 9,2 chile serrano,Fruits/Vegetables
-9,~? bag of carrots,Fruits/Vegetables
+9,~1/3 bag of carrots,Fruits/Vegetables
 9,cilantro,Fruits/Vegetables
 10,tostadas,Rice/beans/pasta/soup
-10,? 1lb bag of black beans,Rice/beans/pasta/soup
+10,1/4 1lb bag of black beans,Rice/beans/pasta/soup
 10,1 queso ranchero,Refrigerated stuff
 10,1 small guacamole cup,Fruits/Vegetables
 11,Chicken (3lb),Carne
-11,½ 5 lbs bag of Papas,Fruits/Vegetables
+11,1/2 5 lbs bag of Papas,Fruits/Vegetables
 11,Sweet potatoes for tuvi,Fruits/Vegetables
 12,Chicken (3lb),Carne
 12,1 broccoli,Fruits/Vegetables
-12,~? bag of carrots,Fruits/Vegetables
+12,~1/3 bag of carrots,Fruits/Vegetables
 13,Mac and cheese boxes--2,Rice/beans/pasta/soup
 13,Butter,Dairy and eggs
 13,Milk,Dairy and eggs
@@ -55,16 +57,36 @@ id,name,section
 14,cilantro,Fruits/Vegetables
 15,4 lbs bag salmon,Carne
 15,8/10 1lb bag of rice,Rice/beans/pasta/soup
-16,? 5 lbs bag of Papas,Fruits/Vegetables
+16,2/3 5 lbs bag of Papas,Fruits/Vegetables
 16,21 Eggs,Dairy and eggs
 17,Spaghetti,Rice/beans/pasta/soup
-18,tomato sauce,Rice/beans/pasta/soup
-18,Ground beef all natural (2),Carne
-18,~½ 10 pack tortillas de arina (6 tortillas),Rice/beans/pasta/soup
-19,7 extra large tortilla de arina,Rice/beans/pasta/soup
-19,2 chicken fajitas,Carne
-19,½ Bell pepper,Fruits/Vegetables
-19,1 8 oz bag queso mozzarella,Refrigerated stuff
-19,1 small guacamole,Fruits/Vegetables
-19,¼ 1 lb black or brown beans,Rice/beans/pasta/soup
-19,1/8 1 lb Rice,Rice/beans/pasta/soup
+17,tomato sauce,Rice/beans/pasta/soup
+17,Ground beef all natural (2),Carne
+17,~1/2 10 pack tortillas de arina (6 tortillas),Rice/beans/pasta/soup
+18,7 extra large tortilla de arina,Rice/beans/pasta/soup
+18,2 chicken fajitas,Carne
+18,1/2 Bell pepper,Fruits/Vegetables
+18,1 8 oz bag queso mozzarella,Refrigerated stuff
+18,1 small guacamole,Fruits/Vegetables
+18,1/4 1 lb black or brown beans,Rice/beans/pasta/soup
+18,1/8 1 lb Rice,Rice/beans/pasta/soup
+19,8 pack buns,Bread/Cookies
+19,8 pack sausages,Refrigerated stuff
+19,ASK ARTURO,Refrigerated stuff
+20,~3 lbs chicken,Carne
+20,1 Brocolli,Fruits/Vegetables
+20,3/4 1lb bag Carrots,Fruits/Vegetables
+20,~3 Chile cerrano,Fruits/Vegetables
+21,54 taquitos,Frozen stuff
+21,2 Small spicy guacamole,Fruits/Vegetables
+22,2.5 lbs chicken,Carne
+22,Pasta,Rice/beans/pasta/soup
+22,Alfredo sauce,Rice/beans/pasta/soup
+22,1/2 10 pack bag tortillas de arina,Rice/beans/pasta/soup
+23,21 eggs,Dairy and eggs
+23,~16 hamons,Refrigerated stuff
+24,3 lb great value frozen chicken,Frozen stuff
+24,12 oz of carrots and peas,Dairy and eggs
+24,1 bag of tostadas,Rice/beans/pasta/soup
+25,1 10oz pork chorizo,Refrigerated stuff
+25,21 eggs,Dairy and eggs

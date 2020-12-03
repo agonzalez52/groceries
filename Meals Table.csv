@@ -1,6 +1,6 @@
 id,name,abbrev,last_time,this_time,extra,notes
-1,"Beans, rice, and cheese ",(brc),1,1,"onion or onion powder, oregano, chicken flavor bouillon, salt, garlic powder, onion powder",
-2,Carne del Angel ,(angel carne),1,1,,
+1,"Beans, rice, and cheese",(brc),1,1,"onion or onion powder, oregano, chicken flavor bouillon, salt, garlic powder, onion powder",
+2,Carne del Angel,(angel carne),1,1,,
 3,Tortadas,(tortadas),1,1,,15 min at 350
 4,Quesadillas,(quesadillas),,,,
 5,Krabby patties,(krabby patties),,,"ketchup, cheese squares",
@@ -17,3 +17,10 @@ id,name,abbrev,last_time,this_time,extra,notes
 16,Papas and eggs,(papas/eggs),,,salt,use a lot of erl
 17,Spaghetti,(spaghetti),,,salt,Put water to boil first then prepare meat
 18,Burritos,(burritos),,,,
+19,Hot dogs,(hot dogs),,,"ketchup, oil",ASK ARTURO
+20,Chicken stir fry,(stir fry),,,,"chicken spices, salt"
+21,Taquitos,(taquitos),,,Avocados,
+22,Chicken pasta,(chicken pasta),,,black pepper,
+23,Eggs and ham,(eggs and ham),,,"salt, oil",
+24,Chicken salad,(chicken salad),,,mayo,
+25,Chorizo con huevos,(chorizo w eggs),,,,
