@@ -77,10 +77,9 @@ def get_text_range_idx(service, doc_id, match_text):
             for e in elements:
                 if e.get('textRun'):
                     content = e.get('textRun').get('content')
-                    #print(' {}'.format(content))
                     # added to exactly match section name
                     if match_text == content or match_text == content.strip('\n'):
-                        print('matched '+match_text)
+                        print(match_text)
                         startIdx = e.get('startIndex')
                         endIdx = e.get('endIndex')
                         # added because sometimes section title and its '\n' are separated into two elements
@@ -108,7 +107,7 @@ def insert_text(service, doc_id, startIndex, item):
             }
         }
     ]
-    print('inserted '+item+' at index '+str(startIndex))
+    #print('inserted '+item+' at index '+str(startIndex))
 
     # Format text
     requests_format = [
@@ -149,6 +148,7 @@ def insert_text(service, doc_id, startIndex, item):
     ]
 
     result1 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_insert}).execute()
+    print('    '+item)
     result2 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
 
 # add ingredients to google doc given the id's to the meals
@@ -168,6 +168,10 @@ def update_grocery_list(ids, service, doc):
         # write updated this_time, last_time values to csv
         Meals.to_csv('Meals Table.csv')
 
+        # get the meal name
+        Meal_name = Meals.loc[id, 'name']
+        print('MEAL: '+Meal_name)
+
         # get the meal abbreviation
         Meal_abbrev = Meals.loc[id, 'abbrev']
 
@@ -180,13 +184,15 @@ def update_grocery_list(ids, service, doc):
             # insert text to google doc
             start_i, end_i = get_text_range_idx(service, doc, section)
             insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev)
+        print('Completed'+'\n')
 
 if __name__ == '__main__':
     service = main()
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
-    update_grocery_list([1,2,3], service, doc)
+    update_grocery_list([19,20], service, doc)
+    # 6,35,42,25,24,1
 
     # INSERT TEXT TEST
     # start_h, end_h = get_text_range_idx(service, doc, "Health")
