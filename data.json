@@ -14,42 +14,12 @@
             },
             {
                 "startIndex": 1,
-                "endIndex": 2,
+                "endIndex": 3,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 1,
                             "endIndex": 2,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 2,
-                "endIndex": 4,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 2,
-                            "endIndex": 3,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -66,8 +36,8 @@
                             }
                         },
                         {
-                            "startIndex": 3,
-                            "endIndex": 4,
+                            "startIndex": 2,
+                            "endIndex": 3,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -92,13 +62,13 @@
                 }
             },
             {
-                "startIndex": 4,
-                "endIndex": 11,
+                "startIndex": 3,
+                "endIndex": 10,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 4,
-                            "endIndex": 10,
+                            "startIndex": 3,
+                            "endIndex": 9,
                             "textRun": {
                                 "content": "Health",
                                 "textStyle": {
@@ -116,6 +86,26 @@
                             }
                         },
                         {
+                            "startIndex": 9,
+                            "endIndex": 10,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 10,
+                "endIndex": 11,
+                "paragraph": {
+                    "elements": [
+                        {
                             "startIndex": 10,
                             "endIndex": 11,
                             "textRun": {
@@ -132,32 +122,12 @@
             },
             {
                 "startIndex": 11,
-                "endIndex": 12,
+                "endIndex": 13,
                 "paragraph": {
                     "elements": [
                         {
                             "startIndex": 11,
                             "endIndex": 12,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {}
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 12,
-                "endIndex": 14,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 12,
-                            "endIndex": 13,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -174,8 +144,8 @@
                             }
                         },
                         {
-                            "startIndex": 13,
-                            "endIndex": 14,
+                            "startIndex": 12,
+                            "endIndex": 13,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -200,13 +170,13 @@
                 }
             },
             {
-                "startIndex": 14,
-                "endIndex": 32,
+                "startIndex": 13,
+                "endIndex": 31,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 14,
-                            "endIndex": 31,
+                            "startIndex": 13,
+                            "endIndex": 30,
                             "textRun": {
                                 "content": "Fruits/Vegetables",
                                 "textStyle": {
@@ -224,8 +194,8 @@
                             }
                         },
                         {
-                            "startIndex": 31,
-                            "endIndex": 32,
+                            "startIndex": 30,
+                            "endIndex": 31,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -239,13 +209,33 @@
                 }
             },
             {
-                "startIndex": 32,
-                "endIndex": 53,
+                "startIndex": 31,
+                "endIndex": 82,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 32,
-                            "endIndex": 53,
+                            "startIndex": 31,
+                            "endIndex": 82,
+                            "textRun": {
+                                "content": "Maybe make with rice or vegetables (baked chicken)\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 82,
+                "endIndex": 103,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 82,
+                            "endIndex": 103,
                             "textRun": {
                                 "content": "2 roma tomatos (brc)\n",
                                 "textStyle": {}
@@ -259,13 +249,13 @@
                 }
             },
             {
-                "startIndex": 53,
-                "endIndex": 54,
+                "startIndex": 103,
+                "endIndex": 104,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 53,
-                            "endIndex": 54,
+                            "startIndex": 103,
+                            "endIndex": 104,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -279,13 +269,13 @@
                 }
             },
             {
-                "startIndex": 54,
-                "endIndex": 56,
+                "startIndex": 104,
+                "endIndex": 106,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 54,
-                            "endIndex": 55,
+                            "startIndex": 104,
+                            "endIndex": 105,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -302,8 +292,8 @@
                             }
                         },
                         {
-                            "startIndex": 55,
-                            "endIndex": 56,
+                            "startIndex": 105,
+                            "endIndex": 106,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -328,13 +318,13 @@
                 }
             },
             {
-                "startIndex": 56,
-                "endIndex": 62,
+                "startIndex": 106,
+                "endIndex": 112,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 56,
-                            "endIndex": 61,
+                            "startIndex": 106,
+                            "endIndex": 111,
                             "textRun": {
                                 "content": "Carne",
                                 "textStyle": {
@@ -352,8 +342,8 @@
                             }
                         },
                         {
-                            "startIndex": 61,
-                            "endIndex": 62,
+                            "startIndex": 111,
+                            "endIndex": 112,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -367,13 +357,33 @@
                 }
             },
             {
-                "startIndex": 62,
-                "endIndex": 94,
+                "startIndex": 112,
+                "endIndex": 151,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 62,
-                            "endIndex": 94,
+                            "startIndex": 112,
+                            "endIndex": 151,
+                            "textRun": {
+                                "content": "~3lb of chicken breast (baked chicken)\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 151,
+                "endIndex": 183,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 151,
+                            "endIndex": 183,
                             "textRun": {
                                 "content": "1 carne del Angel (angel carne)\n",
                                 "textStyle": {}
@@ -387,13 +397,13 @@
                 }
             },
             {
-                "startIndex": 94,
-                "endIndex": 95,
+                "startIndex": 183,
+                "endIndex": 184,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 94,
-                            "endIndex": 95,
+                            "startIndex": 183,
+                            "endIndex": 184,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -407,13 +417,13 @@
                 }
             },
             {
-                "startIndex": 95,
-                "endIndex": 97,
+                "startIndex": 184,
+                "endIndex": 186,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 95,
-                            "endIndex": 96,
+                            "startIndex": 184,
+                            "endIndex": 185,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -430,8 +440,8 @@
                             }
                         },
                         {
-                            "startIndex": 96,
-                            "endIndex": 97,
+                            "startIndex": 185,
+                            "endIndex": 186,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -456,13 +466,13 @@
                 }
             },
             {
-                "startIndex": 97,
-                "endIndex": 111,
+                "startIndex": 186,
+                "endIndex": 200,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 97,
-                            "endIndex": 110,
+                            "startIndex": 186,
+                            "endIndex": 199,
                             "textRun": {
                                 "content": "Bread/Cookies",
                                 "textStyle": {
@@ -480,8 +490,8 @@
                             }
                         },
                         {
-                            "startIndex": 110,
-                            "endIndex": 111,
+                            "startIndex": 199,
+                            "endIndex": 200,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -495,33 +505,13 @@
                 }
             },
             {
-                "startIndex": 111,
-                "endIndex": 143,
+                "startIndex": 200,
+                "endIndex": 201,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 111,
-                            "endIndex": 143,
-                            "textRun": {
-                                "content": "2 6 pack pan bolillo (tortadas)\n",
-                                "textStyle": {}
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 143,
-                "endIndex": 144,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 143,
-                            "endIndex": 144,
+                            "startIndex": 200,
+                            "endIndex": 201,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -546,13 +536,13 @@
                 }
             },
             {
-                "startIndex": 144,
-                "endIndex": 146,
+                "startIndex": 201,
+                "endIndex": 203,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 144,
-                            "endIndex": 145,
+                            "startIndex": 201,
+                            "endIndex": 202,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -569,8 +559,8 @@
                             }
                         },
                         {
-                            "startIndex": 145,
-                            "endIndex": 146,
+                            "startIndex": 202,
+                            "endIndex": 203,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -595,13 +585,13 @@
                 }
             },
             {
-                "startIndex": 146,
-                "endIndex": 182,
+                "startIndex": 203,
+                "endIndex": 239,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 146,
-                            "endIndex": 182,
+                            "startIndex": 203,
+                            "endIndex": 239,
                             "textRun": {
                                 "content": "Candy/snack cakes/condiments/spices\n",
                                 "textStyle": {
@@ -626,13 +616,13 @@
                 }
             },
             {
-                "startIndex": 182,
-                "endIndex": 183,
+                "startIndex": 239,
+                "endIndex": 240,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 182,
-                            "endIndex": 183,
+                            "startIndex": 239,
+                            "endIndex": 240,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -657,13 +647,13 @@
                 }
             },
             {
-                "startIndex": 183,
-                "endIndex": 185,
+                "startIndex": 240,
+                "endIndex": 242,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 183,
-                            "endIndex": 184,
+                            "startIndex": 240,
+                            "endIndex": 241,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -680,8 +670,8 @@
                             }
                         },
                         {
-                            "startIndex": 184,
-                            "endIndex": 185,
+                            "startIndex": 241,
+                            "endIndex": 242,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -706,13 +696,13 @@
                 }
             },
             {
-                "startIndex": 185,
-                "endIndex": 207,
+                "startIndex": 242,
+                "endIndex": 264,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 185,
-                            "endIndex": 206,
+                            "startIndex": 242,
+                            "endIndex": 263,
                             "textRun": {
                                 "content": "Rice/beans/pasta/soup",
                                 "textStyle": {
@@ -730,8 +720,8 @@
                             }
                         },
                         {
-                            "startIndex": 206,
-                            "endIndex": 207,
+                            "startIndex": 263,
+                            "endIndex": 264,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -745,33 +735,13 @@
                 }
             },
             {
-                "startIndex": 207,
-                "endIndex": 242,
+                "startIndex": 264,
+                "endIndex": 303,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 207,
-                            "endIndex": 242,
-                            "textRun": {
-                                "content": "~_ 1 lb bag black beans (tortadas)\n",
-                                "textStyle": {}
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 242,
-                "endIndex": 281,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 242,
-                            "endIndex": 281,
+                            "startIndex": 264,
+                            "endIndex": 303,
                             "textRun": {
                                 "content": "1/4 1 lb bag brown beans (angel carne)\n",
                                 "textStyle": {}
@@ -785,15 +755,15 @@
                 }
             },
             {
-                "startIndex": 281,
-                "endIndex": 310,
+                "startIndex": 303,
+                "endIndex": 331,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 281,
-                            "endIndex": 310,
+                            "startIndex": 303,
+                            "endIndex": 331,
                             "textRun": {
-                                "content": "8/10 1 lb bag of rice  (brc)\n",
+                                "content": "8/10 1 lb bag of rice (brc)\n",
                                 "textStyle": {}
                             }
                         }
@@ -805,15 +775,15 @@
                 }
             },
             {
-                "startIndex": 310,
-                "endIndex": 350,
+                "startIndex": 331,
+                "endIndex": 375,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 310,
-                            "endIndex": 350,
+                            "startIndex": 331,
+                            "endIndex": 375,
                             "textRun": {
-                                "content": "_-_ 1 lb bag brown or black beans (brc)\n",
+                                "content": "1/2-3/4 1 lb bag brown or black beans (brc)\n",
                                 "textStyle": {}
                             }
                         }
@@ -825,13 +795,13 @@
                 }
             },
             {
-                "startIndex": 350,
-                "endIndex": 351,
+                "startIndex": 375,
+                "endIndex": 376,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 350,
-                            "endIndex": 351,
+                            "startIndex": 375,
+                            "endIndex": 376,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -856,13 +826,13 @@
                 }
             },
             {
-                "startIndex": 351,
-                "endIndex": 353,
+                "startIndex": 376,
+                "endIndex": 378,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 351,
-                            "endIndex": 352,
+                            "startIndex": 376,
+                            "endIndex": 377,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -879,8 +849,8 @@
                             }
                         },
                         {
-                            "startIndex": 352,
-                            "endIndex": 353,
+                            "startIndex": 377,
+                            "endIndex": 378,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -905,187 +875,15 @@
                 }
             },
             {
-                "startIndex": 353,
-                "endIndex": 366,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 353,
-                            "endIndex": 366,
-                            "textRun": {
-                                "content": "Chips/snacks\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 366,
-                "endIndex": 367,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 366,
-                            "endIndex": 367,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 367,
-                "endIndex": 369,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 367,
-                            "endIndex": 368,
-                            "horizontalRule": {
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "startIndex": 368,
-                            "endIndex": 369,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 369,
-                "endIndex": 388,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 369,
-                            "endIndex": 388,
-                            "textRun": {
-                                "content": "Refrigerated stuff\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 388,
-                "endIndex": 389,
-                "paragraph": {
-                    "elements": [
-                        {
-                            "startIndex": 388,
-                            "endIndex": 389,
-                            "textRun": {
-                                "content": "\n",
-                                "textStyle": {
-                                    "bold": true,
-                                    "foregroundColor": {
-                                        "color": {
-                                            "rgbColor": {
-                                                "red": 0.2901961,
-                                                "green": 0.5254902,
-                                                "blue": 0.9098039
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "paragraphStyle": {
-                        "namedStyleType": "NORMAL_TEXT",
-                        "direction": "LEFT_TO_RIGHT"
-                    }
-                }
-            },
-            {
-                "startIndex": 389,
+                "startIndex": 378,
                 "endIndex": 391,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 389,
+                            "startIndex": 378,
                             "endIndex": 390,
-                            "horizontalRule": {
+                            "textRun": {
+                                "content": "Chips/snacks",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -1105,6 +903,26 @@
                             "endIndex": 391,
                             "textRun": {
                                 "content": "\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 391,
+                "endIndex": 392,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 391,
+                            "endIndex": 392,
+                            "textRun": {
+                                "content": "\n",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -1127,13 +945,181 @@
                 }
             },
             {
-                "startIndex": 391,
-                "endIndex": 403,
+                "startIndex": 392,
+                "endIndex": 394,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 391,
-                            "endIndex": 403,
+                            "startIndex": 392,
+                            "endIndex": 393,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 393,
+                            "endIndex": 394,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 394,
+                "endIndex": 413,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 394,
+                            "endIndex": 412,
+                            "textRun": {
+                                "content": "Refrigerated stuff",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 412,
+                            "endIndex": 413,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 413,
+                "endIndex": 414,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 413,
+                            "endIndex": 414,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 414,
+                "endIndex": 416,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 414,
+                            "endIndex": 415,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 415,
+                            "endIndex": 416,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 416,
+                "endIndex": 428,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 416,
+                            "endIndex": 428,
                             "textRun": {
                                 "content": "Jugos/water\n",
                                 "textStyle": {
@@ -1158,13 +1144,13 @@
                 }
             },
             {
-                "startIndex": 403,
-                "endIndex": 404,
+                "startIndex": 428,
+                "endIndex": 429,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 403,
-                            "endIndex": 404,
+                            "startIndex": 428,
+                            "endIndex": 429,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1189,13 +1175,13 @@
                 }
             },
             {
-                "startIndex": 404,
-                "endIndex": 406,
+                "startIndex": 429,
+                "endIndex": 431,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 404,
-                            "endIndex": 405,
+                            "startIndex": 429,
+                            "endIndex": 430,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -1212,8 +1198,8 @@
                             }
                         },
                         {
-                            "startIndex": 405,
-                            "endIndex": 406,
+                            "startIndex": 430,
+                            "endIndex": 431,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1238,15 +1224,15 @@
                 }
             },
             {
-                "startIndex": 406,
-                "endIndex": 419,
+                "startIndex": 431,
+                "endIndex": 444,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 406,
-                            "endIndex": 419,
+                            "startIndex": 431,
+                            "endIndex": 443,
                             "textRun": {
-                                "content": "Frozen stuff\n",
+                                "content": "Frozen stuff",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -1260,6 +1246,14 @@
                                     }
                                 }
                             }
+                        },
+                        {
+                            "startIndex": 443,
+                            "endIndex": 444,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
+                            }
                         }
                     ],
                     "paragraphStyle": {
@@ -1269,13 +1263,13 @@
                 }
             },
             {
-                "startIndex": 419,
-                "endIndex": 420,
+                "startIndex": 444,
+                "endIndex": 445,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 419,
-                            "endIndex": 420,
+                            "startIndex": 444,
+                            "endIndex": 445,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1300,13 +1294,13 @@
                 }
             },
             {
-                "startIndex": 420,
-                "endIndex": 422,
+                "startIndex": 445,
+                "endIndex": 447,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 420,
-                            "endIndex": 421,
+                            "startIndex": 445,
+                            "endIndex": 446,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -1323,8 +1317,8 @@
                             }
                         },
                         {
-                            "startIndex": 421,
-                            "endIndex": 422,
+                            "startIndex": 446,
+                            "endIndex": 447,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1349,13 +1343,13 @@
                 }
             },
             {
-                "startIndex": 422,
-                "endIndex": 437,
+                "startIndex": 447,
+                "endIndex": 462,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 422,
-                            "endIndex": 436,
+                            "startIndex": 447,
+                            "endIndex": 461,
                             "textRun": {
                                 "content": "Dairy and eggs",
                                 "textStyle": {
@@ -1373,8 +1367,8 @@
                             }
                         },
                         {
-                            "startIndex": 436,
-                            "endIndex": 437,
+                            "startIndex": 461,
+                            "endIndex": 462,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -1388,13 +1382,13 @@
                 }
             },
             {
-                "startIndex": 437,
-                "endIndex": 460,
+                "startIndex": 462,
+                "endIndex": 485,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 437,
-                            "endIndex": 460,
+                            "startIndex": 462,
+                            "endIndex": 485,
                             "textRun": {
                                 "content": "2 queso ranchero (brc)\n",
                                 "textStyle": {}
@@ -1408,13 +1402,13 @@
                 }
             },
             {
-                "startIndex": 460,
-                "endIndex": 461,
+                "startIndex": 485,
+                "endIndex": 486,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 460,
-                            "endIndex": 461,
+                            "startIndex": 485,
+                            "endIndex": 486,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1439,13 +1433,13 @@
                 }
             },
             {
-                "startIndex": 461,
-                "endIndex": 463,
+                "startIndex": 486,
+                "endIndex": 488,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 461,
-                            "endIndex": 462,
+                            "startIndex": 486,
+                            "endIndex": 487,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -1462,8 +1456,8 @@
                             }
                         },
                         {
-                            "startIndex": 462,
-                            "endIndex": 463,
+                            "startIndex": 487,
+                            "endIndex": 488,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1488,13 +1482,13 @@
                 }
             },
             {
-                "startIndex": 463,
-                "endIndex": 473,
+                "startIndex": 488,
+                "endIndex": 498,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 463,
-                            "endIndex": 472,
+                            "startIndex": 488,
+                            "endIndex": 497,
                             "textRun": {
                                 "content": "Hot stuff",
                                 "textStyle": {
@@ -1512,8 +1506,8 @@
                             }
                         },
                         {
-                            "startIndex": 472,
-                            "endIndex": 473,
+                            "startIndex": 497,
+                            "endIndex": 498,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -1527,13 +1521,13 @@
                 }
             },
             {
-                "startIndex": 473,
-                "endIndex": 474,
+                "startIndex": 498,
+                "endIndex": 499,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 473,
-                            "endIndex": 474,
+                            "startIndex": 498,
+                            "endIndex": 499,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {}
@@ -1547,13 +1541,13 @@
                 }
             },
             {
-                "startIndex": 474,
-                "endIndex": 476,
+                "startIndex": 499,
+                "endIndex": 501,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 474,
-                            "endIndex": 475,
+                            "startIndex": 499,
+                            "endIndex": 500,
                             "horizontalRule": {
                                 "textStyle": {
                                     "bold": true,
@@ -1570,8 +1564,8 @@
                             }
                         },
                         {
-                            "startIndex": 475,
-                            "endIndex": 476,
+                            "startIndex": 500,
+                            "endIndex": 501,
                             "textRun": {
                                 "content": "\n",
                                 "textStyle": {
@@ -1596,15 +1590,319 @@
                 }
             },
             {
-                "startIndex": 476,
-                "endIndex": 482,
+                "startIndex": 501,
+                "endIndex": 507,
                 "paragraph": {
                     "elements": [
                         {
-                            "startIndex": 476,
-                            "endIndex": 482,
+                            "startIndex": 501,
+                            "endIndex": 507,
                             "textRun": {
                                 "content": "Other\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 507,
+                "endIndex": 508,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 507,
+                            "endIndex": 508,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 508,
+                "endIndex": 510,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 508,
+                            "endIndex": 509,
+                            "horizontalRule": {
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "startIndex": 509,
+                            "endIndex": 510,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 510,
+                "endIndex": 516,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 510,
+                            "endIndex": 516,
+                            "textRun": {
+                                "content": "Extra\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 516,
+                "endIndex": 532,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 516,
+                            "endIndex": 532,
+                            "textRun": {
+                                "content": "Carne del Angel\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 532,
+                "endIndex": 536,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 532,
+                            "endIndex": 536,
+                            "textRun": {
+                                "content": "nan\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 536,
+                "endIndex": 537,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 536,
+                            "endIndex": 537,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 537,
+                "endIndex": 561,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 537,
+                            "endIndex": 561,
+                            "textRun": {
+                                "content": "Beans, rice, and cheese\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 561,
+                "endIndex": 652,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 561,
+                            "endIndex": 652,
+                            "textRun": {
+                                "content": "onion or onion powder, oregano, chicken flavor bouillon, salt, garlic powder, onion powder\n",
+                                "textStyle": {}
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 652,
+                "endIndex": 653,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 652,
+                            "endIndex": 653,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 653,
+                "endIndex": 654,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 653,
+                            "endIndex": 654,
+                            "textRun": {
+                                "content": "\n",
+                                "textStyle": {
+                                    "bold": true,
+                                    "foregroundColor": {
+                                        "color": {
+                                            "rgbColor": {
+                                                "red": 0.2901961,
+                                                "green": 0.5254902,
+                                                "blue": 0.9098039
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "paragraphStyle": {
+                        "namedStyleType": "NORMAL_TEXT",
+                        "direction": "LEFT_TO_RIGHT"
+                    }
+                }
+            },
+            {
+                "startIndex": 654,
+                "endIndex": 658,
+                "paragraph": {
+                    "elements": [
+                        {
+                            "startIndex": 654,
+                            "endIndex": 658,
+                            "textRun": {
+                                "content": "End\n",
                                 "textStyle": {
                                     "bold": true,
                                     "foregroundColor": {
@@ -2011,7 +2309,7 @@
             }
         ]
     },
-    "revisionId": "ALm37BUHke5QLWsG3vMKp1pVLGSWX-gEY9Pd79jssJqWgbTeU9WtgcZpqnPLHn5TN8nwORopHrmdg-Cc5A9owg",
+    "revisionId": "ALm37BV7sBp8oiW7fDeONHX-WW2rxOfXKCdZGIGZkrY8PaRPD6hqYDfh12oxSTjW6r8GgQ8aHOab60M7zvvrTA",
     "suggestionsViewMode": "SUGGESTIONS_INLINE",
     "documentId": "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 }
