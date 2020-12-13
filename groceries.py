@@ -1,3 +1,6 @@
+#
+# Version 1.0.0
+#
 from __future__ import print_function
 import pickle
 import os.path
@@ -137,7 +140,7 @@ def insert_text(service, doc_id, startIndex, item):
                             'rgbColor': {
                                 'blue': 0.0,
                                 'green': 0.0,
-                                'red': 0.0
+                                'red': 1.0
                             }
                         }
                     }
@@ -175,6 +178,9 @@ def update_grocery_list(ids, service, doc):
         # get the meal abbreviation
         Meal_abbrev = Meals.loc[id, 'abbrev']
 
+        # get the Extras
+        Meal_extra = Meals.loc[id, 'extra']
+
         # get all the ingredients for the meal and write them to doc
         for index,row in Ingredients[Ingredients['id']==id].iterrows():
             # get ingredient and section name
@@ -184,15 +190,17 @@ def update_grocery_list(ids, service, doc):
             # insert text to google doc
             start_i, end_i = get_text_range_idx(service, doc, section)
             insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev)
-        print('Completed'+'\n')
+
+        # insert Extras at end of doc
+        start_i, end_i = get_text_range_idx(service, doc, 'Extra')
+        insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n')
 
 if __name__ == '__main__':
     service = main()
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
-    update_grocery_list([19,20], service, doc)
-    # 6,35,42,25,24,1
+    update_grocery_list([9,14,22,23,32,20], service, doc)
 
     # INSERT TEXT TEST
     # start_h, end_h = get_text_range_idx(service, doc, "Health")
