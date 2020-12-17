@@ -36,6 +36,7 @@ id,name,section
 9,5 lbs of potato bag (4-5 potatos),Fruits/Vegetables
 9,"1 Serrano Peppers, approx. 8-12 per 0.25 lb",Fruits/Vegetables
 9,1 lb bag of carrots (2-3 carrots),Fruits/Vegetables
+9,Lemon,Fruits/Vegetables
 9,"Cilantro, bunch (?)",Fruits/Vegetables
 10,tostadas,Rice/beans/pasta/soup
 10,1/4 1lb bag of black beans,Rice/beans/pasta/soup
@@ -43,9 +44,11 @@ id,name,section
 10,1 small guacamole cup,Fruits/Vegetables
 11,Chicken (3lb),Carne
 11,1/2 5 lbs bag of Papas,Fruits/Vegetables
+11,4 Avocado,Fruits/Vegetables
 11,Sweet potatoes for tuvi,Fruits/Vegetables
 12,Chicken (3lb),Carne
 12,1 broccoli,Fruits/Vegetables
+12,4 Avocado,Fruits/Vegetables
 12,~1/3 bag of carrots,Fruits/Vegetables
 13,Mac and cheese boxes--2,Rice/beans/pasta/soup
 13,Butter,Dairy and eggs
@@ -61,7 +64,7 @@ id,name,section
 16,21 Eggs,Dairy and eggs
 17,1lb Spaghetti,Rice/beans/pasta/soup
 17,tomato sauce,Rice/beans/pasta/soup
-17,Ground beef all natural (2),Carne
+17,2 Ground beef all natural,Carne
 17,10 pack tortillas de arina (6 tortillas),Rice/beans/pasta/soup
 18,7 extra large tortilla de arina,Rice/beans/pasta/soup
 18,2 chicken fajitas,Carne
@@ -77,6 +80,7 @@ id,name,section
 20,1 Brocolli,Fruits/Vegetables
 20,1lb bag Carrots (5 carrots),Fruits/Vegetables
 20,"1 Serrano Peppers, approx. 8-12 per 0.25 lb",Fruits/Vegetables
+20,4 Avocado,Fruits/Vegetables
 21,54 taquitos,Frozen stuff
 21,2 Small spicy guacamole,Fruits/Vegetables
 22,"Freshness Guaranteed Chicken Breast Tenderloins, 2.25 - 3.2 lb",Carne
@@ -119,6 +123,7 @@ id,name,section
 34,Dumplings (Costco),Frozen stuff
 35,All natural steak thing (Costco),Frozen stuff
 35,1/4 1 lb bag brown beans,Rice/beans/pasta/soup
+35,4 Avocado,Fruits/Vegetables
 36,"foster farms boneless skinless chicken breast, 1.6-2.39 lb",Carne
 36,1 white onion diced,Fruits/Vegetables
 36,2 red bell pepper,Fruits/Vegetables
@@ -127,6 +132,7 @@ id,name,section
 36,1 lb rice,Rice/beans/pasta/soup
 36,"1 great value whole peeled tomatos, 28 oz",Rice/beans/pasta/soup
 36,1 kitchen basics all natural original chicken stock,Rice/beans/pasta/soup
+36,4 Avocado,Fruits/Vegetables
 37,"1 old el paso medium enchilada sauce, 10 oz",Rice/beans/pasta/soup
 37,"1 great value boneless skinless chicken breast, 3 lb (frozen)",Carne
 37,1/2 lb black beans,Rice/beans/pasta/soup
@@ -138,6 +144,7 @@ id,name,section
 38,1/2 black beans 1lb bag,Rice/beans/pasta/soup
 38,2 queso ranchero,Refrigerated stuff
 38,4 tomatoes,Fruits/Vegetables
+38,4 Avocado,Fruits/Vegetables
 39,Hashbrowns,Frozen stuff
 39,21 eggs,Dairy and eggs
 40,21 eggs,Dairy and eggs
@@ -145,3 +152,4 @@ id,name,section
 41,Large Marketside pizzas (2),Fruits/Vegetables
 42,~3lb of chicken breast,Carne
 42,Maybe make with rice or vegetables,Fruits/Vegetables
+42,4 Avocado,
