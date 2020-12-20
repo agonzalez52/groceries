@@ -200,7 +200,7 @@ if __name__ == '__main__':
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
-    update_grocery_list([9,14,22,23,32,20], service, doc)
+    update_grocery_list([40,1,30,17,25,36], service, doc)
 
     # INSERT TEXT TEST
     # start_h, end_h = get_text_range_idx(service, doc, "Health")
