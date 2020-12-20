@@ -9,6 +9,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import pandas as pd
+from datetime import date
+from datetime import timedelta
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -155,11 +157,13 @@ def insert_text(service, doc_id, startIndex, item):
     result2 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(ids, service, doc):
+def update_grocery_list(ids, service, doc, week_date):
     # Open Meals and Ingredients tables
     Meals = pd.read_csv('Meals Table.csv', index_col='id')
     Ingredients = pd.read_csv('Ingredients Table.csv')
 
+    i = 0
+    # loop through meals
     for id in ids:
         # update this_time, last_time variables
         if Meals.loc[id, 'this_time'] == 1:
@@ -167,6 +171,13 @@ def update_grocery_list(ids, service, doc):
         else:
             Meals.loc[id, 'this_time'] = 1
             Meals.loc[id, 'last_time'] = 0
+
+        # write week date to meal sheet
+        Meals.loc[id, 'week'] = week_date.strftime("%m-%d-%y")
+
+        # meal_day = day meal is being made
+        meal_day = week_date + timedelta(days=i)
+        i+=1
 
         # write updated this_time, last_time values to csv
         Meals.to_csv('Meals Table.csv')
@@ -183,13 +194,20 @@ def update_grocery_list(ids, service, doc):
 
         # get all the ingredients for the meal and write them to doc
         for index,row in Ingredients[Ingredients['id']==id].iterrows():
-            # get ingredient and section name
+            # get ingredient, section name, and days before take down
             ingredient = row['name']
             section = row['section']
+            days_before = row['days_before_take_down']
 
             # insert text to google doc
             start_i, end_i = get_text_range_idx(service, doc, section)
             insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev)
+
+            # create reminder in google doc if ingredient needs a reminder
+            if days_before > 0:
+                start_j, end_j = get_text_range_idx(service, doc, 'Reminders')
+                insert_text(service, doc, end_j, )
+                # format reminder: [meal_day-days_before] - Takedown [ingredient] at 8:00am for [Meal_name]
 
         # insert Extras at end of doc
         start_i, end_i = get_text_range_idx(service, doc, 'Extra')
@@ -199,8 +217,9 @@ if __name__ == '__main__':
     service = main()
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-
-    update_grocery_list([40,1,30,17,25,36], service, doc)
+    
+    start_date = date(2020, 12, 28)
+    update_grocery_list([40,1,30,17,25,36], service, doc, start_date)
 
     # INSERT TEXT TEST
     # start_h, end_h = get_text_range_idx(service, doc, "Health")
