@@ -219,7 +219,7 @@ if __name__ == '__main__':
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
     
     start_date = date(2020, 12, 28)
-    update_grocery_list([40,1,30,17,25,36], service, doc, start_date)
+    update_grocery_list([38,10,29,13,11,4], service, doc, start_date)
 
     # INSERT TEXT TEST
     # start_h, end_h = get_text_range_idx(service, doc, "Health")
