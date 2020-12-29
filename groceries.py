@@ -18,6 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 # The ID of a sample document.
 DOCUMENT_ID = '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE'
 
+# color codes for text
 red = [0.0,0.0,1.0]
 green = [0.0,1.0,0.0]
 blue = [1.0,0.0,0.0]
@@ -65,7 +66,7 @@ def create_document(service):
 
     return doc
 
-def get_text_range_idx(service, doc_id, match_text):
+def get_text_range_idx(service, doc_id, match_text, do_print):
     """
     Find text and their start and end index.
     """
@@ -90,7 +91,8 @@ def get_text_range_idx(service, doc_id, match_text):
                     content = e.get('textRun').get('content')
                     # added to exactly match section name
                     if match_text == content or match_text == content.strip('\n'):
-                        print(match_text)
+                        if do_print:
+                            print(match_text)
                         startIdx = e.get('startIndex')
                         endIdx = e.get('endIndex')
                         # added because sometimes section title and its '\n' are separated into two elements
@@ -102,7 +104,7 @@ def get_text_range_idx(service, doc_id, match_text):
 
     return startIdx, endIdx
 
-def insert_text(service, doc_id, startIndex, item, color):
+def insert_text(service, doc_id, startIndex, item, color, do_print):
     """
     Inserts texts followed by newline. Formats text.
     Use case: startIndex should be endIndex of the name of the section
@@ -159,27 +161,34 @@ def insert_text(service, doc_id, startIndex, item, color):
     ]
 
     result1 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_insert}).execute()
-    print('    '+item)
+    if do_print:
+        print('    '+item)
     result2 = service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
 
 # loop through ingredients for meal 'id' and add to doc
-def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev):
+def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
+    Meal_name, meal_day):
     # get all the ingredients for the meal and write them to doc
     for index,row in Ingredients[Ingredients['id']==id].iterrows():
         # get ingredient, section name, and days before take down
         ingredient = row['name']
         section = row['section']
-        days_before = row['days_before_take_down']
+        days_before = row['days_before_action']
+        action = row['action']
+        time = row['time']
+        notify_who = row['notify_who']
+        notify_when = row['notify_when']
 
-        # insert text to google doc
-        start_i, end_i = get_text_range_idx(service, doc, section)
-        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, yellow)
+        # insert ingredient to google doc
+        start_i, end_i = get_text_range_idx(service, doc, section, True)
+        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, yellow,
+            True)
 
         # create reminder in google doc if ingredient needs a reminder
         if days_before > 0:
-            start_j, end_j = get_text_range_idx(service, doc, 'Reminders')
-            insert_text(service, doc, end_j, )
-            # format reminder: [meal_day-days_before] - Takedown [ingredient] at 8:00am for [Meal_name]
+            make_one_reminder(service, doc, meal_day, days_before, action,
+                ingredient, time, notify_who, notify_when,
+                Meal_name)
 
 # add ingredients to google doc given the id's to the meals
 def update_grocery_list(ids, service, doc, week_date, test_run=0):
@@ -190,30 +199,81 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
     i = 0
     # loop through meals
     for id in ids:
-        if test_run!=0:
-            # write week date to Meals
-            Meals.loc[id, 'week'] = week_date.strftime("%m-%d-%y")
-
-            # write week to csv
-            Meals.to_csv('Meals Table.csv')
+        if test_run<=0:
+            update_meal_date(Meals, week_date, id)
 
         # meal_day = day meal is being made
         meal_day = week_date + timedelta(days=i)
         i+=1
 
-        # get csv values from Meals
+        # get csv values from Meal
         Meal_name = Meals.loc[id, 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+Meal_name)
         Meal_abbrev = Meals.loc[id, 'abbrev']
         Meal_extra = Meals.loc[id, 'extra']
 
-        write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev)
+        write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
+        Meal_name, meal_day)
 
         if isinstance(Meal_extra, str):
             # insert Extras at end of doc
-            start_i, end_i = get_text_range_idx(service, doc, 'Extra')
-            insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra), yellow)
+            start_i, end_i = get_text_range_idx(service, doc, 'Extra', True)
+            insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
+                , yellow, True)
+
+# write reminders in google doc and update meal date in csv given meals for week
+def make_reminders(ids, service, doc, week_date):
+    # Open Meals and Ingredients tables
+    Meals = pd.read_csv('Meals Table.csv', index_col='id')
+    Ingredients = pd.read_csv('Ingredients Table.csv')
+
+    i = 0
+    # loop through Meals
+    for meal in ids:
+        update_meal_date(Meals, week_date, meal)
+
+        # meal_day = day meal is being made
+        meal_day = week_date + timedelta(days=i)
+        i+=1
+
+        # get csv values for Meal
+        Meal_name = Meals.loc[meal, 'name']
+
+        # loop through meal ingredients
+        for index,row in Ingredients[Ingredients['id']==id].iterrows():
+            ingredient = row['name']
+            days_before = row['days_before_action']
+            action = row['action']
+            time = row['time']
+            notify_who = row['notify_who']
+            notify_when = row['notify_when']
+
+            # create reminder in google doc if ingredient needs a reminder
+            if days_before > 0:
+                make_one_reminder(service, doc, meal_day, days_before, action,
+                                    ingredient, time, notify_who, notify_when,
+                                    Meal_name)
+
+# write reminder to google doc for a given 'ingredient'
+def make_one_reminder(service, doc, meal_day, days_before, action,
+                        ingredient, time, notify_who, notify_when, meal_name):
+    # days_before is set to 10 in csv if reminder is for same day
+    if days_before >= 10:
+        days_before = 0
+    start_j, end_j = get_text_range_idx(service, doc, 'Reminders', False)
+    insert_text(service, doc, end_j, meal_name+' - '+action+' '+ingredient+' '+
+        'on '+str(meal_day-timedelta(days_before))+' at '+time+' in Family calendar.'
+        +' Add '+notify_who+', notify at '+notify_when+', default color, on private\n',
+        yellow, False)
+
+# write the week a meal is being made in Meals sheet
+def update_meal_date(Meals, week_date, meal):
+    # write week date to Meals
+    Meals.loc[meal, 'week'] = week_date.strftime("%m-%d-%y")
+
+    # write week to csv
+    Meals.to_csv('Meals Table.csv')
 
 if __name__ == '__main__':
     service = main()
@@ -222,44 +282,6 @@ if __name__ == '__main__':
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
     start_date = date(2021, 1, 11)
-    update_grocery_list([38,10,29,13,11,4], service, doc, start_date)
-
-    # INSERT TEXT TEST
-    # start_h, end_h = get_text_range_idx(service, doc, "Health")
-    # #print('end_h: '+str(end_h))
-    # insert_text(service, doc, end_h, 'floss')
-    #
-    # start_c, end_c = get_text_range_idx(service, doc, "Carne")
-    # #print('end_c: '+str(end_c))
-    # insert_text(service, doc, end_c, 'chicken (3lb)')
-    #
-    # start_cagain, end_cagain = get_text_range_idx(service, doc, "Carne")
-    # insert_text(service, doc, end_cagain, 'ground beef')
-    #
-    # start_o, end_o = get_text_range_idx(service, doc, "Hot stuff")
-    # insert_text(service, doc, end_o, 'chicken wings')
-
-    # CSV TEST
-    # Meals = pd.read_csv('Meals Table.csv', index_col='id')
-    # Ingredients = pd.read_csv('Ingredients Table.csv')
-    #
-    # curr_id = 1;
-    #
-    # # update this_time, last_time variables
-    # if Meals.loc[curr_id, 'this_time'] == 1:
-    #     Meals.loc[curr_id, 'last_time'] = 1
-    # else:
-    #     Meals.loc[curr_id, 'this_time'] = 1
-    #     Meals.loc[curr_id, 'last_time'] = 0
-    #
-    # # get meal name corresponding to the specified id
-    # Meal_name = Meals.loc[curr_id, 'name']
-    #
-    # # loops through rows with specified id and prints out the ingredient name/
-    # # section
-    # for index,row in Ingredients[Ingredients['id']==curr_id].iterrows():
-    #     print('Name: '+row['name']+' Section: '+row['section'])
-    #
-    # Meals.to_csv('Meals Table.csv')
+    update_grocery_list([1,2,16], service, doc, start_date, 1) # TEST RUN
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
