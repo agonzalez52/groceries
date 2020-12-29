@@ -196,6 +196,9 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
     Meals = pd.read_csv('Meals Table.csv', index_col='id')
     Ingredients = pd.read_csv('Ingredients Table.csv')
 
+    meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
+        ,"w")
+
     i = 0
     # loop through meals
     for id in ids:
@@ -210,6 +213,7 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
         Meal_name = Meals.loc[id, 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+Meal_name)
+        meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
         Meal_abbrev = Meals.loc[id, 'abbrev']
         Meal_extra = Meals.loc[id, 'extra']
 
@@ -221,6 +225,8 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
             start_i, end_i = get_text_range_idx(service, doc, 'Extra', True)
             insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
                 , yellow, True)
+
+    meals_file.close()
 
 # write reminders in google doc and update meal date in csv given meals for week
 def make_reminders(ids, service, doc, week_date):
@@ -263,9 +269,9 @@ def make_one_reminder(service, doc, meal_day, days_before, action,
         days_before = 0
     start_j, end_j = get_text_range_idx(service, doc, 'Reminders', False)
     insert_text(service, doc, end_j, meal_name+' - '+action+' '+ingredient+' '+
-        'on '+str(meal_day-timedelta(days_before))+' at '+time+' in Family calendar.'
-        +' Add '+notify_who+', notify at '+notify_when+', default color, on private\n',
-        yellow, False)
+        'on '+(meal_day-timedelta(days_before)).strftime("%A, %m-%d-%y")+' at '
+        +time+' in Family calendar. Add '+notify_who+', notify at '+notify_when+
+        ', default color, on private\n', yellow, False)
 
 # write the week a meal is being made in Meals sheet
 def update_meal_date(Meals, week_date, meal):
