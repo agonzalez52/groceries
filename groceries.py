@@ -1,6 +1,9 @@
 #
-# Version 1.0.0
+# Version 1.1.0
 #
+# Created By: Angel Gonzalez
+#
+
 from __future__ import print_function
 import pickle
 import os.path
@@ -181,7 +184,7 @@ def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
 
         # insert ingredient to google doc
         start_i, end_i = get_text_range_idx(service, doc, section, True)
-        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, yellow,
+        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, red,
             True)
 
         # create reminder in google doc if ingredient needs a reminder
@@ -224,7 +227,7 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
             # insert Extras at end of doc
             start_i, end_i = get_text_range_idx(service, doc, 'Extra', True)
             insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
-                , yellow, True)
+                , black, True)
 
     meals_file.close()
 
@@ -271,7 +274,7 @@ def make_one_reminder(service, doc, meal_day, days_before, action,
     insert_text(service, doc, end_j, meal_name+' - '+action+' '+ingredient+' '+
         'on '+(meal_day-timedelta(days_before)).strftime("%A, %m-%d-%y")+' at '
         +time+' in Family calendar. Add '+notify_who+', notify at '+notify_when+
-        ', default color, on private\n', yellow, False)
+        ', default color, on private\n', black, False)
 
 # write the week a meal is being made in Meals sheet
 def update_meal_date(Meals, week_date, meal):
@@ -288,6 +291,6 @@ if __name__ == '__main__':
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
     start_date = date(2021, 1, 11)
-    update_grocery_list([1,2,16], service, doc, start_date, 1) # TEST RUN
+    update_grocery_list([1,2,16], service, doc, start_date)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
