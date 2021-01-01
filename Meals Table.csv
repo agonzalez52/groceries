@@ -1,22 +1,22 @@
 id,name,week,abbrev,extra,notes
 1,"Beans, rice, and cheese",,(brc),"onion or onion powder, oregano, chicken flavor bouillon, salt, garlic powder, onion powder",
 2,Carne del Angel,,(angel carne),,
-3,Tortadas,12/28/20,(tortadas),,15 min at 350
-4,Quesadillas,1/4/21,(quesadillas),,
+3,Tortadas,12/28/2020,(tortadas),,15 min at 350
+4,Quesadillas,12/28/2020,(quesadillas),,
 5,Krabby patties,,(krabby patties),"ketchup, cheese squares",
 6,Lentil soup,,(lentils),"Salt, coriander",
 7,Sandwiches,,(sandwiches),"Mayo, cheese squares, chips, ASK ARTURO",
 8,Tortas,,(tortas),"Mayo, cheese squares, chips, ASK ARTURO",350 for 10 min
 9,Caldo de pollo,,(caldo),Salt,
-10,Tostadas,01-04-21,(tostadas),,
-11,Chicken with papas,1/4/21,(chicken w papas),,
-12,Chicken with vegetables,01-04-21,(chicken w vegs),,
-13,Mac and chun,01-04-21,(mac),,
+10,Tostadas,1/4/2021,(tostadas),,
+11,Chicken with papas,12/28/2020,(chicken w papas),,
+12,Chicken with vegetables,1/4/2021,(chicken w vegs),,
+13,Mac and chun,1/4/2021,(mac),,
 14,Tilapia with rice,,(tilapia),"Fish seasoning, salt, parchment paper, garlic",
 15,Salmon with rice,,(salmon),"Fish seasoning, salt, parchment paper",make for less than 20 min (11/06/20)- non coscto salmon. costco- start 1:20 before serving time (only 1 batch)
 16,Papas and eggs,,(papas/eggs),salt,use a lot of erl
 17,Spaghetti,,(spaghetti),salt,Put water to boil first then prepare meat
-18,Burritos,12/28/20,(burritos),,
+18,Burritos,12/28/2020,(burritos),,
 19,Hot dogs,,(hot dogs),"ketchup, oil",ASK ARTURO
 20,Chicken stir fry,,(stir fry),,"chicken spices, salt"
 21,Taquitos,,(taquitos),Avocados,
@@ -24,10 +24,10 @@ id,name,week,abbrev,extra,notes
 23,Eggs and ham,,(eggs and ham),"salt, oil",
 24,Chicken salad,,(chicken salad),mayo,
 25,Chorizo con huevos,,(chorizo w eggs),,
-26,Hard boiled eggs,12/28/20,(hard boiled eggs),,"1 hr 30 minutes (30 minutes to put eggs in small pan and fill with enough cold water to cover then bring to a boil, 14 minutes to leave with cap on, 30 minutes to peel, 16 minutes to serve)"
+26,Hard boiled eggs,12/28/2020,(hard boiled eggs),,"1 hr 30 minutes (30 minutes to put eggs in small pan and fill with enough cold water to cover then bring to a boil, 14 minutes to leave with cap on, 30 minutes to peel, 16 minutes to serve)"
 27,Lasagna,,(lasagna),,
-28,Tuvi's chicken thing,01-04-21,(tuvi chicken thing),,
-29,Sausage and eggs,01-04-21,(sausage/eggs),,
+28,Tuvi's chicken thing,1/4/2021,(tuvi chicken thing),,
+29,Sausage and eggs,1/4/2021,(sausage/eggs),,
 30,Chile beans,,(chili beans),,
 31,Green beans with chicken,,(green beans w chicken),,
 32,Tuna Salad,,(tuna salad),"mayonaisse, salt, pepper",
@@ -35,8 +35,8 @@ id,name,week,abbrev,extra,notes
 34,Dumplings (costco),,(dumplings),,
 35,All natural steak thing (costco),,(steak thing),,
 36,Chicken and chorizo jambalaya,,(jambalaya),"olive oil, garlic, cajun seasoning",
-37,Chicken enchilada dip,12/28/20,(chicken dip),,"2 hours considering chicken, and no leftovers"
-38,Wrapped tortilla soaked in beans with cheese on top,01-04-21,(wrapped tortilla),"salt, garlic",
+37,Chicken enchilada dip,12/28/2020,(chicken dip),,"2 hours considering chicken, and no leftovers"
+38,Wrapped tortilla soaked in beans with cheese on top,1/4/2021,(wrapped tortilla),"salt, garlic",
 39,Hashbrowns and eggs,,(hashbrowns),,
 40,Eggs and beans,,(eggs/beans),,
 41,Pizza,,(pizza),,
