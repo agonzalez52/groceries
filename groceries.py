@@ -250,7 +250,7 @@ def make_reminders(ids, service, doc, week_date):
         Meal_name = Meals.loc[meal, 'name']
 
         # loop through meal ingredients
-        for index,row in Ingredients[Ingredients['id']==id].iterrows():
+        for index,row in Ingredients[Ingredients['id']==meal].iterrows():
             ingredient = row['name']
             days_before = row['days_before_action']
             action = row['action']
@@ -275,7 +275,7 @@ def make_one_reminder(service, doc, meal_day, days_before, action,
         ') - '+action+' '+ingredient+' '+'on '+
         (meal_day-timedelta(days_before)).strftime("%A, %m-%d-%y")+' at '
         +time+' in Family calendar. Add '+notify_who+', notify at '+notify_when+
-        ', default color, on private\n', yellow, False)
+        ', default color, on private\n', red, True)
 
 # write the week a meal is being made in Meals sheet
 def update_meal_date(Meals, week_date, meal):
@@ -291,7 +291,8 @@ if __name__ == '__main__':
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
-    start_date = date(2021, 1, 11)
-    update_grocery_list([1,2,16], service, doc, start_date, 1) # TEST RUN
+    start_date = date(2021, 1, 4)
+    #update_grocery_list([1,2,16], service, doc, start_date, 1) # TEST RUN
+    make_reminders([38,10,29,13,12,28],service,doc,start_date)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
