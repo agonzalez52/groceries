@@ -199,8 +199,8 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
     Meals = pd.read_csv('Meals Table.csv', index_col='id')
     Ingredients = pd.read_csv('Ingredients Table.csv')
 
-    #meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
-    #    ,"w")
+    meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
+        ,"w")
 
     i = 0
     # loop through meals
@@ -216,7 +216,7 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
         Meal_name = Meals.loc[id, 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+Meal_name)
-        #meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
+        meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
         Meal_abbrev = Meals.loc[id, 'abbrev']
         Meal_extra = Meals.loc[id, 'extra']
 
@@ -229,7 +229,7 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
             insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
                 , red, True)
 
-    #meals_file.close()
+    meals_file.close()
 
 # write reminders in google doc and update meal date in csv given meals for week
 def make_reminders(ids, service, doc, week_date):
@@ -293,7 +293,7 @@ if __name__ == '__main__':
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
     start_date = date(2021, 1, 18)
-    #update_grocery_list([43,15,19,17,16,6], service, doc, start_date)
-    make_reminders([20,15,19,42,16,6],service,doc,start_date)
+    update_grocery_list([43,15,19,17,16,6], service, doc, start_date)
+    #make_reminders([20,15,19,42,16,6],service,doc,start_date)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
