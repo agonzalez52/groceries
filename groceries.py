@@ -184,7 +184,7 @@ def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
 
         # insert ingredient to google doc
         start_i, end_i = get_text_range_idx(service, doc, section, True)
-        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, yellow,
+        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, red,
             True)
 
         # create reminder in google doc if ingredient needs a reminder
@@ -199,8 +199,8 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
     Meals = pd.read_csv('Meals Table.csv', index_col='id')
     Ingredients = pd.read_csv('Ingredients Table.csv')
 
-    meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
-        ,"w")
+    #meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
+    #    ,"w")
 
     i = 0
     # loop through meals
@@ -216,7 +216,7 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
         Meal_name = Meals.loc[id, 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+Meal_name)
-        meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
+        #meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
         Meal_abbrev = Meals.loc[id, 'abbrev']
         Meal_extra = Meals.loc[id, 'extra']
 
@@ -227,9 +227,9 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
             # insert Extras at end of doc
             start_i, end_i = get_text_range_idx(service, doc, 'Extra', True)
             insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
-                , yellow, True)
+                , red, True)
 
-    meals_file.close()
+    #meals_file.close()
 
 # write reminders in google doc and update meal date in csv given meals for week
 def make_reminders(ids, service, doc, week_date):
@@ -289,10 +289,11 @@ if __name__ == '__main__':
     service = main()
     # to create initial doc
     #doc = create_document(service)
+    # for existing doc
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
-    start_date = date(2021, 1, 4)
-    #update_grocery_list([1,2,16], service, doc, start_date, 1) # TEST RUN
-    make_reminders([38,10,29,13,12,28],service,doc,start_date)
+    start_date = date(2021, 1, 18)
+    #update_grocery_list([43,15,19,17,16,6], service, doc, start_date)
+    make_reminders([20,15,19,42,16,6],service,doc,start_date)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

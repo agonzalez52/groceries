@@ -40,7 +40,7 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 9,"Cilantro, bunch (?)",Fruits/Vegetables,0,,,,
 10,tostadas,Rice/beans/pasta/soup,0,,,,
 10,1/4 1lb bag of black beans,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
-10,1 queso ranchero,Refrigerated stuff,0,,,,
+10,1 queso ranchero,Dairy and eggs,0,,,,
 10,1 small guacamole cup,Fruits/Vegetables,0,,,,
 11,Chicken (3lb),Carne,2,Take down,8:00am,Angel,time of event
 11,1/2 5 lbs bag of Papas,Fruits/Vegetables,0,,,,
@@ -142,7 +142,7 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 37,1 cilantro,Fruits/Vegetables,0,,,,
 37,Tortilla chips,Chips/snacks,0,,,,
 38,1/2 black beans 1lb bag,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
-38,2 queso ranchero,Refrigerated stuff,0,,,,
+38,2 queso ranchero,Dairy and eggs,0,,,,
 38,4 tomatoes,Fruits/Vegetables,0,,,,
 38,4 Avocado,Fruits/Vegetables,0,,,,
 39,Hashbrowns,Frozen stuff,0,,,,
@@ -153,3 +153,4 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 42,~3lb of chicken breast,Carne,2,Take down,8:00am,Angel,time of event
 42,Maybe make with rice or vegetables,Fruits/Vegetables,0,,,,
 42,4 Avocado,Fruits/Vegetables,0,,,,
+43,~4/5 5lbs bag of potatoes (6-10),Fruits/Vegetables,0,,,,
