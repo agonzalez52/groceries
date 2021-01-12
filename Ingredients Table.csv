@@ -64,7 +64,7 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 16,21 Eggs,Dairy and eggs,1,Get from garage,7:05pm,Arturo and Angel,"2 hours before as email, 1 hour before, and at time of event"
 17,1lb Spaghetti,Rice/beans/pasta/soup,0,,,,
 17,tomato sauce,Rice/beans/pasta/soup,0,,,,
-17,2 Ground beef all natural,Carne,0,Take down,8:00am,Angel,time of event
+17,2 Ground beef all natural,Carne,2,Take down,8:00am,Angel,time of event
 17,10 pack tortillas de arina (6 tortillas),Rice/beans/pasta/soup,0,,,,
 18,7 extra large tortilla de arina,Rice/beans/pasta/soup,0,,,,
 18,2 chicken fajitas,Carne,0,,,,
