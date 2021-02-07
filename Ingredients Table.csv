@@ -121,7 +121,7 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 33,~1 tomato,Fruits/Vegetables,0,,,,
 33,olive oil,Rice/beans/pasta/soup,0,,,,
 34,Dumplings (Costco),Frozen stuff,0,,,,
-35,All natural steak thing (Costco),Frozen stuff,0,,,,
+35,All natural steak thing (Costco),Frozen stuff,2,Take down,8:00am,Angel,time of event
 35,1/4 1 lb bag brown beans,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
 35,4 Avocado,Fruits/Vegetables,2,Take out,7:30pm,Angel,time of event
 36,"foster farms boneless skinless chicken breast, 1.6-2.39 lb",Carne,2,Take down,8:00am,Angel,time of event
