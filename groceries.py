@@ -32,11 +32,13 @@ color_blue = [1.0,0.0,0.0]
 color_black = [0.0,0.0,0.0]
 color_yellow = [0.0,1.0,1.0]
 
+creds = None
+
 def main():
     """Shows basic usage of the Docs API.
     Prints the title of a sample document.
     """
-    creds = None
+    #creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
@@ -57,7 +59,7 @@ def main():
 
     service = build('docs', 'v1', credentials=creds)
     sheet_service = build('sheets','v4',credentials=creds)
-    return creds, service, sheet_service
+    return service, sheet_service
 
     # Retrieve the documents contents from the Docs service.
     #document = service.documents().get(documentId=DOCUMENT_ID).execute()
@@ -199,7 +201,7 @@ def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
                 Meal_name)
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(ids, service, sheet_service, creds, doc, week_date, test_run=0):
+def update_grocery_list(ids, service, sheet_service, doc, week_date, test_run=0):
     # Open Meals and Ingredients tables
     Meals_data = pull_sheet_data(sheet_service, sheet, 'Meals')
     Meals = pd.DataFrame(Meals_data[1:], columns=data[0], )
@@ -215,7 +217,7 @@ def update_grocery_list(ids, service, sheet_service, creds, doc, week_date, test
     # loop through meals
     for id in ids:
         if test_run<=0:
-            update_meal_date(Meals, sheet_service, creds, week_date, id)
+            update_meal_date(Meals, sheet_service, week_date, id)
 
         # meal_day = day meal is being made
         meal_day = week_date + timedelta(days=i)
@@ -287,7 +289,7 @@ def make_one_reminder(service, doc, meal_day, days_before, action,
         ', default color, on private\n', color_yellow, True)
 
 # write the week a meal is being made in Meals sheet
-def update_meal_date(Meals, sheet_service, creds, week_date, meal):
+def update_meal_date(Meals, sheet_service, week_date, meal):
     # write week date to Meals
     Meals.loc[meal, 'week'] = week_date.strftime("%m-%d-%y")
 
@@ -309,13 +311,13 @@ def pull_sheet_data(sheet_service, sheet_id, tab):
     return data
 
 if __name__ == '__main__':
-    creds, service, sheet_service = main()
+    service, sheet_service = main()
     # to create initial doc
     #doc = create_document(service)
     # for existing doc
 
     start_date = date(2021, 2, 1)
-    update_grocery_list([3,40,17,24,35,37], service, sheet_service, creds, doc, start_date)
+    update_grocery_list([3,40,17,24,35,37], service, sheet_service, doc, start_date)
     #make_reminders([20,15,19,42,16,6],service,doc,start_date)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
