@@ -14,6 +14,10 @@ from google.auth.transport.requests import Request
 import pandas as pd
 from datetime import date
 from datetime import timedelta
+import df2gspread as d2g
+
+doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+sheet = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -22,11 +26,11 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 DOCUMENT_ID = '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE'
 
 # color codes for text
-red = [0.0,0.0,1.0]
-green = [0.0,1.0,0.0]
-blue = [1.0,0.0,0.0]
-black = [0.0,0.0,0.0]
-yellow = [0.0,1.0,1.0]
+color_red = [0.0,0.0,1.0]
+color_green = [0.0,1.0,0.0]
+color_blue = [1.0,0.0,0.0]
+color_black = [0.0,0.0,0.0]
+color_yellow = [0.0,1.0,1.0]
 
 def main():
     """Shows basic usage of the Docs API.
@@ -52,7 +56,8 @@ def main():
             pickle.dump(creds, token)
 
     service = build('docs', 'v1', credentials=creds)
-    return service
+    sheet_service = build('sheets','v4',credentials=creds)
+    return creds, service, sheet_service
 
     # Retrieve the documents contents from the Docs service.
     #document = service.documents().get(documentId=DOCUMENT_ID).execute()
@@ -184,7 +189,7 @@ def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
 
         # insert ingredient to google doc
         start_i, end_i = get_text_range_idx(service, doc, section, True)
-        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, red,
+        insert_text(service, doc, end_i, ingredient+' '+Meal_abbrev, color_yellow,
             True)
 
         # create reminder in google doc if ingredient needs a reminder
@@ -194,19 +199,23 @@ def write_ingredients_to_doc(service, doc, Ingredients, id, Meal_abbrev,
                 Meal_name)
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(ids, service, doc, week_date, test_run=0):
+def update_grocery_list(ids, service, sheet_service, creds, doc, week_date, test_run=0):
     # Open Meals and Ingredients tables
-    Meals = pd.read_csv('Meals Table.csv', index_col='id')
-    Ingredients = pd.read_csv('Ingredients Table.csv')
+    Meals_data = pull_sheet_data(sheet_service, sheet, 'Meals')
+    Meals = pd.DataFrame(Meals_data[1:], columns=data[0], )
+    Ingredients_data = pull_sheet_data(sheet_service, sheet, 'Ingredients')
+    Ingredients = pd.DataFrame(Ingredients_data[1:], columns=data[0])
+    # Meals = pd.read_csv('Meals Table.csv', index_col='id')
+    # Ingredients = pd.read_csv('Ingredients Table.csv')
 
-    meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
-        ,"w")
+    #meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+'.txt'
+        #,"w")
 
     i = 0
     # loop through meals
     for id in ids:
         if test_run<=0:
-            update_meal_date(Meals, week_date, id)
+            update_meal_date(Meals, sheet_service, creds, week_date, id)
 
         # meal_day = day meal is being made
         meal_day = week_date + timedelta(days=i)
@@ -216,7 +225,7 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
         Meal_name = Meals.loc[id, 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+Meal_name)
-        meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
+        #meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+Meal_name+'\n\n')
         Meal_abbrev = Meals.loc[id, 'abbrev']
         Meal_extra = Meals.loc[id, 'extra']
 
@@ -227,9 +236,9 @@ def update_grocery_list(ids, service, doc, week_date, test_run=0):
             # insert Extras at end of doc
             start_i, end_i = get_text_range_idx(service, doc, 'Extra', True)
             insert_text(service, doc, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
-                , red, True)
+                , color_yellow, True)
 
-    meals_file.close()
+    #meals_file.close()
 
 # write reminders in google doc and update meal date in csv given meals for week
 def make_reminders(ids, service, doc, week_date):
@@ -275,25 +284,38 @@ def make_one_reminder(service, doc, meal_day, days_before, action,
         ') - '+action+' '+ingredient+' '+'on '+
         (meal_day-timedelta(days_before)).strftime("%A, %m-%d-%y")+' at '
         +time+' in Family calendar. Add '+notify_who+', notify at '+notify_when+
-        ', default color, on private\n', red, True)
+        ', default color, on private\n', color_yellow, True)
 
 # write the week a meal is being made in Meals sheet
-def update_meal_date(Meals, week_date, meal):
+def update_meal_date(Meals, sheet_service, creds, week_date, meal):
     # write week date to Meals
     Meals.loc[meal, 'week'] = week_date.strftime("%m-%d-%y")
 
     # write week to csv
-    Meals.to_csv('Meals Table.csv')
+    d2g.upload(Meals, sheet, 'Meals', credentials=creds, row_names=True)
+    #Meals.to_csv('Meals Table.csv')
+
+def pull_sheet_data(sheet_service, sheet_id, tab):
+    sheet = sheet_service.spreadsheets()
+    result = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+    values = result.get('values',[])
+
+    if not values:
+        print('No data found')
+    else:
+        rows = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+
+    data = rows.get('values')
+    return data
 
 if __name__ == '__main__':
-    service = main()
+    creds, service, sheet_service = main()
     # to create initial doc
     #doc = create_document(service)
     # for existing doc
-    doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
-    start_date = date(2021, 1, 18)
-    update_grocery_list([43,15,19,17,16,6], service, doc, start_date)
+    start_date = date(2021, 2, 1)
+    update_grocery_list([3,40,17,24,35,37], service, sheet_service, creds, doc, start_date)
     #make_reminders([20,15,19,42,16,6],service,doc,start_date)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
