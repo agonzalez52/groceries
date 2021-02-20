@@ -38,6 +38,7 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 9,1 lb bag of carrots (2-3 carrots),Fruits/Vegetables,0,,,,
 9,Lemon,Fruits/Vegetables,0,,,,
 9,"Cilantro, bunch (?)",Fruits/Vegetables,0,,,,
+9,4 Avocado,Fruits/Vegetables,2,Take out,7:30pm,Angel,time of event
 10,tostadas,Rice/beans/pasta/soup,0,,,,
 10,1/4 1lb bag of black beans,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
 10,1 queso ranchero,Dairy and eggs,0,,,,
@@ -154,3 +155,5 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 42,Maybe make with rice or vegetables,Fruits/Vegetables,0,,,,
 42,4 Avocado,Fruits/Vegetables,2,Take out,7:30pm,Angel,time of event
 43,~4/5 5lbs bag of potatoes (6-10),Fruits/Vegetables,0,,,,
+44,1/4 1 lb bag brown beans,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
+44,Carne asada,Carne,2,Take down,8:00am,Angel,time of event
