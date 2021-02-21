@@ -17,7 +17,7 @@ from datetime import timedelta
 import df2gspread as d2g
 
 doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-sheet = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
+sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -299,13 +299,13 @@ def update_meal_date(Meals, week_date, meal):
 
 def pull_sheet_data(sheet_service, tab):
     sheet = sheet_service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=sheet,range=tab).execute()
+    result = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
     values = result.get('values',[])
 
     if not values:
         print('No data found')
     else:
-        rows = sheet.values().get(spreadsheetId=sheet,range=tab).execute()
+        rows = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
 
     data = rows.get('values')
     return data
