@@ -8,7 +8,7 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 3,~1/4 1 lb bag black beans,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
 3,2 6 pack pan bolillo,Bread/Cookies,0,,,,
 3,~1 16 oz queso mozarella,Refrigerated stuff,0,,,,
-4,14 flour tortillas,Rice/beans/pasta/soup,0,,,,
+4,10 flour tortillas,Rice/beans/pasta/soup,0,,,,
 4,1 16 oz bag mexican cheese,Refrigerated stuff,0,,,,
 4,1 16 oz bag queso mozzarella,Refrigerated stuff,0,,,,
 4,1 8 oz bag queso mozzarella,Refrigerated stuff,0,,,,
@@ -39,10 +39,10 @@ id,name,section,days_before_action,action,time,notify_who,notify_when
 9,Lemon,Fruits/Vegetables,0,,,,
 9,"Cilantro, bunch (?)",Fruits/Vegetables,0,,,,
 9,4 Avocado,Fruits/Vegetables,2,Take out,7:30pm,Angel,time of event
-10,tostadas,Rice/beans/pasta/soup,0,,,,
+10,tostadas,Bread/Cookies,0,,,,
 10,1/4 1lb bag of black beans,Rice/beans/pasta/soup,10,Make,4:00pm,Angel,"2 hours before as email, 1 hour before, and at time of event"
 10,1 queso ranchero,Dairy and eggs,0,,,,
-10,1 small guacamole cup,Fruits/Vegetables,0,,,,
+10,2 Avocado,Fruits/Vegetables,2,Take out,7:30pm,Angel,time of event
 11,Chicken (3lb),Carne,2,Take down,8:00am,Angel,time of event
 11,1/2 5 lbs bag of Papas,Fruits/Vegetables,0,,,,
 11,4 Avocado,Fruits/Vegetables,2,Take out,7:30pm,Angel,time of event
