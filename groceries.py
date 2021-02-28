@@ -236,7 +236,7 @@ def update_grocery_list(ids, service, sheet_service, week_date, test_run=0):
         write_ingredients_to_doc(service, Ingredients, id, Meal_abbrev,
         Meal_name, meal_day)
 
-        if isinstance(Meal_extra, str):
+        if isinstance(Meal_extra, str) and Meal_extra != 'N/A':
             # insert Extras at end of doc
             start_i, end_i = get_text_range_idx(service, 'Extra', True)
             insert_text(service, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
@@ -297,7 +297,6 @@ def make_one_reminder(service, meal_day, days_before, action,
 def update_meal_date(Meals, week_date, meal):
     # write week date to Meals
     Meals.loc[str(meal), 'week'] = week_date.strftime("%m-%d-%y")
-    print('***\nMEAL IS: '+str(meal)+'\n***')
 
     # write week to csv
     date_values = np.reshape(Meals.loc[:,'week'].values.tolist(), (len(Meals.index), 1))
