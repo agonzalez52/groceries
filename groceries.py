@@ -192,7 +192,7 @@ def write_ingredients_to_doc(doc_service, Ingredients, id, Meal_abbrev,
 
         # insert ingredient to google doc
         start_i, end_i = get_text_range_idx(doc_service, section, True)
-        insert_text(doc_service, end_i, ingredient+' '+Meal_abbrev, color_yellow,
+        insert_text(doc_service, end_i, ingredient+' '+Meal_abbrev, color_red,
             True)
 
         # create reminder in google doc if ingredient needs a reminder
@@ -240,7 +240,7 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
             # insert Extras at end of doc
             start_i, end_i = get_text_range_idx(doc_service, 'Extra', True)
             insert_text(doc_service, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
-                , color_yellow, True)
+                , color_red, True)
 
     #meals_file.close()
 
@@ -263,10 +263,10 @@ def make_reminders(ids, doc_service, week_date):
         i+=1
 
         # get csv values for Meal
-        Meal_name = Meals.loc[meal, 'name']
+        Meal_name = Meals.loc[str(meal), 'name']
 
         # loop through meal ingredients
-        for index,row in Ingredients[Ingredients['id']==meal].iterrows():
+        for index,row in Ingredients[Ingredients['id']==str(meal)].iterrows():
             ingredient = row['name']
             days_before = row['days_before_action']
             action = row['action']
@@ -275,7 +275,7 @@ def make_reminders(ids, doc_service, week_date):
             notify_when = row['notify_when']
 
             # create reminder in google doc if ingredient needs a reminder
-            if days_before > 0:
+            if int(days_before) > 0:
                 make_one_reminder(doc_service, meal_day, days_before, action,
                                     ingredient, time, notify_who, notify_when,
                                     Meal_name)
@@ -291,7 +291,7 @@ def make_one_reminder(doc_service, meal_day, days_before, action,
         ') - '+action+' '+ingredient+' '+'on '+
         (meal_day-timedelta(int(days_before))).strftime("%A, %m-%d-%y")+' at '
         +time+' in Family calendar. Add '+notify_who+', notify at '+notify_when+
-        ', default color, on private\n', color_yellow, True)
+        ', default color, on private\n', color_red, True)
 
 # write the week a meal is being made in Meals sheet
 def update_meal_date(Meals, week_date, meal):
@@ -331,8 +331,9 @@ if __name__ == '__main__':
     #doc = create_document(service)
     # for existing doc
 
-    start_date = date(2025, 11, 7)
-    update_grocery_list([1,44], doc_service, sheet_service, start_date)
-    #make_reminders([20,15,19,42,16,6],service,start_date)
+    start_date = date(2021, 3, 29)
+    update_grocery_list([18,17,23,22,39,11], doc_service, sheet_service, start_date)
+    #make_reminders([12,41,13,24,37,1],doc_service,start_date)
+
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
