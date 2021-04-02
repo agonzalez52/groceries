@@ -24,18 +24,18 @@ id,name,rank,week,abbrev,extra,notes
 23,Eggs and ham,2A,1/11/21,(eggs and ham),"salt, oil",
 24,Chicken salad,2A,2/1/21,(chicken salad),mayo,
 25,Chorizo con huevos,2A,2/8/21,(chorizo w eggs),,
-26,Hard boiled eggs,2B,1/25/21,(hard boiled eggs),,"1 hr 30 minutes (30 minutes to put eggs in small pan and fill with enough cold water to cover then bring to a boil, 14 minutes to leave with cap on, 30 minutes to peel, 16 minutes to serve)"
+26,Hard boiled eggs,2B,1/25/21,(hard boiled eggs),"1 hr 30 minutes (30 minutes to put eggs in small pan and fill with enough cold water to cover then bring to a boil, 14 minutes to leave with cap on, 30 minutes to peel, 16 minutes to serve)",
 27,Lasagna,,,(lasagna),,
 28,Tuvi's chicken thing,1B,12/28/20,(tuvi chicken thing),,
 29,Sausage and eggs,2A,1/4/21,(sausage/eggs),,
 30,Chile beans,,2/22/21,(chili beans),,
-31,Green beans with chicken,,,(green beans w chicken),,
+31,Green beans with chicken,(green beans w chicken),,,,
 32,Tuna Salad,1B,2/15/21,(tuna salad),"mayonaisse, salt, pepper",
-33,Chicken burgers,,,(chicken burgers),"ketchup, cheese squares",turn oil on low and let sit for 5 min before putting fries
-34,Dumplings (costco),,,(dumplings),,
+33,Chicken burgers,,(chicken burgers),"ketchup, cheese squares",turn oil on low and let sit for 5 min before putting fries,
+34,Dumplings (costco),,(dumplings),,,
 35,All natural steak thing (costco),2B,2/1/21,(steak thing),,
 36,Chicken and chorizo jambalaya,2B,3/1/21,(jambalaya),"olive oil, garlic, cajun seasoning",
-37,Chicken enchilada dip,1B,2/1/21,(chicken dip),,"2 hours considering chicken, and no leftovers"
+37,Chicken enchilada dip,1B,2/1/21,(chicken dip),"2 hours considering chicken, and no leftovers",
 38,Wrapped tortilla soaked in beans with cheese on top,2B,2/22/21,(wrapped tortilla),"salt, garlic",
 39,Hashbrowns and eggs,2B,2/8/21,(hashbrowns),,
 40,Eggs and beans,2A,3/1/21,(eggs/beans),,
