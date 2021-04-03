@@ -239,7 +239,8 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
         if isinstance(Meal_extra, str) and Meal_extra != 'N/A':
             # insert Extras at end of doc
             start_i, end_i = get_text_range_idx(doc_service, 'Extra', True)
-            insert_text(doc_service, end_i, Meal_name+'\n'+str(Meal_extra)+'\n'
+            insert_text(doc_service, end_i,
+                Meal_abbrev.strip('()')+'\n'+str(Meal_extra)+'\n'
                 , color_red, True)
 
     #meals_file.close()
@@ -289,8 +290,8 @@ def make_one_reminder(doc_service, meal_day, days_before, action,
     start_j, end_j = get_text_range_idx(doc_service, 'Reminders', False)
     insert_text(doc_service, end_j, meal_name+' ('+meal_day.strftime("%a")+
         ') - '+action+' '+ingredient+' '+'on '+
-        (meal_day-timedelta(int(days_before))).strftime("%A, %m-%d-%y")+' at '
-        +time+' in Family calendar. Add '+notify_who+', notify at '+notify_when+
+        (meal_day-timedelta(int(days_before))).strftime("%a, %m-%d")+' at '
+        +time+' in Fam calendar. Add '+notify_who+', notify at '+notify_when+
         ', default color, on private\n', color_red, True)
 
 # write the week a meal is being made in Meals sheet
@@ -331,8 +332,8 @@ if __name__ == '__main__':
     #doc = create_document(service)
     # for existing doc
 
-    start_date = date(2021, 3, 29)
-    update_grocery_list([18,17,23,22,39,11], doc_service, sheet_service, start_date)
+    start_date = date(2021, 4, 12)
+    update_grocery_list([38,13,15,17], doc_service, sheet_service, start_date)
     #make_reminders([12,41,13,24,37,1],doc_service,start_date)
 
 
