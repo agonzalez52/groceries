@@ -331,8 +331,8 @@ if __name__ == '__main__':
     #doc = create_document(service)
     # for existing doc
 
-    start_date = date(2021, 3, 29)
-    update_grocery_list([18,17,23,22,39,11], doc_service, sheet_service, start_date)
+    start_date = date(2021, 4, 29)
+    update_grocery_list([10,9,20], doc_service, sheet_service, start_date)
     #make_reminders([12,41,13,24,37,1],doc_service,start_date)
 
 
