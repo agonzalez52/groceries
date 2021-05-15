@@ -17,8 +17,8 @@ from datetime import timedelta
 from df2gspread import df2gspread as d2g
 import numpy as np
 
-doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
+DOC_ID = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+SHEET_ID = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -27,39 +27,42 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 DOCUMENT_ID = '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE'
 
 # color codes for text
-color_red = [0.0,0.0,1.0]
-color_green = [0.0,1.0,0.0]
-color_blue = [1.0,0.0,0.0]
-color_black = [0.0,0.0,0.0]
-color_yellow = [0.0,1.0,1.0]
+COLOR_RED = [0.0,0.0,1.0]
+COLOR_GREEN = [0.0,1.0,0.0]
+COLOR_BLUE = [1.0,0.0,0.0]
+COLOR_BLACK = [0.0,0.0,0.0]
+COLOR_YELLOW = [0.0,1.0,1.0]
+COLOR_PURPLE = [0.9,0.1,0.6]
 
-creds = None
+FONT_COLOR = color_green
+
+CREDS = None
 
 def main():
     """Shows basic usage of the Docs API.
     Prints the title of a sample document.
     """
-    #creds = None
+    #CREDS = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
+            CREDS = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
+    if not CREDS or not CREDS.valid:
+        if CREDS and CREDS.expired and CREDS.refresh_token:
+            CREDS.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+            CREDS = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+            pickle.dump(CREDS, token)
 
-    doc_service = build('docs', 'v1', credentials=creds)
-    sheet_service = build('sheets','v4',credentials=creds)
+    doc_service = build('docs', 'v1', credentials=CREDS)
+    sheet_service = build('sheets','v4',credentials=CREDS)
     return doc_service, sheet_service
 
     # Retrieve the documents contents from the Docs service.
@@ -83,7 +86,7 @@ def get_text_range_idx(doc_service, match_text, do_print):
     """
 
     # Do a document "get" request and print the results as formatted JSON
-    result = doc_service.documents().get(documentId=doc_id).execute()
+    result = doc_service.documents().get(documentId=DOC_ID).execute()
 
     with open('data.json', 'w') as f:
         json.dump(result, f, indent=4)
@@ -171,10 +174,10 @@ def insert_text(doc_service, startIndex, item, color, do_print):
         }
     ]
 
-    result1 = doc_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_insert}).execute()
+    result1 = doc_service.documents().batchUpdate(documentId=DOC_ID, body={'requests': requests_insert}).execute()
     if do_print:
         print('    '+item)
-    result2 = doc_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
+    result2 = doc_service.documents().batchUpdate(documentId=DOC_ID, body={'requests': requests_format}).execute()
 
 # loop through ingredients for meal 'id' and add to doc
 def write_ingredients_to_doc(doc_service, Ingredients, id, Meal_abbrev,
@@ -192,7 +195,7 @@ def write_ingredients_to_doc(doc_service, Ingredients, id, Meal_abbrev,
 
         # insert ingredient to google doc
         start_i, end_i = get_text_range_idx(doc_service, section, True)
-        insert_text(doc_service, end_i, ingredient+' '+Meal_abbrev, color_red,
+        insert_text(doc_service, end_i, ingredient+' '+Meal_abbrev, FONT_COLOR,
             True)
 
         # create reminder in google doc if ingredient needs a reminder
@@ -241,7 +244,7 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
             start_i, end_i = get_text_range_idx(doc_service, 'Extra', True)
             insert_text(doc_service, end_i,
                 Meal_abbrev.strip('()')+'\n'+str(Meal_extra)+'\n'
-                , color_red, True)
+                , FONT_COLOR, True)
 
     #meals_file.close()
 
@@ -292,7 +295,7 @@ def make_one_reminder(doc_service, meal_day, days_before, action,
         ') - '+action+' '+ingredient+' '+'on '+
         (meal_day-timedelta(int(days_before))).strftime("%a, %m-%d")+' at '
         +time+'. Add '+notify_who+', notify at '+notify_when+
-        '\n', color_red, True)
+        '\n', FONT_COLOR, True)
 
 # write the week a meal is being made in Meals sheet
 def update_meal_date(Meals, week_date, meal):
@@ -304,7 +307,7 @@ def update_meal_date(Meals, week_date, meal):
     date_length = len(Meals.index)
 
     response_date = sheet_service.spreadsheets().values().update(
-        spreadsheetId=sheet_id,
+        spreadsheetId=SHEET_ID,
         valueInputOption='USER_ENTERED',
         range='Meals!D2:D{}'.format(date_length+1),
         body=dict(
@@ -315,13 +318,13 @@ def update_meal_date(Meals, week_date, meal):
 
 def pull_sheet_data(sheet_service, tab):
     sheet = sheet_service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+    result = sheet.values().get(spreadsheetId=SHEET_ID,range=tab).execute()
     values = result.get('values',[])
 
     if not values:
         print('No data found')
     else:
-        rows = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+        rows = sheet.values().get(spreadsheetId=SHEET_ID,range=tab).execute()
 
     data = rows.get('values')
     return data
@@ -333,8 +336,8 @@ if __name__ == '__main__':
     # for existing doc
 
 
-    start_date = date(2021, 5, 8)
-    update_grocery_list([18], doc_service, sheet_service, start_date)
+    start_date = date(2021, 5, 24)
+    update_grocery_list([39,17,13,24,4,16], doc_service, sheet_service, start_date)
     #make_reminders([12,41,13,24,37,1],doc_service,start_date)
 
 
