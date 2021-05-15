@@ -6,50 +6,41 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from df2gspread import df2gspread as d2g
-import groceries_funcs as grc
 
-doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
+DOC_ID = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+SHEET_ID = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
-# The ID of a sample document.
-DOCUMENT_ID = '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE'
-
-creds = None
+CREDS = None
 
 def build_services():
     """Shows basic usage of the Docs API.
     Prints the title of a sample document.
     """
-    #creds = None
+    #CREDS = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
+            CREDS = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
+    if not CREDS or not CREDS.valid:
+        if CREDS and CREDS.expired and CREDS.refresh_token:
+            CREDS.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+            CREDS = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+            pickle.dump(CREDS, token)
 
-    doc_service = build('docs', 'v1', credentials=creds)
-    sheet_service = build('sheets','v4',credentials=creds)
+    doc_service = build('docs', 'v1', credentials=CREDS)
+    sheet_service = build('sheets','v4',credentials=CREDS)
     return doc_service, sheet_service
-
-    # Retrieve the documents contents from the Docs service.
-    #document = service.documents().get(documentId=DOCUMENT_ID).execute()
-
-    #print('The title of the document is: {}'.format(document.get('title')))
 
 def create_document(service):
     title = 'Automated Groceries'
@@ -67,7 +58,7 @@ def get_text_range_idx(doc_service, match_text, do_print):
     """
 
     # Do a document "get" request and print the results as formatted JSON
-    result = doc_service.documents().get(documentId=doc_id).execute()
+    result = doc_service.documents().get(documentId=DOC_ID).execute()
 
     with open('data.json', 'w') as f:
         json.dump(result, f, indent=4)
@@ -115,7 +106,6 @@ def insert_text(doc_service, startIndex, item, color, do_print):
             }
         }
     ]
-    #print('inserted '+item+' at index '+str(startIndex))
 
     # Format text
     requests_format = [
@@ -155,20 +145,22 @@ def insert_text(doc_service, startIndex, item, color, do_print):
         }
     ]
 
-    result1 = doc_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_insert}).execute()
+    result1 = doc_service.documents().batchUpdate(documentId=DOC_ID, body={
+        'requests': requests_insert}).execute()
     if do_print:
         print('    '+item)
-    result2 = doc_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests_format}).execute()
+    result2 = doc_service.documents().batchUpdate(documentId=DOC_ID, body={
+        'requests': requests_format}).execute()
 
 def pull_sheet_data(sheet_service, tab):
     sheet = sheet_service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+    result = sheet.values().get(spreadsheetId=SHEET_ID,range=tab).execute()
     values = result.get('values',[])
 
     if not values:
         print('No data found')
     else:
-        rows = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+        rows = sheet.values().get(spreadsheetId=SHEET_ID,range=tab).execute()
 
     data = rows.get('values')
     return data
