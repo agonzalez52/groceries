@@ -16,8 +16,7 @@ if __name__ == '__main__':
     #doc = gfuncs.create_document(service)
     # for existing doc
 
-
-    start_date = date(1980, 1, 3)
+    start_date = date(1980, 1, 4)
     grc.update_grocery_list([27,31,7], doc_service, sheet_service, start_date)
     #grc.make_reminders([12,41,13,24,37,1],doc_service,sheet_service,start_date)
 
