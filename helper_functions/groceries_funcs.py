@@ -23,8 +23,8 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
     ingredients_data = gfuncs.pull_sheet_data(sheet_service, 'Ingredients')
     ingredients = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
-    #meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
-        #'.txt',"w")
+    meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
+        '.txt',"w")
 
     i = 0
     # loop through meals
@@ -38,21 +38,22 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
         print('MEAL: '+meal_name)
 
         # meal_day = day meal is being made
+        meal_abbrev = meals.loc[str(id), 'abbrev']
         meal_day = week_date + timedelta(days=i)
         i+=1
-        #meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+meal_name+'\n\n')
-        meal_abbrev = meals.loc[str(id), 'abbrev']
-        meal_extra = meals.loc[str(id), 'extra']
         write_ingredients_to_doc(doc_service, ingredients, id, meal_abbrev,
         meal_name, meal_day)
 
+        meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+meal_name+'\n\n')
+
+        meal_extra = meals.loc[str(id), 'extra']
         if isinstance(meal_extra, str) and meal_extra != 'N/A':
             # insert Extras at end of doc
             start_i, end_i = gfuncs.get_text_range_idx(doc_service, 'Extra', True)
             extra_msg = f'{meal_abbrev.strip("()")}\n{str(meal_extra)}\n'
             gfuncs.insert_text(doc_service, end_i, extra_msg, FONT_COLOR, True)
 
-    #meals_file.close()
+    meals_file.close()
 
 # loop through ingredients for meal 'id' and add to doc
 def write_ingredients_to_doc(doc_service, ingredients, id, meal_abbrev,
