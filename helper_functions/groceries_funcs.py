@@ -23,7 +23,7 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
     ingredients_data = gfuncs.pull_sheet_data(sheet_service, 'Ingredients')
     ingredients = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
-    meals_file = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
+    meals_log = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
         '.txt',"w")
 
     i = 0
@@ -44,7 +44,7 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
         write_ingredients_to_doc(doc_service, ingredients, id, meal_abbrev,
         meal_name, meal_day)
 
-        meals_file.write(meal_day.strftime("%A, %m/%d")+'\n'+meal_name+'\n\n')
+        meals_log.write(meal_day.strftime("%A, %m/%d")+'\n'+meal_name+'\n\n')
 
         meal_extra = meals.loc[str(id), 'extra']
         if isinstance(meal_extra, str) and meal_extra != 'N/A':
@@ -53,7 +53,7 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
             extra_msg = f'{meal_abbrev.strip("()")}\n{str(meal_extra)}\n'
             gfuncs.insert_text(doc_service, end_i, extra_msg, FONT_COLOR, True)
 
-    meals_file.close()
+    meals_log.close()
 
 # loop through ingredients for meal 'id' and add to doc
 def write_ingredients_to_doc(doc_service, ingredients, id, meal_abbrev,
