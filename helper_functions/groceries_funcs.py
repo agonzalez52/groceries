@@ -16,6 +16,8 @@ FONT_COLOR = COLOR_RED
 
 # add ingredients to google doc given the id's to the meals
 def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
+    check_meal_list_size(ids)
+
     # Open Meals and Ingredients tables
     meals_data = gfuncs.pull_sheet_data(sheet_service, 'Meals')
     meals = pd.DataFrame(meals_data[1:], columns=meals_data[0])
@@ -54,6 +56,14 @@ def update_grocery_list(ids, doc_service, sheet_service, week_date, test_run=0):
             gfuncs.insert_text(doc_service, end_i, extra_msg, FONT_COLOR, True)
 
     meals_log.close()
+
+# Warns if the list of ids is less than 6
+def check_meal_list_size(ids):
+    if len(ids) < 6:
+        response = input("\nWARNING: List size is "+str(len(ids))+
+            ". Do you want to continue? ")
+        if response != 'y':
+            exit()
 
 # loop through ingredients for meal 'id' and add to doc
 def write_ingredients_to_doc(doc_service, ingredients, id, meal_abbrev,
