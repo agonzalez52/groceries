@@ -2,6 +2,8 @@
 
 Automates the process of adding items to a grocery list.
 
+<img width="632" alt="Screen Shot 2021-05-21 at 5 05 21 PM" src="https://user-images.githubusercontent.com/73859721/119208374-c5000a00-ba56-11eb-9566-5e20facd851f.png">
+
 ## Overview
 
 Spreadsheets are managed in Google sheets which contain a record of meals and their corresponding ingredients among other data. The program takes a set of meals and uses Google's Docs/Sheets API to read the ingredients from the Google sheet and write all of those meal's ingredients into the Google doc grocery list. The grocery items are organized in the Google doc grocery list by section (fruits/vegetables, meat, dairy, etc.).
