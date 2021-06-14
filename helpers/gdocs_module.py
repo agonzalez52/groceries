@@ -13,10 +13,15 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 CREDS = None
 
 class GoogleDoc:
-    def __init__(self):
-        self.doc_service = None
-        self.doc_id = None
-        self.font_color = None
+    def __init__(self, doc_id, doc_service):
+        self.doc_id = doc_id
+        self.doc_service = doc_service
+
+    def set_font_color(self, font_color):
+        self.font_color = font_color
+
+    def get_font_color(self):
+        return self.font_color
 
     def create_document(self, service):
 
@@ -25,11 +30,11 @@ class GoogleDoc:
     def insert_text(self, startIndex, item, color, do_print):
 
 class GoogleSheet:
-    def __init__(self):
-        self.sheet_service = None
-        self.doc_id = None
+    def __init__(self, sheet_id, sheet_service):
+        self.sheet_id = sheet_id
+        self.sheet_service = sheet_service
 
-    def def pull_sheet_data(sheet_id, tab):
+    def def pull_sheet_data(self, sheet_id, tab):
 
 def build_services():
     # The file token.pickle stores the user's access and refresh tokens, and is

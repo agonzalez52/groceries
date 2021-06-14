@@ -8,6 +8,7 @@ import sys
 sys.path.append('helpers')
 import groceries_module as grcm
 import gdocs_module as gglm
+import font_colors as fc
 from datetime import date
 from datetime import datetime
 
@@ -21,36 +22,32 @@ def greeting():
         print('\n\nGood Evening!\n\n')
 
 if __name__ == '__main__':
-    # color codes for text
-    color_red = [0.0,0.0,1.0] # first week
-    color_purple = [0.9,0.1,0.6] # second week
-    color_yellow = [0.0,1.0,1.0] # test
-    color_green = [0.0,1.0,0.0]
-    color_blue = [1.0,0.0,0.0]
-    color_black = [0.0,0.0,0.0]
+    greeting()
 
+    '''
+    STEP 1: UNCOMMENT CORRECT IDS FOR GOOGLE DOC AND SHEET
+    '''
     doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
     sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
     # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
     # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
 
-    gdoc = gglm.GoogleDoc()
-    gsheet = gglm.GoogleSheet()
-    gdoc.doc_id = doc_id
-    gsheet.sheet_id = sheet_id
+    '''
+    STEP 2: SET THESE VARIABLES
+    '''
+    meal_week = date(2021, 6, 7)
+    meal_ids = [41,17,51,25,11,50]
+    font_color = fc.color_red
 
-    meal_batch = grcm.MealBatch()
+    doc_service, sheet_service = gglm.build_services()
+    gdoc = gglm.GoogleDoc(doc_id, doc_service)
+    gsheet = gglm.GoogleSheet(sheet_id, sheet_service)
 
-    greeting()
-
-    gdoc.doc_service, gsheet.sheet_service = gglm.build_services()
-
-    meal_batch.week_date = date(2021, 6, 7)
-    meal_batch.meal_ids = [41,17,51,25,11,50]
-    gdoc.font_color = color_red
+    meal_batch = grcm.MealBatch(meal_week, meal_ids)
+    gdoc.set_font_color(font_color)
     grcm.update_grocery_list(meal_batch, gdoc, gsheet)
-    #grcm.make_reminders(meal_ids,doc_service,sheet_service,sheet_id,start_date)
+    #grcm.make_reminders(meal_batch, gdoc, gsheet)
 
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

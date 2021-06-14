@@ -5,33 +5,34 @@ import numpy as np
 import gdocs_module as gglm
 
 class MealBatch:
-    def __init__(self):
-        meal_ids = None
-        week_date = None
+    def __init__(self, week_date, meal_ids):
+        self.week_date = week_date
+        self.meal_ids = meal_ids
 
 class Meal:
-    def __init__(self):
-        id = None
-        name = None
-        rank = None
-        week = None
-        abbrev = None
-        extra = None
-        notes = None
+    def __init__(self, id, name, rank, week, abbrev, extra, notes):
+        self.id = id
+        self.name = name
+        self.rank = rank
+        self.week = week
+        self.abbrev = abbrev
+        self.extra = extra
+        self.notes = notes
 
     def get_extra():
         # return extra message
 
 class Ingredient:
-    def __init__(self):
-        id = None
-        name = None
-        section = None
-        days_before_action = None
-        action = None
-        time = None
-        notify_who = None
-        notify_when = None
+    def __init__(self, id, name, section, days_before_action, action, time,
+        notify_who, notify_when):
+        self.id = id
+        self.name = name
+        self.section = section
+        self.days_before_action = days_before_action
+        self.action = action
+        self.time = time
+        self.notify_who = notify_who
+        self.notify_when = notify_when
 
     def get_reminder():
         # return reminder string
