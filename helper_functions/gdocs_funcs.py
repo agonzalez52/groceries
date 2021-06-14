@@ -8,11 +8,7 @@ from google.auth.transport.requests import Request
 from df2gspread import df2gspread as d2g
 
 
-#DOC_ID = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-#SHEET_ID = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
-DOC_ID = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
-SHEET_ID = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -20,10 +16,6 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 CREDS = None
 
 def build_services():
-    """Shows basic usage of the Docs API.
-    Prints the title of a sample document.
-    """
-    #CREDS = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
@@ -56,13 +48,13 @@ def create_document(service):
 
     return doc
 
-def get_text_range_idx(doc_service, match_text, do_print):
+def get_text_range_idx(doc_service, doc_id, match_text, do_print):
     """
     Find text and their start and end index.
     """
 
     # Do a document "get" request and print the results as formatted JSON
-    result = doc_service.documents().get(documentId=DOC_ID).execute()
+    result = doc_service.documents().get(documentId=doc_id).execute()
 
     with open('data.json', 'w') as f:
         json.dump(result, f, indent=4)
@@ -94,7 +86,7 @@ def get_text_range_idx(doc_service, match_text, do_print):
 
     return startIdx, endIdx
 
-def insert_text(doc_service, startIndex, item, color, do_print):
+def insert_text(doc_service, doc_id, startIndex, item, color, do_print):
     """
     Inserts texts followed by newline. Formats text.
     Use case: startIndex should be endIndex of the name of the section
@@ -149,22 +141,22 @@ def insert_text(doc_service, startIndex, item, color, do_print):
         }
     ]
 
-    result1 = doc_service.documents().batchUpdate(documentId=DOC_ID, body={
+    result1 = doc_service.documents().batchUpdate(documentId=doc_id, body={
         'requests': requests_insert}).execute()
     if do_print:
         print('    '+item)
-    result2 = doc_service.documents().batchUpdate(documentId=DOC_ID, body={
+    result2 = doc_service.documents().batchUpdate(documentId=doc_id, body={
         'requests': requests_format}).execute()
 
-def pull_sheet_data(sheet_service, tab):
+def pull_sheet_data(sheet_service, sheet_id, tab):
     sheet = sheet_service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SHEET_ID,range=tab).execute()
+    result = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
     values = result.get('values',[])
 
     if not values:
         print('No data found')
     else:
-        rows = sheet.values().get(spreadsheetId=SHEET_ID,range=tab).execute()
+        rows = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
 
     data = rows.get('values')
     return data
