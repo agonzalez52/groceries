@@ -7,20 +7,21 @@ import gdocs_module as gglm
 class MealBatch:
     def __init__(self, week_date, meal_ids):
         self.week_date = week_date
-        self.meal_ids = meal_ids
+        self.ids = meal_ids
 
 class Meal:
-    def __init__(self, id, name, rank, week, abbrev, extra, notes):
+    def __init__(self, id, name, rank, week, day, abbrev, extra, notes):
         self.id = id
         self.name = name
         self.rank = rank
         self.week = week
+        self.day = day
         self.abbrev = abbrev
         self.extra = extra
         self.notes = notes
 
-    def get_extra():
-        # return extra message
+    def get_extra(self):
+        return f'{self.abbrev.strip("()")}\n{str(self.extra)}\n'
 
 class Ingredient:
     def __init__(self, id, name, section, days_before_action, action, time,
@@ -34,48 +35,48 @@ class Ingredient:
         self.notify_who = notify_who
         self.notify_when = notify_when
 
-    def get_reminder():
-        # return reminder string
-
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(ids, doc_service, sheet_service, doc_id, sheet_id, week_date, font_color):
-    check_meal_list_size(ids)
+def update_grocery_list(meal_batch, gdoc, gsheet):
+    check_meal_list_size(meal_batch.ids)
 
     # Open Meals and Ingredients tables
-    meals_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Meals')
-    meals = pd.DataFrame(meals_data[1:], columns=meals_data[0])
-    meals = meals.set_index('id')
-    ingredients_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
-    ingredients = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
+    meals_data = gglm.pull_sheet_data(gsheet, 'Meals')
+    meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
+    meals_df = meals_df.set_index('id')
+    ingredients_data = gglm.pull_sheet_data(gsheet, 'Ingredients')
+    ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     meals_log = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
         '.txt',"w")
 
     i = 0
     # loop through meals
-    for id in ids:
-        update_meal_date(meals, week_date, id, sheet_service)
+    for id in meal_batch.ids:
+        update_meal_date(meals_df, meal_batch.week_date, id, gsheet)
 
         # get csv values from Meal
-        meal_name = meals.loc[str(id), 'name']
+        meal_name = meals_df.loc[str(id), 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+meal_name)
 
         # meal_day = day meal is being made
-        meal_abbrev = meals.loc[str(id), 'abbrev']
+        meal_abbrev = meals_df.loc[str(id), 'abbrev']
         meal_day = week_date + timedelta(days=i)
+        meal_extra = meals_df.loc[str(id), 'extra']
+        meal_rank = meals_df.loc[str(id), 'rank']
+        meal_notes = meals_df.loc[str(id), 'notes']
+        meal = Meal(id, meal_name, meal_rank, meal_batch.week_date, meal_day,
+            meal_abbrev, meal_extra, meal_notes)
         i+=1
-        write_ingredients_to_doc(doc_service, doc_id, ingredients, id, meal_abbrev,
-        meal_name, meal_day, font_color)
+        write_ingredients_to_doc(gdoc, ingredients_df, meal)
 
         meals_log.write(meal_day.strftime("%A, %m/%d")+'\n'+meal_name+'\n\n')
 
-        meal_extra = meals.loc[str(id), 'extra']
-        if isinstance(meal_extra, str) and meal_extra != 'N/A':
+        if isinstance(meal.meal_extra, str) and meal.meal_extra != 'N/A':
             # insert Extras at end of doc
-            start_i, end_i = gglm.get_text_range_idx(doc_service, doc_id, 'Extra', True)
-            extra_msg = f'{meal_abbrev.strip("()")}\n{str(meal_extra)}\n'
-            gglm.insert_text(doc_service, doc_id, end_i, extra_msg, font_color, True)
+            start_i, end_i = gglm.get_text_range_idx(gdoc, 'Extra', True)
+            extra_msg = meal.get_extra()
+            gglm.insert_text(gdoc, end_i, extra_msg, True)
 
     meals_log.close()
 
@@ -88,10 +89,10 @@ def check_meal_list_size(ids):
             exit()
 
 # loop through ingredients for meal 'id' and add to doc
-def write_ingredients_to_doc(doc_service, doc_id, ingredients, id, meal_abbrev,
+def write_ingredients_to_doc(doc_service, doc_id, ingredients_df, id, meal_abbrev,
     meal_name, meal_day, font_color):
     # get all the ingredients for the meal and write them to doc
-    for index,row in ingredients[ingredients['id']==str(id)].iterrows():
+    for index,row in ingredients_df[ingredients_df['id']==str(id)].iterrows():
         # get ingredient, section name, and days before take down
         ingredient = row['name']
         section = row['section']
@@ -130,14 +131,14 @@ def make_one_reminder(doc_service, doc_id, meal_day, days_before, action,
     gglm.insert_text(doc_service, doc_id, end_j, reminder_msg, font_color, True)
 
 # write the week a meal is being made in Meals sheet
-def update_meal_date(meals, week_date, meal, sheet_service):
+def update_meal_date(meals_df, week_date, meal, sheet_service):
     # write week date to meals
-    meals.loc[str(meal), 'week'] = week_date.strftime("%m-%d-%y")
+    meals_df.loc[str(meal), 'week'] = week_date.strftime("%m-%d-%y")
 
     # get week column from dataframe
-    date_values = np.reshape(meals.loc[:,'week'].values.tolist(),
-        (len(meals.index), 1))
-    date_length = len(meals.index)
+    date_values = np.reshape(meals_df.loc[:,'week'].values.tolist(),
+        (len(meals_df.index), 1))
+    date_length = len(meals_df.index)
 
     # write week to google sheet
     response_date = sheet_service.spreadsheets().values().update(
@@ -153,23 +154,23 @@ def update_meal_date(meals, week_date, meal, sheet_service):
 def make_reminders(ids, doc_service, sheet_service, sheet_id, week_date):
     # Open Meals and ingredients tables
     meals_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Meals')
-    meals = pd.DataFrame(meals_data[1:], columns=meals_data[0])
-    meals = meals.set_index('id')
+    meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
+    meals_df = meals_df.set_index('id')
     ingredients_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
-    ingredients = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
+    ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     i = 0
     # loop through meals
     for meal in ids:
-        update_meal_date(meals, week_date, meal, sheet_service)
+        update_meal_date(meals_df, week_date, meal, sheet_service)
 
         # meal_day = day meal is being made
         meal_day = week_date + timedelta(days=i)
         i+=1
         # get meal name from dataframe
-        meal_name = meals.loc[str(meal), 'name']
+        meal_name = meals_df.loc[str(meal), 'name']
         # loop through meal ingredients
-        for index,row in ingredients[ingredients['id']==str(meal)].iterrows():
+        for index,row in ingredients_df[ingredients_df['id']==str(meal)].iterrows():
             ingredient = row['name']
             days_before = row['days_before_action']
             action = row['action']
