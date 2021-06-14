@@ -2,17 +2,49 @@ import pandas as pd
 from datetime import date
 from datetime import timedelta
 import numpy as np
-import gdocs_funcs as gfuncs
+import gdocs_module as gglm
+
+class MealBatch:
+    def __init__(self):
+        meal_ids = None
+        week_date = None
+
+class Meal:
+    def __init__(self):
+        id = None
+        name = None
+        rank = None
+        week = None
+        abbrev = None
+        extra = None
+        notes = None
+
+    def get_extra():
+        # return extra message
+
+class Ingredient:
+    def __init__(self):
+        id = None
+        name = None
+        section = None
+        days_before_action = None
+        action = None
+        time = None
+        notify_who = None
+        notify_when = None
+
+    def get_reminder():
+        # return reminder string
 
 # add ingredients to google doc given the id's to the meals
 def update_grocery_list(ids, doc_service, sheet_service, doc_id, sheet_id, week_date, font_color):
     check_meal_list_size(ids)
 
     # Open Meals and Ingredients tables
-    meals_data = gfuncs.pull_sheet_data(sheet_service, sheet_id, 'Meals')
+    meals_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Meals')
     meals = pd.DataFrame(meals_data[1:], columns=meals_data[0])
     meals = meals.set_index('id')
-    ingredients_data = gfuncs.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
+    ingredients_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
     ingredients = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     meals_log = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
@@ -40,9 +72,9 @@ def update_grocery_list(ids, doc_service, sheet_service, doc_id, sheet_id, week_
         meal_extra = meals.loc[str(id), 'extra']
         if isinstance(meal_extra, str) and meal_extra != 'N/A':
             # insert Extras at end of doc
-            start_i, end_i = gfuncs.get_text_range_idx(doc_service, doc_id, 'Extra', True)
+            start_i, end_i = gglm.get_text_range_idx(doc_service, doc_id, 'Extra', True)
             extra_msg = f'{meal_abbrev.strip("()")}\n{str(meal_extra)}\n'
-            gfuncs.insert_text(doc_service, doc_id, end_i, extra_msg, font_color, True)
+            gglm.insert_text(doc_service, doc_id, end_i, extra_msg, font_color, True)
 
     meals_log.close()
 
@@ -69,9 +101,9 @@ def write_ingredients_to_doc(doc_service, doc_id, ingredients, id, meal_abbrev,
         notify_when = row['notify_when']
 
         # insert ingredient to google doc
-        start_i, end_i = gfuncs.get_text_range_idx(doc_service, doc_id, section, True)
+        start_i, end_i = gglm.get_text_range_idx(doc_service, doc_id, section, True)
         ingredient_msg = f'{ingredient} {meal_abbrev}'
-        gfuncs.insert_text(doc_service, doc_id, end_i, ingredient_msg, font_color, True)
+        gglm.insert_text(doc_service, doc_id, end_i, ingredient_msg, font_color, True)
 
         # create reminder in google doc if ingredient needs a reminder
         if int(days_before) > 0:
@@ -87,14 +119,14 @@ def make_one_reminder(doc_service, doc_id, meal_day, days_before, action,
     if int(days_before) >= 10:
         days_before = 0
 
-    start_j, end_j = gfuncs.get_text_range_idx(doc_service, doc_id, 'Reminders', False)
+    start_j, end_j = gglm.get_text_range_idx(doc_service, doc_id, 'Reminders', False)
     reminder_msg = (
     f'{meal_name}'
     f'({meal_day.strftime("%a")}) - {action} {ingredient} on '
     f'{(meal_day-timedelta(int(days_before))).strftime("%a, %m-%d")} at '
     f'{time}. Add {notify_who}, notify at {notify_when}\n'
     )
-    gfuncs.insert_text(doc_service, doc_id, end_j, reminder_msg, font_color, True)
+    gglm.insert_text(doc_service, doc_id, end_j, reminder_msg, font_color, True)
 
 # write the week a meal is being made in Meals sheet
 def update_meal_date(meals, week_date, meal, sheet_service):
@@ -108,7 +140,7 @@ def update_meal_date(meals, week_date, meal, sheet_service):
 
     # write week to google sheet
     response_date = sheet_service.spreadsheets().values().update(
-        spreadsheetId=gfuncs.SHEET_ID,
+        spreadsheetId=gglm.SHEET_ID,
         valueInputOption='USER_ENTERED',
         range='Meals!D2:D{}'.format(date_length+1),
         body=dict(
@@ -119,10 +151,10 @@ def update_meal_date(meals, week_date, meal, sheet_service):
 # write reminders in google doc and update meal date in csv given meals for week
 def make_reminders(ids, doc_service, sheet_service, sheet_id, week_date):
     # Open Meals and ingredients tables
-    meals_data = gfuncs.pull_sheet_data(sheet_service, sheet_id, 'Meals')
+    meals_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Meals')
     meals = pd.DataFrame(meals_data[1:], columns=meals_data[0])
     meals = meals.set_index('id')
-    ingredients_data = gfuncs.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
+    ingredients_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
     ingredients = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     i = 0

@@ -5,12 +5,9 @@
 #
 
 import sys
-sys.path.append('helper_functions')
-sys.path.append('modules')
-import groceries_funcs as gf
-import gdocs_funcs as gfuncs
-from googlemodule import GoogleDoc, GoogleSheet
-from grocerymodule import MealBatch
+sys.path.append('helpers')
+import groceries_module as grcm
+import gdocs_module as gglm
 from datetime import date
 from datetime import datetime
 
@@ -38,22 +35,22 @@ if __name__ == '__main__':
     # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
     # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
 
-    gdoc = GoogleDoc()
-    gsheet = GoogleSheet()
+    gdoc = gglm.GoogleDoc()
+    gsheet = gglm.GoogleSheet()
     gdoc.doc_id = doc_id
     gsheet.sheet_id = sheet_id
 
-    meal_batch = MealBatch()
+    meal_batch = grcm.MealBatch()
 
     greeting()
 
-    gdoc.doc_service, gsheet.sheet_service = gfuncs.build_services()
+    gdoc.doc_service, gsheet.sheet_service = gglm.build_services()
 
     meal_batch.week_date = date(2021, 6, 7)
     meal_batch.meal_ids = [41,17,51,25,11,50]
     gdoc.font_color = color_red
-    gf.update_grocery_list(meal_batch, gdoc, gsheet)
-    #gf.make_reminders(meal_ids,doc_service,sheet_service,sheet_id,start_date)
+    grcm.update_grocery_list(meal_batch, gdoc, gsheet)
+    #grcm.make_reminders(meal_ids,doc_service,sheet_service,sheet_id,start_date)
 
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

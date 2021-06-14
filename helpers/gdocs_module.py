@@ -7,13 +7,29 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from df2gspread import df2gspread as d2g
 
-
-
-
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 CREDS = None
+
+class GoogleDoc:
+    def __init__(self):
+        self.doc_service = None
+        self.doc_id = None
+        self.font_color = None
+
+    def create_document(self, service):
+
+    def get_text_range_idx(self, match_text, do_print):
+
+    def insert_text(self, startIndex, item, color, do_print):
+
+class GoogleSheet:
+    def __init__(self):
+        self.sheet_service = None
+        self.doc_id = None
+
+    def def pull_sheet_data(sheet_id, tab):
 
 def build_services():
     # The file token.pickle stores the user's access and refresh tokens, and is
