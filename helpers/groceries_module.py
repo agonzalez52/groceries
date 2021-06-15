@@ -20,7 +20,7 @@ class Meal:
         self.extra = extra
         self.notes = notes
 
-    def get_extra(self):
+    def extra_message(self):
         return f'{self.abbrev.strip("()")}\n{str(self.extra)}\n'
 
 class Ingredient:
@@ -35,6 +35,15 @@ class Ingredient:
         self.notify_who = notify_who
         self.notify_when = notify_when
 
+    def reminder_message(self, meal):
+        return (
+        f'{meal.name}'
+        f'({meal.day.strftime("%a")}) - {self.action} {self.name} on '
+        f'{(meal.day-timedelta(int(self.days_before_action))).strftime("%a, %m-%d")} at '
+        f'{self.time}. Add {self.notify_who}, notify at {self.notify_when}\n'
+        )
+
+
 # add ingredients to google doc given the id's to the meals
 def update_grocery_list(meal_batch, gdoc, gsheet):
     check_meal_list_size(meal_batch.ids)
@@ -46,37 +55,39 @@ def update_grocery_list(meal_batch, gdoc, gsheet):
     ingredients_data = gglm.pull_sheet_data(gsheet, 'Ingredients')
     ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
-    meals_log = open("logs/Meal Schedule "+week_date.strftime("%m-%d-%y")+
+    meals_log = open("logs/Meal Schedule "+meal_batch.week_date.strftime("%m-%d-%y")+
         '.txt',"w")
 
     i = 0
     # loop through meals
-    for id in meal_batch.ids:
-        update_meal_date(meals_df, meal_batch.week_date, id, gsheet)
-
+    for meal_id in meal_batch.ids:
         # get csv values from Meal
-        meal_name = meals_df.loc[str(id), 'name']
+        meal_name = meals_df.loc[str(meal_id), 'name']
         print('---------------------------------------------------------------')
         print('MEAL: '+meal_name)
 
+        # create meal object
+        meal_abbrev = meals_df.loc[str(meal_id), 'abbrev']
         # meal_day = day meal is being made
-        meal_abbrev = meals_df.loc[str(id), 'abbrev']
-        meal_day = week_date + timedelta(days=i)
-        meal_extra = meals_df.loc[str(id), 'extra']
-        meal_rank = meals_df.loc[str(id), 'rank']
-        meal_notes = meals_df.loc[str(id), 'notes']
-        meal = Meal(id, meal_name, meal_rank, meal_batch.week_date, meal_day,
-            meal_abbrev, meal_extra, meal_notes)
+        meal_day = meal_batch.week_date + timedelta(days=i)
         i+=1
+        meal_extra = meals_df.loc[str(meal_id), 'extra']
+        meal_rank = meals_df.loc[str(meal_id), 'rank']
+        meal_notes = meals_df.loc[str(meal_id), 'notes']
+        meal = Meal(meal_id, meal_name, meal_rank, meal_batch.week_date, meal_day,
+            meal_abbrev, meal_extra, meal_notes)
+
+        update_meal_date(meals_df, meal, gsheet)
+
         write_ingredients_to_doc(gdoc, ingredients_df, meal)
 
-        meals_log.write(meal_day.strftime("%A, %m/%d")+'\n'+meal_name+'\n\n')
+        meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
 
         if isinstance(meal.meal_extra, str) and meal.meal_extra != 'N/A':
             # insert Extras at end of doc
-            start_i, end_i = gglm.get_text_range_idx(gdoc, 'Extra', True)
-            extra_msg = meal.get_extra()
-            gglm.insert_text(gdoc, end_i, extra_msg, True)
+            start_i, end_i = gdoc.get_text_range_idx('Extra', True)
+            extra_msg = meal.extra_message()
+            gdoc.insert_text(end_i, extra_msg, True)
 
     meals_log.close()
 
@@ -89,51 +100,43 @@ def check_meal_list_size(ids):
             exit()
 
 # loop through ingredients for meal 'id' and add to doc
-def write_ingredients_to_doc(doc_service, doc_id, ingredients_df, id, meal_abbrev,
-    meal_name, meal_day, font_color):
+def write_ingredients_to_doc(gdoc, ingredients_df, meal):
     # get all the ingredients for the meal and write them to doc
-    for index,row in ingredients_df[ingredients_df['id']==str(id)].iterrows():
-        # get ingredient, section name, and days before take down
-        ingredient = row['name']
+    for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
+        # make ingredient object
+        ingredient_name = row['name']
         section = row['section']
         days_before = row['days_before_action']
         action = row['action']
         time = row['time']
         notify_who = row['notify_who']
         notify_when = row['notify_when']
+        ingredient = Ingredient(meal.id, ingredient, days_before, action, time,
+            notify_who, notify_when)
 
         # insert ingredient to google doc
-        start_i, end_i = gglm.get_text_range_idx(doc_service, doc_id, section, True)
-        ingredient_msg = f'{ingredient} {meal_abbrev}'
-        gglm.insert_text(doc_service, doc_id, end_i, ingredient_msg, font_color, True)
+        start_i, end_i = gdoc.get_text_range_idx(section, True)
+        ingredient_msg = f'{ingredient.name} {meal.abbrev}'
+        gdoc.insert_text(end_i, ingredient_msg, True)
 
         # create reminder in google doc if ingredient needs a reminder
         if int(days_before) > 0:
-            make_one_reminder(doc_service, doc_id, meal_day, days_before, action,
-                ingredient, time, notify_who, notify_when,
-                meal_name, font_color)
+            make_one_reminder(gdoc, meal, ingredient)
 
 # write reminder to google doc for a given 'ingredient'
-def make_one_reminder(doc_service, doc_id, meal_day, days_before, action,
-                        ingredient, time, notify_who, notify_when, meal_name,
-                        font_color):
+def make_one_reminder(gdoc, meal, ingredient):
     # days_before is set to 10 in csv if reminder is for same day
-    if int(days_before) >= 10:
-        days_before = 0
+    if int(ingredient.days_before_action) >= 10:
+        ingredient.days_before_action = 0
 
-    start_j, end_j = gglm.get_text_range_idx(doc_service, doc_id, 'Reminders', False)
-    reminder_msg = (
-    f'{meal_name}'
-    f'({meal_day.strftime("%a")}) - {action} {ingredient} on '
-    f'{(meal_day-timedelta(int(days_before))).strftime("%a, %m-%d")} at '
-    f'{time}. Add {notify_who}, notify at {notify_when}\n'
-    )
-    gglm.insert_text(doc_service, doc_id, end_j, reminder_msg, font_color, True)
+    start_j, end_j = gdoc.get_text_range_idx('Reminders', False)
+    reminder_msg = ingredient.reminder_message(meal)
+    gdoc.insert_text(end_j, reminder_msg, True)
 
 # write the week a meal is being made in Meals sheet
-def update_meal_date(meals_df, week_date, meal, sheet_service):
+def update_meal_date(meals_df, meal, gsheet):
     # write week date to meals
-    meals_df.loc[str(meal), 'week'] = week_date.strftime("%m-%d-%y")
+    meals_df.loc[str(meal_id), 'week'] = week_date.strftime("%m-%d-%y")
 
     # get week column from dataframe
     date_values = np.reshape(meals_df.loc[:,'week'].values.tolist(),
@@ -141,8 +144,8 @@ def update_meal_date(meals_df, week_date, meal, sheet_service):
     date_length = len(meals_df.index)
 
     # write week to google sheet
-    response_date = sheet_service.spreadsheets().values().update(
-        spreadsheetId=gglm.SHEET_ID,
+    response_date = gsheet.sheet_service.spreadsheets().values().update(
+        spreadsheetId=gsheet.SHEET_ID,
         valueInputOption='USER_ENTERED',
         range='Meals!D2:D{}'.format(date_length+1),
         body=dict(
@@ -151,35 +154,43 @@ def update_meal_date(meals_df, week_date, meal, sheet_service):
     ).execute()
 
 # write reminders in google doc and update meal date in csv given meals for week
-def make_reminders(ids, doc_service, sheet_service, sheet_id, week_date):
+def make_reminders(meal_batch, gdoc, gsheet):
     # Open Meals and ingredients tables
-    meals_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Meals')
+    meals_data = gglm.pull_sheet_data(gsheet, 'Meals')
     meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
     meals_df = meals_df.set_index('id')
-    ingredients_data = gglm.pull_sheet_data(sheet_service, sheet_id, 'Ingredients')
+    ingredients_data = gglm.pull_sheet_data(gsheet, 'Ingredients')
     ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     i = 0
     # loop through meals
-    for meal in ids:
-        update_meal_date(meals_df, week_date, meal, sheet_service)
-
-        # meal_day = day meal is being made
-        meal_day = week_date + timedelta(days=i)
+    for meal_id in meal_batch.ids:
+        # create meal object
+        meal_name = meals_df.loc[str(meal_id), 'name']
+        meal_rank = meals_df.loc[str(meal_id), 'rank']
+        meal_day = meal_batch.week_date + timedelta(days=i)
         i+=1
-        # get meal name from dataframe
-        meal_name = meals_df.loc[str(meal), 'name']
+        meal_abbrev = meals_df.loc[str(meal_id), 'abbrev']
+        meal_extra = meals_df.loc[str(meal_id), 'extra']
+        meal_notes = meals_df.loc[str(meal_id), 'notes']
+        meal = Meal(meal_id, meal_name, meal_rank, meal_batch.week_date, meal_day,
+            meal_abbrev, meal_extra, meal_notes)
+
+        update_meal_date(meals_df, meal, gsheet)
+
         # loop through meal ingredients
-        for index,row in ingredients_df[ingredients_df['id']==str(meal)].iterrows():
-            ingredient = row['name']
+        for index,row in ingredients_df[ingredients_df['id']==str(meal_id)].iterrows():
+            # create ingredient object
+            ingredient_name = row['name']
+            section = row['section']
             days_before = row['days_before_action']
             action = row['action']
             time = row['time']
             notify_who = row['notify_who']
             notify_when = row['notify_when']
+            ingredient = Ingredient(meal_id, ingredient_name, section,
+                days_before, action, time, notify_who, notify_when)
 
             # create reminder in google doc if ingredient needs a reminder
             if int(days_before) > 0:
-                make_one_reminder(doc_service, doc_id, meal_day, days_before, action,
-                                    ingredient, time, notify_who, notify_when,
-                                    meal_name, font_color)
+                make_one_reminder(gdoc, meal, ingredient)
