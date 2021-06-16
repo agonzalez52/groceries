@@ -10,8 +10,6 @@ from df2gspread import df2gspread as d2g
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
-CREDS = None
-
 class GoogleDoc:
     def __init__(self, doc_id, doc_service):
         self.id = doc_id
@@ -162,24 +160,25 @@ class GoogleSheet:
         ).execute()
 
 def build_services():
+    creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
-            CREDS = pickle.load(token)
+            creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
-    if not CREDS or not CREDS.valid:
-        if CREDS and CREDS.expired and CREDS.refresh_token:
-            CREDS.refresh(Request())
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
-            CREDS = flow.run_local_server(port=0)
+            creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
-            pickle.dump(CREDS, token)
+            pickle.dump(creds, token)
 
-    doc_service = build('docs', 'v1', credentials=CREDS)
-    sheet_service = build('sheets','v4',credentials=CREDS)
+    doc_service = build('docs', 'v1', credentials=creds)
+    sheet_service = build('sheets','v4',credentials=creds)
     return doc_service, sheet_service
