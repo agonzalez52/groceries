@@ -49,10 +49,10 @@ def update_grocery_list(meal_batch, gdoc, gsheet):
     check_meal_list_size(meal_batch.ids)
 
     # Open Meals and Ingredients tables
-    meals_data = gglm.pull_sheet_data(gsheet, 'Meals')
+    meals_data = gsheet.pull_sheet_data('Meals')
     meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
     meals_df = meals_df.set_index('id')
-    ingredients_data = gglm.pull_sheet_data(gsheet, 'Ingredients')
+    ingredients_data = gsheet.pull_sheet_data('Ingredients')
     ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     meals_log = open("logs/Meal Schedule "+meal_batch.week_date.strftime("%m-%d-%y")+
@@ -144,22 +144,17 @@ def update_meal_date(meals_df, meal, gsheet):
     date_length = len(meals_df.index)
 
     # write week to google sheet
-    response_date = gsheet.sheet_service.spreadsheets().values().update(
-        spreadsheetId=gsheet.SHEET_ID,
-        valueInputOption='USER_ENTERED',
-        range='Meals!D2:D{}'.format(date_length+1),
-        body=dict(
-            majorDimension='ROWS',
-            values=date_values.tolist())
-    ).execute()
+    sheet_range = 'Meals!D2:D{}'.format(date_length+1)
+    data = date_values.tolist()
+    gsheet.write_data(sheet_range, data)
 
 # write reminders in google doc and update meal date in csv given meals for week
 def make_reminders(meal_batch, gdoc, gsheet):
     # Open Meals and ingredients tables
-    meals_data = gglm.pull_sheet_data(gsheet, 'Meals')
+    meals_data = gsheet.pull_sheet_data('Meals')
     meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
     meals_df = meals_df.set_index('id')
-    ingredients_data = gglm.pull_sheet_data(gsheet, 'Ingredients')
+    ingredients_data = gsheet.pull_sheet_data('Ingredients')
     ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     i = 0

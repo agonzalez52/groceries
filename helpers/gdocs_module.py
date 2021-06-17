@@ -136,9 +136,9 @@ class GoogleSheet:
         self.id = sheet_id
         self.service = sheet_service
 
-    def pull_sheet_data(self, sheet_id, tab):
+    def pull_sheet_data(self, tab):
         sheet = self.service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+        result = sheet.values().get(spreadsheetId=self.id,range=tab).execute()
         values = result.get('values',[])
 
         if not values:
