@@ -6,8 +6,8 @@
 
 import sys
 sys.path.append('helpers')
-import groceries_module as grcm
-import gdocs_module as gglm
+import groceries_module as grc
+import gdocs_module as gdocs
 import font_colors as fc
 from datetime import date
 from datetime import datetime
@@ -40,14 +40,14 @@ if __name__ == '__main__':
     meal_ids = [41,17,51,25,11,50]
     font_color = fc.color_red
 
-    doc_service, sheet_service = gglm.build_services()
-    gdoc = gglm.GoogleDoc(doc_id, doc_service)
-    gsheet = gglm.GoogleSheet(sheet_id, sheet_service)
+    doc_service, sheet_service = gdocs.build_services()
+    gdoc = gdocs.GoogleDoc(doc_id, doc_service)
+    gsheet = gdocs.GoogleSheet(sheet_id, sheet_service)
 
-    meal_batch = grcm.MealBatch(meal_week, meal_ids)
+    meal_batch = grc.MealBatch(meal_week, meal_ids)
     gdoc.set_font_color(font_color)
-    grcm.update_grocery_list(meal_batch, gdoc, gsheet)
-    #grcm.make_reminders(meal_batch, gdoc, gsheet)
+    grc.update_grocery_list(meal_batch, gdoc, gsheet)
+    #grc.make_reminders(meal_batch, gdoc, gsheet)
 
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

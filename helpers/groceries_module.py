@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import date
 from datetime import timedelta
 import numpy as np
-import gdocs_module as gglm
+import gdocs_module as gdocs
 
 class MealBatch:
     def __init__(self, week_date, meal_ids):
