@@ -10,11 +10,11 @@ class MealBatch:
         self.ids = meal_ids
 
 class Meal:
-    def __init__(self, id, name, rank, week, day, abbrev, extra, notes):
+    def __init__(self, id, name, rank, week_date, day, abbrev, extra, notes):
         self.id = id
         self.name = name
         self.rank = rank
-        self.week = week
+        self.week_date = week_date
         self.day = day
         self.abbrev = abbrev
         self.extra = extra
@@ -79,11 +79,11 @@ def update_grocery_list(meal_batch, gdoc, gsheet):
 
         update_meal_date(meals_df, meal, gsheet)
 
-        write_ingredients_to_doc(gdoc, ingredients_df, meal)
+        write_ingredients_to_doc(ingredients_df, meal, gdoc)
 
         meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
 
-        if isinstance(meal.meal_extra, str) and meal.meal_extra != 'N/A':
+        if isinstance(meal.extra, str) and meal.extra != 'N/A':
             # insert Extras at end of doc
             start_i, end_i = gdoc.get_text_range_idx('Extra', True)
             extra_msg = meal.extra_message()
@@ -100,7 +100,7 @@ def check_meal_list_size(ids):
             exit()
 
 # loop through ingredients for meal 'id' and add to doc
-def write_ingredients_to_doc(gdoc, ingredients_df, meal):
+def write_ingredients_to_doc(ingredients_df, meal, gdoc):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # make ingredient object
@@ -111,8 +111,8 @@ def write_ingredients_to_doc(gdoc, ingredients_df, meal):
         time = row['time']
         notify_who = row['notify_who']
         notify_when = row['notify_when']
-        ingredient = Ingredient(meal.id, ingredient, days_before, action, time,
-            notify_who, notify_when)
+        ingredient = Ingredient(meal.id, ingredient_name, section, days_before,
+            action, time, notify_who, notify_when)
 
         # insert ingredient to google doc
         start_i, end_i = gdoc.get_text_range_idx(section, True)
@@ -136,7 +136,7 @@ def make_one_reminder(gdoc, meal, ingredient):
 # write the week a meal is being made in Meals sheet
 def update_meal_date(meals_df, meal, gsheet):
     # write week date to meals
-    meals_df.loc[str(meal_id), 'week'] = week_date.strftime("%m-%d-%y")
+    meals_df.loc[str(meal.id), 'week'] = meal.week_date.strftime("%m-%d-%y")
 
     # get week column from dataframe
     date_values = np.reshape(meals_df.loc[:,'week'].values.tolist(),

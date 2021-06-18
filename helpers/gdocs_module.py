@@ -144,7 +144,7 @@ class GoogleSheet:
         if not values:
             print('No data found')
         else:
-            rows = sheet.values().get(spreadsheetId=sheet_id,range=tab).execute()
+            rows = sheet.values().get(spreadsheetId=self.id,range=tab).execute()
 
         data = rows.get('values')
         return data

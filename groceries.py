@@ -38,7 +38,7 @@ if __name__ == '__main__':
     '''
     meal_week = date(2021, 6, 7)
     meal_ids = [41,17,51,25,11,50]
-    font_color = fc.color_red
+    font_color = fc.COLOR_RED
 
     doc_service, sheet_service = gdocs.build_services()
     gdoc = gdocs.GoogleDoc(doc_id, doc_service)
