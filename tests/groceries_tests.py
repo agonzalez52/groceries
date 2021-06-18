@@ -1,45 +1,46 @@
 import sys
-sys.path.append('../helper_functions')
-import groceries_funcs as grc
-import gdocs_funcs as gfuncs
+sys.path.append('../helpers')
+import groceries_module as grc
+import gdocs_module as gdocs
+import font_colors as fc
 import pandas as pd
 from df2gspread import df2gspread as d2g
 import numpy as np
 
 if __name__ == '__main__':
-    service, sheet_service = gfuncs.build_services()
+    service, sheet_service = gdocs.build_services()
     # to create initial doc
     #doc = create_document(service)
     doc = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
 
     # INSERT TEXT TO DOC TEST
-    # start_h, end_h = gfuncs.get_text_range_idx(service, doc, "Health", True)
+    # start_h, end_h = gdocs.get_text_range_idx(service, doc, "Health", True)
     # #print('end_h: '+str(end_h))
-    # gfuncs.insert_text(service, doc, end_h, 'floss', groceries.yellow, True)
+    # gdocs.insert_text(service, doc, end_h, 'floss', groceries.yellow, True)
 
-    # start_c, end_c = gfuncs.get_text_range_idx(service, doc, "Carne", True)
+    # start_c, end_c = gdocs.get_text_range_idx(service, doc, "Carne", True)
     # #print('end_c: '+str(end_c))
-    # gfuncs.insert_text(service, doc, end_c, 'chicken (3lb)', groceries.yellow
+    # gdocs.insert_text(service, doc, end_c, 'chicken (3lb)', groceries.yellow
     # , True)
 
-    # start_cagain, end_cagain = gfuncs.get_text_range_idx(service, doc,
+    # start_cagain, end_cagain = gdocs.get_text_range_idx(service, doc,
     # "Carne", True)
-    # gfuncs.insert_text(service, doc, end_cagain, 'ground beef',
-    # grc.COLOR_YELLOW, True)
+    # gdocs.insert_text(service, doc, end_cagain, 'ground beef',
+    # fc.COLOR_YELLOW, True)
 
-    # start_o, end_o = gfuncs.get_text_range_idx(service, doc, "Hot stuff",
+    # start_o, end_o = gdocs.get_text_range_idx(service, doc, "Hot stuff",
     # True)
-    # gfuncs.insert_text(service, doc, end_o, 'chicken wings',
-    # grc.COLOR_YELLOW, True)
+    # gdocs.insert_text(service, doc, end_o, 'chicken wings',
+    # fc.COLOR_YELLOW, True)
 
     # Google sheet TEST
     Meals_old = pd.read_csv('Meals Table.csv', index_col='id')
     Ingredients_old = pd.read_csv('Ingredients Table.csv')
 
-    Meals_data = gfuncs.pull_sheet_data(sheet_service, 'Meals')
+    Meals_data = gdocs.pull_sheet_data(sheet_service, 'Meals')
     Meals = pd.DataFrame(Meals_data[1:], columns=Meals_data[0])
     Meals = Meals.set_index('id')
-    Ingredients_data = gfuncs.pull_sheet_data(sheet_service, 'Ingredients')
+    Ingredients_data = gdocs.pull_sheet_data(sheet_service, 'Ingredients')
     Ingredients = pd.DataFrame(Ingredients_data[1:], columns=Ingredients_data[0])
 
     # TEST updating week and looping through meal ingredients
