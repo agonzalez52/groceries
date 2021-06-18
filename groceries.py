@@ -1,24 +1,53 @@
 #
-# Version 1.2.1
+# Version 1.3.0
 #
 # Created By: Angel Gonzalez
 #
 
 import sys
-sys.path.append('helper_functions')
-import groceries_funcs as grc
-import gdocs_funcs as gfuncs
+sys.path.append('helpers')
+import groceries_module as grc
+import gdocs_module as gdocs
+import font_colors as fc
 from datetime import date
+from datetime import datetime
+
+def greeting():
+    curr_hour = datetime.now().hour
+    if curr_hour >= 0 and curr_hour < 12:
+        print('\n\nGood Morning!\n\n')
+    elif curr_hour >=12 and curr_hour < 17:
+        print('\n\nGood Afternoon!\n\n')
+    else:
+        print('\n\nGood Evening!\n\n')
 
 if __name__ == '__main__':
-    doc_service, sheet_service = gfuncs.build_services()
-    # to create initial doc
-    #doc = gfuncs.create_document(service)
-    # for existing doc
+    greeting()
 
-    start_date = date(1980, 1, 4)
-    grc.update_grocery_list([27,31,7], doc_service, sheet_service, start_date)
-    #grc.make_reminders([12,41,13,24,37,1],doc_service,sheet_service,start_date)
+    '''
+    STEP 1: UNCOMMENT CORRECT IDS FOR GOOGLE DOC AND SHEET
+    '''
+    doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+    sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
+
+    # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
+    # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
+
+    '''
+    STEP 2: SET THESE VARIABLES
+    '''
+    meal_week = date(2021, 6, 7)
+    meal_ids = [41,17,51,25,11,50]
+    font_color = fc.COLOR_RED
+
+    doc_service, sheet_service = gdocs.build_services()
+    gdoc = gdocs.GoogleDoc(doc_id, doc_service)
+    gsheet = gdocs.GoogleSheet(sheet_id, sheet_service)
+
+    meal_batch = grc.MealBatch(meal_week, meal_ids)
+    gdoc.set_font_color(font_color)
+    grc.update_grocery_list(meal_batch, gdoc, gsheet)
+    #grc.make_reminders(meal_batch, gdoc, gsheet)
 
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
