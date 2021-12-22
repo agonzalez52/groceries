@@ -36,9 +36,13 @@ if __name__ == '__main__':
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2021, 6, 7)
-    meal_ids = [41,17,51,25,11,50]
+    meal_week = date(2022, 1, 1)
+    meal_ids = [39,35]
     font_color = fc.COLOR_RED
+
+    '''
+    STEP 3: RUN PROGRAM IN TERMINAL
+    '''
 
     doc_service, sheet_service = gdocs.build_services()
     gdoc = gdocs.GoogleDoc(doc_id, doc_service)
@@ -46,8 +50,7 @@ if __name__ == '__main__':
 
     meal_batch = grc.MealBatch(meal_week, meal_ids)
     gdoc.set_font_color(font_color)
-    grc.update_grocery_list(meal_batch, gdoc, gsheet)
-    #grc.make_reminders(meal_batch, gdoc, gsheet)
+    grc.update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0)
 
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

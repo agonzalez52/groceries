@@ -48,7 +48,7 @@ class Ingredient:
         f'{meal.name}'
         f'({meal.day.strftime("%a")}) - {self.action} {self.name} on '
         f'{(meal.day-timedelta(int(self.days_before_action))).strftime("%a, %m-%d")} at '
-        f'{self.time}. Add {self.notify_who}, notify at {self.notify_when}\n'
+        f'{self.time}\n'
         )
 
 # create an ingredient object given an ingredient dataframe's row
@@ -65,10 +65,10 @@ def create_ingredient(row):
         action, time, notify_who, notify_when)
     return ingredient
 
-
-# create a meal object given meals dataframe, meal day offset, and meal id
-def create_meal(meals_df, meal_id, week_date, i):
-    row = meals_df.loc[str(meal_id)]
+# create a meal object given the row, week of meal, and meal day offset
+def create_meal(row_df, week_date, i):
+    meal_id = row_df.index[0]
+    row = row_df.iloc[0]
     meal_name = row['name']
     meal_abbrev = row['abbrev']
     meal_day = week_date + timedelta(days=i)
@@ -98,7 +98,8 @@ def update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0):
     # loop through meals
     for meal_id in meal_batch.ids:
         # create meal object
-        meal = create_meal(meals_df, meal_id, meal_batch.week_date, i)
+        row_df = meals_df.loc[[str(meal_id)]]
+        meal = create_meal(row_df, meal_batch.week_date, i)
         i+=1
 
         print('---------------------------------------------------------------')
@@ -108,6 +109,7 @@ def update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0):
 
         write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only)
 
+        # Only write extras if reminders_only flag is off
         if (reminders_only <= 0):
             write_extra_message_to_doc(meal, gdoc)
 
@@ -135,7 +137,7 @@ def write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only=0):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # create ingredient object
-        ingredient = create_ingredient(row, meal.id)
+        ingredient = create_ingredient(row)
 
         if (reminders_only <= 0):
             # insert ingredient to google doc
@@ -144,7 +146,7 @@ def write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only=0):
             gdoc.insert_text(end_i, ingredient_msg, True)
 
         # write reminder in google doc if ingredient needs a reminder
-        if int(ingredient.days_before_actiondays_before) > 0:
+        if int(ingredient.days_before_action) > 0:
             make_one_reminder(gdoc, meal, ingredient)
 
 # write a meal's extra ingredients to google doc grocery list
@@ -164,26 +166,3 @@ def make_one_reminder(gdoc, meal, ingredient):
     start_j, end_j = gdoc.get_text_range_idx('Reminders', False)
     reminder_msg = ingredient.reminder_message(meal)
     gdoc.insert_text(end_j, reminder_msg, True)
-
-# WONT NEED THIS IF REMINDERS_ONLY FLAG WORKS IN UPDATE GROCERIES
-# write each ingredient's reminder to the google doc grocery list
-# update the meal date in the google sheet
-def make_reminders(meal_batch, gdoc, gsheet):
-    # Open Meals and ingredients tables
-    meals_data = gsheet.pull_sheet_data('Meals')
-    meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
-    meals_df = meals_df.set_index('id')
-    ingredients_data = gsheet.pull_sheet_data('Ingredients')
-    ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
-
-    i = 0
-    # loop through meals
-    for meal_id in meal_batch.ids:
-        # create meal object
-        meal = create_meal(meals_df, meal_id, meal_batch.week_date, i)
-        i+=1
-
-        write_meal_date_to_sheet(meals_df, meal, gsheet)
-
-        # write only ingredient's reminders to google doc grocery list
-        write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only=1)
