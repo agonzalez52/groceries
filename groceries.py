@@ -42,15 +42,18 @@ if __name__ == '__main__':
 
     '''
     STEP 3: RUN PROGRAM IN TERMINAL
+        $ python groceries.py
     '''
 
-    doc_service, sheet_service = gdocs.build_services()
+    doc_service, sheet_service, calendar_service = gdocs.build_services()
     gdoc = gdocs.GoogleDoc(doc_id, doc_service)
     gsheet = gdocs.GoogleSheet(sheet_id, sheet_service)
+    gcalendar = gdocs.GoogleCalendar(calendar_service)
 
     meal_batch = grc.MealBatch(meal_week, meal_ids)
     gdoc.set_font_color(font_color)
-    grc.update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0)
+    #grc.update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0)
 
+    gcalendar.get_calendars()
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

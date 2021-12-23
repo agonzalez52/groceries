@@ -8,7 +8,10 @@ from google.auth.transport.requests import Request
 from df2gspread import df2gspread as d2g
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/drive',
+          'https://www.googleapis.com/auth/calendar']
+
+FAMILY_CALENDAR_ID = 'family05728506763710474802@group.calendar.google.com'
 
 class GoogleDoc:
     def __init__(self, doc_id, doc_service):
@@ -159,6 +162,20 @@ class GoogleSheet:
                 values=data)
         ).execute()
 
+class GoogleCalendar:
+    def __init__(self, calendar_service):
+        self.service = calendar_service
+
+    def get_calendars(self):
+        page_token = None
+        while True:
+          calendar_list = self.service.calendarList().list(pageToken=page_token).execute()
+          for calendar_list_entry in calendar_list['items']:
+            print(calendar_list_entry['summary']+' id: '+calendar_list_entry['id'])
+          page_token = calendar_list.get('nextPageToken')
+          if not page_token:
+            break
+
 def build_services():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -180,5 +197,7 @@ def build_services():
             pickle.dump(creds, token)
 
     doc_service = build('docs', 'v1', credentials=creds)
-    sheet_service = build('sheets','v4',credentials=creds)
-    return doc_service, sheet_service
+    sheet_service = build('sheets', 'v4', credentials=creds)
+    calendar_service = build('calendar', 'v3', credentials=creds)
+
+    return doc_service, sheet_service, calendar_service
