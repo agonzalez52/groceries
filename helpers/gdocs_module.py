@@ -6,9 +6,26 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from df2gspread import df2gspread as d2g
+from datetime import time
+from datetime import timedelta
+from datetime import datetime
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/drive',
+          'https://www.googleapis.com/auth/calendar']
+
+ATTENDEES_DICT = {
+    'Angel': 'angelmg58@gmail.com',
+    'Fernando': 'fgonzalez55555@gmail.com',
+    'Arturo': 'jesusgong333@gmail.com'
+}
+
+REMINDERS_DICT = {
+    '2 hours before as email': ['email', '120'],
+    '2 hours before': ['popup', '120'],
+    '1 hour before': ['popup', '60'],
+    'at time of event': ['popup', '0']
+}
 
 class GoogleDoc:
     def __init__(self, doc_id, doc_service):
@@ -159,6 +176,77 @@ class GoogleSheet:
                 values=data)
         ).execute()
 
+class GoogleCalendar:
+    def __init__(self, calendar_id, calendar_service):
+        self.service = calendar_service
+        self.id = calendar_id
+
+    def get_calendars(self):
+        page_token = None
+        while True:
+          calendar_list = self.service.calendarList().list(pageToken=page_token).execute()
+          for calendar_list_entry in calendar_list['items']:
+            print(calendar_list_entry['summary']+' id: '+calendar_list_entry['id'])
+          page_token = calendar_list.get('nextPageToken')
+          if not page_token:
+            break
+
+    def get_attendees(self, attendees):
+        split_attendees = attendees.split(',')
+        attendee_list = []
+
+        for attendee in split_attendees:
+            attendee_email = ATTENDEES_DICT[attendee.strip()]
+            attendee_dict = {'email': attendee_email}
+            attendee_list.append(attendee_dict)
+
+        return attendee_list
+
+    def get_reminders(self, reminders):
+        split_reminders = reminders.split(',')
+        reminder_list = []
+
+        for reminder in split_reminders:
+            reminder_method = REMINDERS_DICT[reminder.strip()][0]
+            reminder_trigger = REMINDERS_DICT[reminder.strip()][1]
+            reminder_dict = {'method': reminder_method, 'minutes': int(reminder_trigger)}
+            reminder_list.append(reminder_dict)
+
+        return reminder_list
+
+    def create_event(self, meal, ingredient):
+        # event summary
+        summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
+        # event start/end dateTime
+        start_time = datetime.strptime(ingredient.time,'%I:%M %p').time()
+        end_time = (datetime.strptime(ingredient.time,'%I:%M %p')+timedelta(hours=1)).time()
+        start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}'
+        end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}'
+        # event attendees
+        attendees = self.get_attendees(ingredient.notify_who)
+        # event reminders
+        reminders = self.get_reminders(ingredient.notify_when)
+
+        event = {
+            'summary': summary,
+            'start': {
+                'dateTime': start_date_time,
+                'timeZone': 'America/Los_Angeles',
+            },
+            'end': {
+                'dateTime': end_date_time,
+                'timeZone': 'America/Los_Angeles',
+            },
+            'attendees': attendees,
+            'reminders': {
+                'useDefault': False,
+                'overrides': reminders,
+            },
+        }
+
+        event = self.service.events().insert(calendarId=self.id, body=event).execute()
+        print(f"    Event created on {start_date_time}: {event.get('htmlLink')}")
+
 def build_services():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -180,5 +268,7 @@ def build_services():
             pickle.dump(creds, token)
 
     doc_service = build('docs', 'v1', credentials=creds)
-    sheet_service = build('sheets','v4',credentials=creds)
-    return doc_service, sheet_service
+    sheet_service = build('sheets', 'v4', credentials=creds)
+    calendar_service = build('calendar', 'v3', credentials=creds)
+
+    return doc_service, sheet_service, calendar_service

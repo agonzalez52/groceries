@@ -80,7 +80,7 @@ def create_meal(row_df, week_date, i):
     return meal
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0):
+def update_grocery_list(meal_batch, gdoc, gsheet, gcalendar, reminders_only=0):
     meal_batch.check_meal_list_size()
 
     # Create meals and ingredients dataframes
@@ -107,7 +107,7 @@ def update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0):
 
         write_meal_date_to_sheet(meals_df, meal, gsheet)
 
-        write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only)
+        write_ingredients_to_doc(ingredients_df, meal, gdoc, gcalendar, reminders_only)
 
         # Only write extras if reminders_only flag is off
         if (reminders_only <= 0):
@@ -133,7 +133,7 @@ def write_meal_date_to_sheet(meals_df, meal, gsheet):
     gsheet.write_data(sheet_range, data)
 
 # write a meal's ingredients to google doc grocery list
-def write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only=0):
+def write_ingredients_to_doc(ingredients_df, meal, gdoc, gcalendar, reminders_only=0):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # create ingredient object
@@ -145,9 +145,12 @@ def write_ingredients_to_doc(ingredients_df, meal, gdoc, reminders_only=0):
             ingredient_msg = f'{ingredient.name} {meal.abbrev}'
             gdoc.insert_text(end_i, ingredient_msg, True)
 
-        # write reminder in google doc if ingredient needs a reminder
+        # create google calendar reminder if ingredient needs a reminder
         if int(ingredient.days_before_action) > 0:
-            make_one_reminder(gdoc, meal, ingredient)
+            # days_before is set to 10 in google sheet if reminder is for same day
+            if int(ingredient.days_before_action) >= 10:
+                ingredient.days_before_action = 0
+            gcalendar.create_event(meal, ingredient)
 
 # write a meal's extra ingredients to google doc grocery list
 def write_extra_message_to_doc(meal, gdoc):
@@ -156,13 +159,3 @@ def write_extra_message_to_doc(meal, gdoc):
             start_i, end_i = gdoc.get_text_range_idx('Extra', True)
             extra_msg = meal.extra_message()
             gdoc.insert_text(end_i, extra_msg, True)
-
-# write an ingredient's reminder to the google doc grocery list
-def make_one_reminder(gdoc, meal, ingredient):
-    # days_before is set to 10 in google sheet if reminder is for same day
-    if int(ingredient.days_before_action) >= 10:
-        ingredient.days_before_action = 0
-
-    start_j, end_j = gdoc.get_text_range_idx('Reminders', False)
-    reminder_msg = ingredient.reminder_message(meal)
-    gdoc.insert_text(end_j, reminder_msg, True)

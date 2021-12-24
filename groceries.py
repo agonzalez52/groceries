@@ -33,24 +33,27 @@ if __name__ == '__main__':
     # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
     # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
 
+    angel_calendar_id = 'angelmg58@gmail.com'
+
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2022, 1, 1)
-    meal_ids = [39,35]
+    meal_week = date(2021, 12, 27)
+    meal_ids = [3]
     font_color = fc.COLOR_RED
 
     '''
     STEP 3: RUN PROGRAM IN TERMINAL
+        $ python groceries.py
     '''
 
-    doc_service, sheet_service = gdocs.build_services()
+    doc_service, sheet_service, calendar_service = gdocs.build_services()
     gdoc = gdocs.GoogleDoc(doc_id, doc_service)
     gsheet = gdocs.GoogleSheet(sheet_id, sheet_service)
+    gcalendar = gdocs.GoogleCalendar(angel_calendar_id, calendar_service)
 
     meal_batch = grc.MealBatch(meal_week, meal_ids)
     gdoc.set_font_color(font_color)
-    grc.update_grocery_list(meal_batch, gdoc, gsheet, reminders_only=0)
-
+    grc.update_grocery_list(meal_batch, gdoc, gsheet, gcalendar, reminders_only=0)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')
