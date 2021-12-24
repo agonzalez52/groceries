@@ -215,15 +215,16 @@ class GoogleCalendar:
         return reminder_list
 
     def create_event(self, meal, ingredient):
+        # event summary
         summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
-        # converts 4:00 PM to time object
+        # event start/end dateTime
         start_time = datetime.strptime(ingredient.time,'%I:%M %p').time()
-        # adds one hour to start_time
         end_time = (datetime.strptime(ingredient.time,'%I:%M %p')+timedelta(hours=1)).time()
-        # combines meal day with start_time to get format that dateTime wants
         start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}'
         end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}'
+        # event attendees
         attendees = self.get_attendees(ingredient.notify_who)
+        # event reminders
         reminders = self.get_reminders(ingredient.notify_when)
 
         event = {
