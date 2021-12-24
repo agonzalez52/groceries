@@ -6,12 +6,27 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from df2gspread import df2gspread as d2g
+from datetime import time
+from datetime import timedelta
+from datetime import datetime
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/calendar']
 
 FAMILY_CALENDAR_ID = 'family05728506763710474802@group.calendar.google.com'
+
+ATTENDEES_DICT = {
+    'Angel': 'angelmg58@gmail.com',
+    'Fernando': 'fgonzalez55555@gmail.com',
+    'Arturo': 'jesusgong333@gmail.com'
+}
+
+REMINDERS_DICT = {
+    '2 hours before as email': ['email', '120'],
+    '1 hour before': ['popup', '60'],
+    'at time of event': ['popup', '0']
+}
 
 class GoogleDoc:
     def __init__(self, doc_id, doc_service):
@@ -175,6 +190,71 @@ class GoogleCalendar:
           page_token = calendar_list.get('nextPageToken')
           if not page_token:
             break
+
+    def get_attendees(self, attendees):
+        split_attendees = attendees.split(',')
+        attendee_list = []
+
+        for attendee in split_attendees:
+            attendee_email = ATTENDEES_DICT[attendee.strip()]
+            attendee_dict = {'email': attendee_email}
+            attendee_list.append(attendee_dict)
+
+        return attendee_list
+
+    def get_reminders(self, reminders):
+        split_reminders = reminders.split(',')
+        reminder_list = []
+
+        for reminder in split_reminders:
+            reminder_method = REMINDERS_DICT[reminder.strip()][0]
+            reminder_trigger = REMINDERS_DICT[reminder.strip()][1]
+            reminder_dict = {'method': reminder_method, 'minutes': int(reminder_trigger)}
+            reminder_list.append(reminder_dict)
+
+        return reminder_list
+
+    def create_event(self, calendar_id, meal, ingredient):
+        # calendar id - calendar_id✅
+        # body:
+        # start, end time - meal.day, ingredient.time✅
+        # summary (title) - ingred.action, ingred.name, meal.name✅
+        # description?
+        # attendees - ingredient.notify_who✅
+        # reminders - ingredient.notify_when✅
+        summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
+        # converts 4:00 PM to time object
+        start_time = datetime.strptime(ingredient.time,'%I:%M %p').time()
+        # adds one hour to start_time
+        end_time = (datetime.strptime(ingredient.time,'%I:%M %p')+timedelta(hours=1)).time()
+        # combines meal day with start_time to get format that dateTime wants
+        start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}'
+        end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}'
+        attendees = self.get_attendees(ingredient.notify_who)
+        reminders = self.get_reminders(ingredient.notify_when)
+
+        event = {
+            'summary': f'IGNORE {summary}',
+            'start': {
+                'dateTime': start_date_time,
+                'timeZone': 'America/Los_Angeles',
+            },
+            'end': {
+                'dateTime': end_date_time,
+                'timeZone': 'America/Los_Angeles',
+            },
+            'attendees': attendees,
+            'reminders': {
+                'useDefault': False,
+                'overrides': reminders,
+            },
+        }
+
+        print('event:')
+        print(event)
+
+        event = self.service.events().insert(calendarId=calendar_id, body=event).execute()
+        print('Event created: %s' % (event.get('htmlLink')))
 
 def build_services():
     creds = None
