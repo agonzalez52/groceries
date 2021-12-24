@@ -14,8 +14,6 @@ from datetime import datetime
 SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/calendar']
 
-FAMILY_CALENDAR_ID = 'family05728506763710474802@group.calendar.google.com'
-
 ATTENDEES_DICT = {
     'Angel': 'angelmg58@gmail.com',
     'Fernando': 'fgonzalez55555@gmail.com',
@@ -24,6 +22,7 @@ ATTENDEES_DICT = {
 
 REMINDERS_DICT = {
     '2 hours before as email': ['email', '120'],
+    '2 hours before': ['popup', '120'],
     '1 hour before': ['popup', '60'],
     'at time of event': ['popup', '0']
 }
@@ -178,8 +177,9 @@ class GoogleSheet:
         ).execute()
 
 class GoogleCalendar:
-    def __init__(self, calendar_service):
+    def __init__(self, calendar_id, calendar_service):
         self.service = calendar_service
+        self.id = calendar_id
 
     def get_calendars(self):
         page_token = None
@@ -214,14 +214,7 @@ class GoogleCalendar:
 
         return reminder_list
 
-    def create_event(self, calendar_id, meal, ingredient):
-        # calendar id - calendar_id✅
-        # body:
-        # start, end time - meal.day, ingredient.time✅
-        # summary (title) - ingred.action, ingred.name, meal.name✅
-        # description?
-        # attendees - ingredient.notify_who✅
-        # reminders - ingredient.notify_when✅
+    def create_event(self, meal, ingredient):
         summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
         # converts 4:00 PM to time object
         start_time = datetime.strptime(ingredient.time,'%I:%M %p').time()
@@ -234,7 +227,7 @@ class GoogleCalendar:
         reminders = self.get_reminders(ingredient.notify_when)
 
         event = {
-            'summary': f'IGNORE {summary}',
+            'summary': summary,
             'start': {
                 'dateTime': start_date_time,
                 'timeZone': 'America/Los_Angeles',
@@ -250,11 +243,8 @@ class GoogleCalendar:
             },
         }
 
-        print('event:')
-        print(event)
-
-        event = self.service.events().insert(calendarId=calendar_id, body=event).execute()
-        print('Event created: %s' % (event.get('htmlLink')))
+        event = self.service.events().insert(calendarId=self.id, body=event).execute()
+        print(f"    Event created on {start_date_time}: {event.get('htmlLink')}")
 
 def build_services():
     creds = None
