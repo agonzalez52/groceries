@@ -110,18 +110,19 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0):
         print('---------------------------------------------------------------')
         print('MEAL: '+meal.name)
 
-        #write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
+        write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
-        #write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only)
+        write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only)
 
         # Only write extras if reminders_only flag is off
-        #if (reminders_only <= 0):
-        #    write_extra_message_to_doc(meal, gapi.gdoc)
+        if (reminders_only <= 0):
+           write_extra_message_to_doc(meal, gapi.gdoc)
 
         meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
 
-    email_meal_log(MY_EMAIL, 'TEST '+meals_log_name.replace(os.path.abspath(os.getcwd())+'/logs/',''), '', meals_log_path, gapi.gmail)
     meals_log.close()
+    email_meal_log(MY_EMAIL, meals_log_name.replace(os.path.abspath(os.getcwd())+'/logs/',''), '', meals_log_path, gapi.gmail)
+
 
 # write the week a meal is being made to the google sheet
 def write_meal_date_to_sheet(meals_df, meal, gsheet):
@@ -169,4 +170,4 @@ def write_extra_message_to_doc(meal, gdoc):
 def email_meal_log(sender, subject, message_text, file_path, gmail):
     for receiver in MEAL_LOG_RECEIVERS:
         message = gmail.create_message_with_attachment(sender, receiver, subject, message_text, file_path)
-        gmail.send_message(receiver, message)
+        gmail.send_message(sender, message)
