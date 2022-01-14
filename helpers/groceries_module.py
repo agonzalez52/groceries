@@ -3,6 +3,7 @@ from datetime import date
 from datetime import timedelta
 import numpy as np
 import gdocs_module as gdocs
+import os
 
 class MealBatch:
     def __init__(self, week_date, meal_ids):
@@ -51,6 +52,9 @@ class Ingredient:
         f'{self.time}\n'
         )
 
+MEAL_LOG_RECEIVERS = ['fgonzalez55555@gmail.com', 'jesusgong333@gmail.com']
+MY_EMAIL = 'angelmg58@gmail.com'
+
 # create an ingredient object given an ingredient dataframe's row
 def create_ingredient(row):
     ingredient_id = row['id']
@@ -80,19 +84,20 @@ def create_meal(row_df, week_date, i):
     return meal
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(meal_batch, gdoc, gsheet, gcalendar, reminders_only=0):
+def update_grocery_list(meal_batch, gapi, reminders_only=0):
     meal_batch.check_meal_list_size()
 
     # Create meals and ingredients dataframes
-    meals_data = gsheet.pull_sheet_data('Meals')
+    meals_data = gapi.gsheet.pull_sheet_data('Meals')
     meals_df = pd.DataFrame(meals_data[1:], columns=meals_data[0])
     meals_df = meals_df.set_index('id')
-    ingredients_data = gsheet.pull_sheet_data('Ingredients')
+    ingredients_data = gapi.gsheet.pull_sheet_data('Ingredients')
     ingredients_df = pd.DataFrame(ingredients_data[1:], columns=ingredients_data[0])
 
     # create meal log
-    meals_log = open("logs/Meal Schedule "+meal_batch.week_date.strftime("%m-%d-%y")+
-        '.txt',"w")
+    meals_log_path = os.path.abspath(os.getcwd())+"/logs/Meal Schedule "+meal_batch.week_date.strftime("%m-%d-%y")+'.txt'
+    meals_log_name = meals_log_path.replace('.txt','')
+    meals_log = open(meals_log_path,"w")
 
     i = 0
     # loop through meals
@@ -105,17 +110,19 @@ def update_grocery_list(meal_batch, gdoc, gsheet, gcalendar, reminders_only=0):
         print('---------------------------------------------------------------')
         print('MEAL: '+meal.name)
 
-        write_meal_date_to_sheet(meals_df, meal, gsheet)
+        write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
-        write_ingredients_to_doc(ingredients_df, meal, gdoc, gcalendar, reminders_only)
+        write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only)
 
         # Only write extras if reminders_only flag is off
         if (reminders_only <= 0):
-            write_extra_message_to_doc(meal, gdoc)
+           write_extra_message_to_doc(meal, gapi.gdoc)
 
         meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
 
     meals_log.close()
+    email_meal_log(MY_EMAIL, meals_log_name.replace(os.path.abspath(os.getcwd())+'/logs/',''), '', meals_log_path, gapi.gmail)
+
 
 # write the week a meal is being made to the google sheet
 def write_meal_date_to_sheet(meals_df, meal, gsheet):
@@ -133,7 +140,7 @@ def write_meal_date_to_sheet(meals_df, meal, gsheet):
     gsheet.write_data(sheet_range, data)
 
 # write a meal's ingredients to google doc grocery list
-def write_ingredients_to_doc(ingredients_df, meal, gdoc, gcalendar, reminders_only=0):
+def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # create ingredient object
@@ -141,16 +148,16 @@ def write_ingredients_to_doc(ingredients_df, meal, gdoc, gcalendar, reminders_on
 
         if (reminders_only <= 0):
             # insert ingredient to google doc
-            start_i, end_i = gdoc.get_text_range_idx(ingredient.section, True)
+            start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, True)
             ingredient_msg = f'{ingredient.name} {meal.abbrev}'
-            gdoc.insert_text(end_i, ingredient_msg, True)
+            gapi.gdoc.insert_text(end_i, ingredient_msg, True)
 
         # create google calendar reminder if ingredient needs a reminder
         if int(ingredient.days_before_action) > 0:
             # days_before is set to 10 in google sheet if reminder is for same day
             if int(ingredient.days_before_action) >= 10:
                 ingredient.days_before_action = 0
-            gcalendar.create_event(meal, ingredient)
+            gapi.gcalendar.create_event(meal, ingredient)
 
 # write a meal's extra ingredients to google doc grocery list
 def write_extra_message_to_doc(meal, gdoc):
@@ -159,3 +166,8 @@ def write_extra_message_to_doc(meal, gdoc):
             start_i, end_i = gdoc.get_text_range_idx('Extra', True)
             extra_msg = meal.extra_message()
             gdoc.insert_text(end_i, extra_msg, True)
+
+def email_meal_log(sender, subject, message_text, file_path, gmail):
+    for receiver in MEAL_LOG_RECEIVERS:
+        message = gmail.create_message_with_attachment(sender, receiver, subject, message_text, file_path)
+        gmail.send_message(sender, message)
