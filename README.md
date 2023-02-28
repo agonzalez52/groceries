@@ -20,3 +20,8 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 
 * Keeps track of when meals were made on the meals Google sheet
 <img width="524" alt="Screen Shot 2021-05-21 at 4 52 05 PM" src="https://user-images.githubusercontent.com/73859721/119207963-1b6c4900-ba55-11eb-9b03-b09d04595464.png">
+
+## First time use
+* Use python version 3.9
+* Go to https://console.cloud.google.com/apis/credentials > Navigate to the correct project > Download and save the **OAuth client** under **OAuth 2.0 Client IDs** as credentials.json in working directory
+* Create a /logs folder in working directory

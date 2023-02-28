@@ -1,0 +1,7 @@
+groceries-env/
+logs/
+credentials.json
+data.json
+token.pickle
+.DS_Store
+__pycache__/
