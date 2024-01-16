@@ -261,7 +261,7 @@ class GoogleCalendar:
         }
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
-        print(f"    Event created on {start_date_time}: {event.get('htmlLink')}")
+        print(f"    Event created on {meal.day-timedelta(int(ingredient.days_before_action))} to {ingredient.action} {ingredient.name}")
 
 class GoogleMail:
     def __init__ (self, gmail_service):

@@ -13,8 +13,8 @@ class MealBatch:
     # Warns if the list of ids is less than 6
     def check_meal_list_size(self):
         if len(self.ids) < 6:
-            response = input("\nWARNING: List size is "+str(len(self.ids))+
-                ". Do you want to continue? ")
+            response = input("\nWARNING: There are only "+str(len(self.ids))+
+                " meals. Do you want to continue? ")
             if response != 'y':
                 exit()
 
@@ -108,7 +108,7 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0):
         i+=1
 
         print('---------------------------------------------------------------')
-        print('MEAL: '+meal.name)
+        print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
 
         write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
