@@ -309,7 +309,7 @@ class GoogleMail:
             message = (self.service.users().messages().send(userId=user_id, body=message)
                        .execute())
             return message
-        except(HttpError, error):
+        except HttpError as error:
             print('An error occurred: %s' % error)
 
 
