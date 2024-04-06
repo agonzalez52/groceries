@@ -18,6 +18,13 @@ class MealBatch:
             if response != 'y':
                 exit()
 
+    # Warns if first day is not Monday
+    def check_start_day(self):
+        if self.week_date.weekday() > 0:
+            response = input("\nWARNING: First day is not Monday. Do you want to continue? ")
+            if response != 'y':
+                exit()
+
 class Meal:
     def __init__(self, id, name, rank, week_date, day, abbrev, extra, notes):
         self.id = id
@@ -86,6 +93,7 @@ def create_meal(row_df, week_date, i):
 # add ingredients to google doc given the id's to the meals
 def update_grocery_list(meal_batch, gapi, reminders_only=0):
     meal_batch.check_meal_list_size()
+    meal_batch.check_start_day()
 
     # Create meals and ingredients dataframes
     meals_data = gapi.gsheet.pull_sheet_data('Meals')
