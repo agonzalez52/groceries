@@ -134,7 +134,7 @@ class GoogleDoc:
                     'fields': 'bold'
                 }
             },
-            # Set item text to black
+            # Set item text to self.font_color
             {
                 'updateTextStyle': {
                     'range': {
@@ -154,6 +154,15 @@ class GoogleDoc:
                     },
                     'fields': 'foregroundColor'
                 }
+            },
+            # remove bullet formatting if there
+            {
+                'deleteParagraphBullets': {
+                    'range': {
+                        'startIndex': startIndex,
+                        'endIndex': startIndex+len(item)
+                    }
+                }
             }
         ]
 
@@ -163,6 +172,62 @@ class GoogleDoc:
             print('    '+item)
         result2 = self.service.documents().batchUpdate(documentId=self.id, body={
             'requests': requests_format}).execute()
+
+    def insert_checklist_item(self, startIndex, item, do_print):
+        requests = []
+        requests.append({
+            'insertText': {
+                'location': {
+                    'index': startIndex
+                },
+                'text': f"{item}\n"
+            }
+        })
+        requests.append({
+            'updateTextStyle': {
+                    'range':{
+                        'startIndex': startIndex,
+                        'endIndex': startIndex+len(item)
+                    },
+                    'textStyle': {
+                        'bold': False
+                    },
+                    'fields': 'bold'
+                }
+        })
+        requests.append({
+            'createParagraphBullets': {
+                'range': {
+                    'startIndex': startIndex,
+                    'endIndex': startIndex+len(item)
+                },
+                'bulletPreset': 'BULLET_CHECKBOX',
+            }
+        })
+        requests.append({
+            'updateTextStyle': {
+                    'range': {
+                        'startIndex': startIndex,
+                        'endIndex': startIndex+len(item)
+                    },
+                    'textStyle': {
+                        'foregroundColor': {
+                            'color': {
+                                'rgbColor': {
+                                    'blue': self.font_color[0],
+                                    'green': self.font_color[1],
+                                    'red': self.font_color[2]
+                                }
+                            }
+                        }
+                    },
+                    'fields': 'foregroundColor'
+                }
+        })
+
+        result = self.service.documents().batchUpdate(documentId=self.id, body={'requests': requests}).execute()
+        if do_print:
+            print('    '+item)
 
 class GoogleSheet:
     def __init__(self, sheet_id, sheet_service):
