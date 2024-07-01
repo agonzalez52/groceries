@@ -38,8 +38,8 @@ if __name__ == '__main__':
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(1975, 3, 5)
-    meal_ids = [3]
+    meal_week = date(2024, 7, 1)
+    meal_ids = [1]
     font_color = fc.COLOR_RED
 
     '''
@@ -47,6 +47,7 @@ if __name__ == '__main__':
         $ python groceries.py
     '''
 
+# Build Google services
     doc_service, sheet_service, calendar_service, mail_service = gdocs.build_services()
     gdoc = gdocs.GoogleDoc(doc_id, doc_service)
     gsheet = gdocs.GoogleSheet(sheet_id, sheet_service)
@@ -56,6 +57,6 @@ if __name__ == '__main__':
 
     meal_batch = grc.MealBatch(meal_week, meal_ids)
     gapi.gdoc.set_font_color(font_color)
-    grc.update_grocery_list(meal_batch, gapi, reminders_only=0)
+    grc.update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=0)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

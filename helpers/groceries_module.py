@@ -91,7 +91,7 @@ def create_meal(row_df, week_date, i):
     return meal
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(meal_batch, gapi, reminders_only=0):
+def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
     meal_batch.check_meal_list_size()
     meal_batch.check_start_day()
 
@@ -120,7 +120,7 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0):
 
         write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
-        write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only)
+        write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only, checklist)
 
         # Only write extras if reminders_only flag is off
         if (reminders_only <= 0):
@@ -148,7 +148,7 @@ def write_meal_date_to_sheet(meals_df, meal, gsheet):
     gsheet.write_data(sheet_range, data)
 
 # write a meal's ingredients to google doc grocery list
-def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0):
+def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0, checklist=1):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # create ingredient object
@@ -158,7 +158,10 @@ def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0):
             # insert ingredient to google doc
             start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, True)
             ingredient_msg = f'{ingredient.name} {meal.abbrev}'
-            gapi.gdoc.insert_text(end_i, ingredient_msg, True)
+            if (checklist <= 0):
+                gapi.gdoc.insert_text(end_i, ingredient_msg, True)
+            else:
+                gapi.gdoc.insert_checklist_item(end_i, ingredient_msg, True)
 
         # create google calendar reminder if ingredient needs a reminder
         if int(ingredient.days_before_action) > 0:
