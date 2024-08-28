@@ -107,6 +107,9 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
     meals_log_name = meals_log_path.replace('.txt','')
     meals_log = open(meals_log_path,"w")
 
+    # list of people who will get an all day event for dinner
+    dinner_attendees = 'Fernando'
+
     i = 0
     # loop through meals
     for meal_id in meal_batch.ids:
@@ -117,6 +120,9 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
 
         print('---------------------------------------------------------------')
         print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
+
+        # create all day event for dinner
+        gapi.gcalendar.create_dinner_event(meal, dinner_attendees)
 
         write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
@@ -168,7 +174,7 @@ def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0, check
             # days_before is set to 10 in google sheet if reminder is for same day
             if int(ingredient.days_before_action) >= 10:
                 ingredient.days_before_action = 0
-            gapi.gcalendar.create_event(meal, ingredient)
+            gapi.gcalendar.create_ingredient_event(meal, ingredient)
 
 # write a meal's extra ingredients to google doc grocery list
 def write_extra_message_to_doc(meal, gdoc):

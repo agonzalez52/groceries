@@ -295,10 +295,10 @@ class GoogleCalendar:
 
         return reminder_list
 
-    def create_event(self, meal, ingredient):
-        # event summary
+    def create_ingredient_event(self, meal, ingredient):
+        # event name
         summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
-        # event start/end dateTime
+        # event start/end dateTime for ingredient
         start_time = datetime.strptime(ingredient.time,'%I:%M %p').time()
         end_time = (datetime.strptime(ingredient.time,'%I:%M %p')+timedelta(hours=1)).time()
         start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}'
@@ -327,6 +327,31 @@ class GoogleCalendar:
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
         print(f"    Event created on {meal.day-timedelta(int(ingredient.days_before_action))} to {ingredient.action} {ingredient.name}")
+
+    def create_dinner_event(self, meal, dinner_attendees):
+        # event name
+        summary = f'Dinner: {meal.name}'
+
+        # event start/end dateTime for dinner reminder
+        dinner_date = datetime.strptime(f'{meal.day}','%Y-%m-%d').date()
+        dinner_date_str = f'{dinner_date}'
+        # event attendees
+        attendees = self.get_attendees(dinner_attendees)
+        event = {
+            'summary': summary,
+            'start': {
+                'date': dinner_date_str,
+                'timeZone': 'America/Los_Angeles',
+            },
+            'end': {
+                'date': dinner_date_str,
+                'timeZone': 'America/Los_Angeles',
+            },
+            'attendees': attendees
+        }
+
+        event = self.service.events().insert(calendarId=self.id, body=event).execute()
+        print(f"All day event created for {meal.name} on {meal.day}\n")
 
 class GoogleMail:
     def __init__ (self, gmail_service):
