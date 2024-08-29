@@ -15,11 +15,11 @@ from datetime import datetime
 def greeting():
     curr_hour = datetime.now().hour
     if curr_hour >= 0 and curr_hour < 12:
-        print('\n\nGood Morning!\n\n')
+        print('\n\nGood Morning! (ctrl+c to terminate)\n\n')
     elif curr_hour >=12 and curr_hour < 17:
-        print('\n\nGood Afternoon!\n\n')
+        print('\n\nGood Afternoon! (ctrl+c to terminate)\n\n')
     else:
-        print('\n\nGood Evening!\n\n')
+        print('\n\nGood Evening! (ctrl+c to terminate)\n\n')
 
 if __name__ == '__main__':
     greeting()
@@ -27,18 +27,18 @@ if __name__ == '__main__':
     '''
     STEP 1: UNCOMMENT CORRECT IDS FOR GOOGLE DOC AND SHEET
     '''
-    # doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-    # sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
+    doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+    sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
-    doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
-    sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
+    # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
+    # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
 
     angel_calendar_id = 'angelmg58@gmail.com'
 
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2024, 7, 1)
+    meal_week = date(2024, 8, 16)
     meal_ids = [1]
     font_color = fc.COLOR_RED
 
@@ -57,6 +57,6 @@ if __name__ == '__main__':
 
     meal_batch = grc.MealBatch(meal_week, meal_ids)
     gapi.gdoc.set_font_color(font_color)
-    grc.update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=0)
+    grc.update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

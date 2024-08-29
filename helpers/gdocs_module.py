@@ -323,6 +323,13 @@ class GoogleCalendar:
                 'useDefault': False,
                 'overrides': reminders,
             },
+            'colorId': '2',
+            'guestsCanModify': True,
+            'source': { # Source from which the event was created
+                'title': 'Groceries Program',
+                'url': 'https://github.com/agonzalez52/groceries'
+            },
+            'transparency': 'transparent' # Does not 'show as busy' during event time
         }
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
@@ -361,7 +368,13 @@ class GoogleCalendar:
                 'overrides': []  # No reminders
             },
             'attendees': attendees,
-            'colorId': '9'
+            'colorId': '1',
+            'guestsCanModify': True,
+            'source': { # Source from which the event was created
+                'title': 'Groceries Program',
+                'url': 'https://github.com/agonzalez52/groceries'
+            },
+            'transparency': 'transparent' # Does not 'show as busy' during event time
         }
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
