@@ -134,7 +134,7 @@ class GoogleDoc:
                     'fields': 'bold'
                 }
             },
-            # Set item text to black
+            # Set item text to self.font_color
             {
                 'updateTextStyle': {
                     'range': {
@@ -154,6 +154,15 @@ class GoogleDoc:
                     },
                     'fields': 'foregroundColor'
                 }
+            },
+            # remove bullet formatting if there
+            {
+                'deleteParagraphBullets': {
+                    'range': {
+                        'startIndex': startIndex,
+                        'endIndex': startIndex+len(item)
+                    }
+                }
             }
         ]
 
@@ -163,6 +172,62 @@ class GoogleDoc:
             print('    '+item)
         result2 = self.service.documents().batchUpdate(documentId=self.id, body={
             'requests': requests_format}).execute()
+
+    def insert_checklist_item(self, startIndex, item, do_print):
+        requests = []
+        requests.append({
+            'insertText': {
+                'location': {
+                    'index': startIndex
+                },
+                'text': f"{item}\n"
+            }
+        })
+        requests.append({
+            'updateTextStyle': {
+                    'range':{
+                        'startIndex': startIndex,
+                        'endIndex': startIndex+len(item)
+                    },
+                    'textStyle': {
+                        'bold': False
+                    },
+                    'fields': 'bold'
+                }
+        })
+        requests.append({
+            'createParagraphBullets': {
+                'range': {
+                    'startIndex': startIndex,
+                    'endIndex': startIndex+len(item)
+                },
+                'bulletPreset': 'BULLET_CHECKBOX',
+            }
+        })
+        requests.append({
+            'updateTextStyle': {
+                    'range': {
+                        'startIndex': startIndex,
+                        'endIndex': startIndex+len(item)
+                    },
+                    'textStyle': {
+                        'foregroundColor': {
+                            'color': {
+                                'rgbColor': {
+                                    'blue': self.font_color[0],
+                                    'green': self.font_color[1],
+                                    'red': self.font_color[2]
+                                }
+                            }
+                        }
+                    },
+                    'fields': 'foregroundColor'
+                }
+        })
+
+        result = self.service.documents().batchUpdate(documentId=self.id, body={'requests': requests}).execute()
+        if do_print:
+            print('    '+item)
 
 class GoogleSheet:
     def __init__(self, sheet_id, sheet_service):
@@ -230,14 +295,14 @@ class GoogleCalendar:
 
         return reminder_list
 
-    def create_event(self, meal, ingredient):
-        # event summary
+    def create_ingredient_event(self, meal, ingredient):
+        # event name
         summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
-        # event start/end dateTime
+        # event start/end dateTime for ingredient
         start_time = datetime.strptime(ingredient.time,'%I:%M %p').time()
         end_time = (datetime.strptime(ingredient.time,'%I:%M %p')+timedelta(hours=1)).time()
-        start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}'
-        end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}'
+        start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}' # Format time as yyyy-mm-ddTHH:mm:ss
+        end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}' # Format time as yyyy-mm-ddTHH:mm:ss
         # event attendees
         attendees = self.get_attendees(ingredient.notify_who)
         # event reminders
@@ -258,10 +323,62 @@ class GoogleCalendar:
                 'useDefault': False,
                 'overrides': reminders,
             },
+            'colorId': '2',
+            'guestsCanModify': True,
+            'source': { # Source from which the event was created
+                'title': 'Groceries Program',
+                'url': 'https://github.com/agonzalez52/groceries'
+            },
+            'transparency': 'transparent' # Does not 'show as busy' during event time
         }
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
-        print(f"    Event created on {start_date_time}: {event.get('htmlLink')}")
+        print(f"    Event created on {meal.day-timedelta(int(ingredient.days_before_action))} to {ingredient.action} {ingredient.name}")
+
+    def create_dinner_event(self, meal, dinner_attendees):
+        # event name
+        summary = f'{meal.name} for dinner'
+
+        # event start/end dateTime for dinner reminder
+        dinner_start_date = datetime.strptime(f'{meal.day}','%Y-%m-%d').date() # Format date as yyyy-mm-dd
+        dinner_end_date = (datetime.strptime(f'{meal.day}','%Y-%m-%d')+timedelta(days=1)).date() # Format date as yyyy-mm-dd
+
+        food_for_week_doc_link = 'https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit'
+        ingredients_sheet_link = 'https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=150359050#gid=150359050'
+        recipes_doc_link = 'https://docs.google.com/document/d/19m9f15dyRHk8bPnnyu-ieBGuhtir1zZBEUIjHfmYabY/edit'
+        # HTML formatted links to helpful docs for event description
+        description_reference_links = (f'<a href={food_for_week_doc_link}>Food For Week</a>\n\n'
+                                       f'<a href={ingredients_sheet_link}>Ingredients Sheet</a>\n\n'
+                                       f'<a href={recipes_doc_link}>Recipes</a>')
+        # event attendees
+        attendees = self.get_attendees(dinner_attendees)
+        event = {
+            'summary': summary,
+            'description': description_reference_links,
+            'start': {
+                'date': f'{dinner_start_date}',
+                'timeZone': 'America/Los_Angeles',
+            },
+            'end': {
+                'date': f'{dinner_end_date}',
+                'timeZone': 'America/Los_Angeles',
+            },
+            'reminders': {
+                'useDefault': False,  # Do not use default reminders
+                'overrides': []  # No reminders
+            },
+            'attendees': attendees,
+            'colorId': '1',
+            'guestsCanModify': True,
+            'source': { # Source from which the event was created
+                'title': 'Groceries Program',
+                'url': 'https://github.com/agonzalez52/groceries'
+            },
+            'transparency': 'transparent' # Does not 'show as busy' during event time
+        }
+
+        event = self.service.events().insert(calendarId=self.id, body=event).execute()
+        print(f"All day event created for {meal.name} on {meal.day}\n")
 
 class GoogleMail:
     def __init__ (self, gmail_service):
@@ -309,7 +426,7 @@ class GoogleMail:
             message = (self.service.users().messages().send(userId=user_id, body=message)
                        .execute())
             return message
-        except(HttpError, error):
+        except HttpError as error:
             print('An error occurred: %s' % error)
 
 

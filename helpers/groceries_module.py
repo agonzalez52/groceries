@@ -4,6 +4,7 @@ from datetime import timedelta
 import numpy as np
 import gdocs_module as gdocs
 import os
+import sys
 
 class MealBatch:
     def __init__(self, week_date, meal_ids):
@@ -13,8 +14,15 @@ class MealBatch:
     # Warns if the list of ids is less than 6
     def check_meal_list_size(self):
         if len(self.ids) < 6:
-            response = input("\nWARNING: List size is "+str(len(self.ids))+
-                ". Do you want to continue? ")
+            response = input("\nWARNING: There are only "+str(len(self.ids))+
+                " meals. Do you want to continue? ")
+            if response != 'y':
+                exit()
+
+    # Warns if first day is not Monday
+    def check_start_day(self):
+        if self.week_date.weekday() > 0:
+            response = input("\nWARNING: First day is not Monday. Do you want to continue? ")
             if response != 'y':
                 exit()
 
@@ -84,8 +92,9 @@ def create_meal(row_df, week_date, i):
     return meal
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(meal_batch, gapi, reminders_only=0):
+def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
     meal_batch.check_meal_list_size()
+    meal_batch.check_start_day()
 
     # Create meals and ingredients dataframes
     meals_data = gapi.gsheet.pull_sheet_data('Meals')
@@ -99,26 +108,39 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0):
     meals_log_name = meals_log_path.replace('.txt','')
     meals_log = open(meals_log_path,"w")
 
+    # list of people who will get an all day event for dinner
+    dinner_attendees = 'Fernando'
+
     i = 0
-    # loop through meals
-    for meal_id in meal_batch.ids:
-        # create meal object
-        row_df = meals_df.loc[[str(meal_id)]]
-        meal = create_meal(row_df, meal_batch.week_date, i)
-        i+=1
+    try:
+        # loop through meals
+        for meal_id in meal_batch.ids:
+            # create meal object
+            try:
+                row_df = meals_df.loc[[str(meal_id)]]
+            except KeyError as e:
+                print(f'\nERROR: \nKeyError when searching for meal id {meal_id} in Groceries sheet: {e}\n')
+                sys.exit(1)
+            meal = create_meal(row_df, meal_batch.week_date, i)
+            i+=1
 
-        print('---------------------------------------------------------------')
-        print('MEAL: '+meal.name)
+            print('---------------------------------------------------------------')
+            print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
 
-        write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
+            # create all day event for dinner
+            gapi.gcalendar.create_dinner_event(meal, dinner_attendees)
 
-        write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only)
+            write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
-        # Only write extras if reminders_only flag is off
-        if (reminders_only <= 0):
-           write_extra_message_to_doc(meal, gapi.gdoc)
+            write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only, checklist)
 
-        meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
+            # Only write extras if reminders_only flag is off
+            if (reminders_only <= 0):
+                write_extra_message_to_doc(meal, gapi.gdoc)
+
+            meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
+    except KeyboardInterrupt:
+        print('\nKeyboarInterrupt: Program terminated by user\n')
 
     meals_log.close()
     email_meal_log(MY_EMAIL, meals_log_name.replace(os.path.abspath(os.getcwd())+'/logs/',''), '', meals_log_path, gapi.gmail)
@@ -140,7 +162,7 @@ def write_meal_date_to_sheet(meals_df, meal, gsheet):
     gsheet.write_data(sheet_range, data)
 
 # write a meal's ingredients to google doc grocery list
-def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0):
+def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0, checklist=1):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # create ingredient object
@@ -150,14 +172,17 @@ def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0):
             # insert ingredient to google doc
             start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, True)
             ingredient_msg = f'{ingredient.name} {meal.abbrev}'
-            gapi.gdoc.insert_text(end_i, ingredient_msg, True)
+            if (checklist <= 0):
+                gapi.gdoc.insert_text(end_i, ingredient_msg, True)
+            else:
+                gapi.gdoc.insert_checklist_item(end_i, ingredient_msg, True)
 
         # create google calendar reminder if ingredient needs a reminder
         if int(ingredient.days_before_action) > 0:
             # days_before is set to 10 in google sheet if reminder is for same day
             if int(ingredient.days_before_action) >= 10:
                 ingredient.days_before_action = 0
-            gapi.gcalendar.create_event(meal, ingredient)
+            gapi.gcalendar.create_ingredient_event(meal, ingredient)
 
 # write a meal's extra ingredients to google doc grocery list
 def write_extra_message_to_doc(meal, gdoc):
