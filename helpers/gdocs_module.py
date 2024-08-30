@@ -17,6 +17,7 @@ from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 import mimetypes
 import base64
+import font_colors as color
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive',
@@ -323,7 +324,7 @@ class GoogleCalendar:
                 'useDefault': False,
                 'overrides': reminders,
             },
-            'colorId': '2',
+            'colorId': color.EVENT_SAGE,
             'guestsCanModify': True,
             'source': { # Source from which the event was created
                 'title': 'Groceries Program',
@@ -368,7 +369,7 @@ class GoogleCalendar:
                 'overrides': []  # No reminders
             },
             'attendees': attendees,
-            'colorId': '1',
+            'colorId': color.EVENT_LAVENDER,
             'guestsCanModify': True,
             'source': { # Source from which the event was created
                 'title': 'Groceries Program',
