@@ -38,8 +38,8 @@ if __name__ == '__main__':
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2024, 8, 16)
-    meal_ids = [1]
+    meal_week = date(2024, 8, 8)
+    meal_ids = [14]
     font_color = fc.COLOR_RED
 
     '''

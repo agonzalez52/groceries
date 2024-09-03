@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.errors import HttpError
 from df2gspread import df2gspread as d2g
-from datetime import time
+from datetime import date
 from datetime import timedelta
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
@@ -342,7 +342,7 @@ class GoogleCalendar:
 
         # event start/end dateTime for dinner reminder
         dinner_start_date = datetime.strptime(f'{meal.day}','%Y-%m-%d').date() # Format date as yyyy-mm-dd
-        dinner_end_date = (datetime.strptime(f'{meal.day}','%Y-%m-%d')+timedelta(days=1)).date() # Format date as yyyy-mm-dd
+        dinner_end_date = (datetime.strptime(f'{meal.day}','%Y-%m-%d')+timedelta(days=1)).date() # end date must be the next day for all-day event
 
         food_for_week_doc_link = 'https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit'
         ingredients_sheet_link = 'https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=150359050#gid=150359050'
@@ -350,12 +350,15 @@ class GoogleCalendar:
         # HTML formatted links to helpful docs for event description
         description_reference_links = (f'<a href={food_for_week_doc_link}>Food For Week</a>\n\n'
                                        f'<a href={ingredients_sheet_link}>Ingredients Sheet</a>\n\n'
-                                       f'<a href={recipes_doc_link}>Recipes</a>')
+                                       f'<a href={recipes_doc_link}>Recipes</a>\n\n')
+        # get date event was created for event description
+        event_created_date = date.today().strftime('Event created on %A, %m/%d/%Y') # format date as 'Monday 7/14/2012'
+
         # event attendees
         attendees = self.get_attendees(dinner_attendees)
         event = {
             'summary': summary,
-            'description': description_reference_links,
+            'description': description_reference_links+event_created_date,
             'start': {
                 'date': f'{dinner_start_date}',
                 'timeZone': 'America/Los_Angeles',
