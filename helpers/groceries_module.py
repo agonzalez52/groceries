@@ -15,14 +15,15 @@ class MealBatch:
     def check_meal_list_size(self):
         if len(self.ids) < 6:
             response = input("\nWARNING: There are only "+str(len(self.ids))+
-                " meals. Do you want to continue? ")
+                " meal(s). Do you want to continue? ")
             if response != 'y':
                 exit()
 
     # Warns if first day is not Monday
     def check_start_day(self):
         if self.week_date.weekday() > 0:
-            response = input("\nWARNING: First day is not Monday. Do you want to continue? ")
+            first_day = self.week_date.strftime('%A, %m/%d/%Y') # format date as 'Monday 7/14/2012'
+            response = input("\nWARNING: First day is not Monday (it's "+first_day+"). Do you want to continue? ")
             if response != 'y':
                 exit()
 

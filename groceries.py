@@ -27,18 +27,18 @@ if __name__ == '__main__':
     '''
     STEP 1: UNCOMMENT CORRECT IDS FOR GOOGLE DOC AND SHEET
     '''
-    # doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-    # sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
+    doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
+    sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
 
-    doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
-    sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
+    # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
+    # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
 
     angel_calendar_id = 'angelmg58@gmail.com'
 
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2024, 8, 16)
+    meal_week = date(2024, 8, 8)
     meal_ids = [14]
     font_color = fc.COLOR_RED
 
