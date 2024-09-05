@@ -38,9 +38,9 @@ if __name__ == '__main__':
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2024, 8, 8)
-    meal_ids = [14]
-    font_color = fc.COLOR_RED
+    meal_week = date(2024, 9, 16)
+    meal_ids = [3,7,30,44,32,11]
+    font_color = fc.COLOR_PURPLE
 
     '''
     STEP 3: RUN PROGRAM IN TERMINAL

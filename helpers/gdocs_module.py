@@ -344,21 +344,29 @@ class GoogleCalendar:
         dinner_start_date = datetime.strptime(f'{meal.day}','%Y-%m-%d').date() # Format date as yyyy-mm-dd
         dinner_end_date = (datetime.strptime(f'{meal.day}','%Y-%m-%d')+timedelta(days=1)).date() # end date must be the next day for all-day event
 
+        # helpful reference links for event description
         food_for_week_doc_link = 'https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit'
         ingredients_sheet_link = 'https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=150359050#gid=150359050'
         recipes_doc_link = 'https://docs.google.com/document/d/19m9f15dyRHk8bPnnyu-ieBGuhtir1zZBEUIjHfmYabY/edit'
         # HTML formatted links to helpful docs for event description
-        description_reference_links = (f'<a href={food_for_week_doc_link}>Food For Week</a>\n\n'
-                                       f'<a href={ingredients_sheet_link}>Ingredients Sheet</a>\n\n'
-                                       f'<a href={recipes_doc_link}>Recipes</a>\n\n')
-        # get date event was created for event description
+        description_reference_links = (f'<a href={ingredients_sheet_link}>Ingredients Sheet</a> - id: {meal.id}\n\n'
+                                       f'<a href={recipes_doc_link}>Recipes</a>\n\n'
+                                       f'<a href={food_for_week_doc_link}>Food For Week</a>\n\n')
+        # get date (today) event was created for event description
         event_created_date = date.today().strftime('Event created on %A, %m/%d/%Y') # format date as 'Monday 7/14/2012'
+        
+        # add meal notes to event description if available
+        event_description = description_reference_links
+        if isinstance(meal.notes, str) and meal.notes != 'N/A':
+            event_description += f'Notes:\n{meal.notes}\n\n'+event_created_date
+        else:
+            event_description += event_created_date
 
         # event attendees
         attendees = self.get_attendees(dinner_attendees)
         event = {
             'summary': summary,
-            'description': description_reference_links+event_created_date,
+            'description': event_description,
             'start': {
                 'date': f'{dinner_start_date}',
                 'timeZone': 'America/Los_Angeles',
