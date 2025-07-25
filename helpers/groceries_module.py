@@ -1,10 +1,9 @@
 import pandas as pd
-from datetime import date
 from datetime import timedelta
 import numpy as np
-import gdocs_module as gdocs
 import os
 import sys
+import time
 
 class MealBatch:
     def __init__(self, week_date, meal_ids):
@@ -116,30 +115,37 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
     try:
         # loop through meals
         for meal_id in meal_batch.ids:
-            # create meal object
-            try:
-                row_df = meals_df.loc[[str(meal_id)]]
-            except KeyError as e:
-                print(f'\nERROR: \nKeyError when searching for meal id {meal_id} in Groceries sheet: {e}\n')
-                sys.exit(1)
-            meal = create_meal(row_df, meal_batch.week_date, i)
+            # skip day if meal id in array is given as 0
+            if meal_id <= 0:
+                skipped_day = meal_batch.week_date + timedelta(days=i)
+                print('---------------------------------------------------------------')
+                print('Skipping '+skipped_day.strftime("%a %m/%d")+' ...')
+                time.sleep(1)
+            else:
+                # create meal object
+                try:
+                    row_df = meals_df.loc[[str(meal_id)]]
+                except KeyError as e:
+                    print(f'\nERROR: \nKeyError when searching for meal id {meal_id} in Groceries sheet: {e}\n')
+                    sys.exit(1)
+                meal = create_meal(row_df, meal_batch.week_date, i)
+
+                print('---------------------------------------------------------------')
+                print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
+
+                # create all day event for dinner
+                gapi.gcalendar.create_dinner_event(meal, dinner_attendees)
+
+                write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
+
+                write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only, checklist)
+
+                # Only write extras if reminders_only flag is off
+                if (reminders_only <= 0):
+                    write_extra_message_to_doc(meal, gapi.gdoc)
+
+                meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
             i+=1
-
-            print('---------------------------------------------------------------')
-            print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
-
-            # create all day event for dinner
-            gapi.gcalendar.create_dinner_event(meal, dinner_attendees)
-
-            write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
-
-            write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only, checklist)
-
-            # Only write extras if reminders_only flag is off
-            if (reminders_only <= 0):
-                write_extra_message_to_doc(meal, gapi.gdoc)
-
-            meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
     except KeyboardInterrupt:
         print('\nKeyboarInterrupt: Program terminated by user\n')
 
