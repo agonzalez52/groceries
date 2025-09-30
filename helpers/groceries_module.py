@@ -105,6 +105,8 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
 
     # create meal log
     meals_log_path = os.path.abspath(os.getcwd())+"/logs/Meal Schedule "+meal_batch.week_date.strftime("%m-%d-%y")+'.txt'
+    meals_log_directory = os.path.dirname(meals_log_path)
+    os.makedirs(meals_log_directory, exist_ok=True)
     meals_log_name = meals_log_path.replace('.txt','')
     meals_log = open(meals_log_path,"w")
 

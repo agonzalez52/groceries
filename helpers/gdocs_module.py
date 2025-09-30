@@ -19,6 +19,10 @@ import mimetypes
 import base64
 import font_colors as color
 
+CREDENTIALS_DIR = os.getenv("CREDENTIALS_DIR", "credentials")
+CREDENTIALS_FILE = os.path.join(CREDENTIALS_DIR, "credentials.json")
+TOKEN_FILE = os.path.join(CREDENTIALS_DIR, "token.pickle")
+
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/calendar',
@@ -447,8 +451,8 @@ def build_services():
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
+    if os.path.exists(TOKEN_FILE):
+        with open(TOKEN_FILE, 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -456,10 +460,10 @@ def build_services():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                CREDENTIALS_FILE, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
+        with open(TOKEN_FILE, 'wb') as token:
             pickle.dump(creds, token)
 
     doc_service = build('docs', 'v1', credentials=creds)
