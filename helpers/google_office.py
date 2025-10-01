@@ -17,29 +17,28 @@ from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 import mimetypes
 import base64
-import font_colors as color
+import helpers.color_codes as colors
+from dotenv import load_dotenv
 
+load_dotenv()
 CREDENTIALS_DIR = os.getenv("CREDENTIALS_DIR", "credentials")
 CREDENTIALS_FILE = os.path.join(CREDENTIALS_DIR, "credentials.json")
 TOKEN_FILE = os.path.join(CREDENTIALS_DIR, "token.pickle")
+REMINDERS = os.getenv("REMINDERS")
+if REMINDERS:
+    REMINDERS_DICT = json.loads(REMINDERS)
+else:
+    print("REMINDERS env var was not found or is empty")
+DINNER_ATTENDEES = os.getenv("DINNER_ATTENDEES")
+if DINNER_ATTENDEES:
+    DINNER_ATTENDEES_DICT = json.loads(DINNER_ATTENDEES)
+else:
+    print("DINNER_ATTENDEES env var was not found or is empty")
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/calendar',
           'https://www.googleapis.com/auth/gmail.send']
-
-ATTENDEES_DICT = {
-    'Angel': 'angelmg58@gmail.com',
-    'Fernando': 'fgonzalez55555@gmail.com',
-    'Arturo': 'jesusgong333@gmail.com'
-}
-
-REMINDERS_DICT = {
-    '2 hours before as email': ['email', '120'],
-    '2 hours before': ['popup', '120'],
-    '1 hour before': ['popup', '60'],
-    'at time of event': ['popup', '0']
-}
 
 class GoogleAPI:
     def __init__(self, g_doc, g_sheet, g_calendar, g_mail):
@@ -277,12 +276,21 @@ class GoogleCalendar:
           if not page_token:
             break
 
-    def get_attendees(self, attendees):
+    def get_attendees_from_dict(self, attendees):
+        attendee_list = []
+
+        for attendee_email in attendees.values():
+            attendee_dict = {'email': attendee_email}
+            attendee_list.append(attendee_dict)
+
+        return attendee_list
+    
+    def get_attendees_from_name(self, attendees):
         split_attendees = attendees.split(',')
         attendee_list = []
 
         for attendee in split_attendees:
-            attendee_email = ATTENDEES_DICT[attendee.strip()]
+            attendee_email = DINNER_ATTENDEES_DICT[attendee.strip()]
             attendee_dict = {'email': attendee_email}
             attendee_list.append(attendee_dict)
 
@@ -309,7 +317,7 @@ class GoogleCalendar:
         start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}' # Format time as yyyy-mm-ddTHH:mm:ss
         end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}' # Format time as yyyy-mm-ddTHH:mm:ss
         # event attendees
-        attendees = self.get_attendees(ingredient.notify_who)
+        attendees = self.get_attendees_from_name(ingredient.notify_who)
         # event reminders
         reminders = self.get_reminders(ingredient.notify_when)
 
@@ -328,7 +336,7 @@ class GoogleCalendar:
                 'useDefault': False,
                 'overrides': reminders,
             },
-            'colorId': color.EVENT_SAGE,
+            'colorId': colors.EVENT_SAGE,
             'guestsCanModify': True,
             'source': { # Source from which the event was created
                 'title': 'Groceries Program',
@@ -367,7 +375,7 @@ class GoogleCalendar:
             event_description += event_created_date
 
         # event attendees
-        attendees = self.get_attendees(dinner_attendees)
+        attendees = self.get_attendees_from_dict(dinner_attendees)
         event = {
             'summary': summary,
             'description': event_description,
@@ -384,7 +392,7 @@ class GoogleCalendar:
                 'overrides': []  # No reminders
             },
             'attendees': attendees,
-            'colorId': color.EVENT_LAVENDER,
+            'colorId': colors.EVENT_LAVENDER,
             'guestsCanModify': True,
             'source': { # Source from which the event was created
                 'title': 'Groceries Program',
