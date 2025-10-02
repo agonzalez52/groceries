@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port FastAPI uses
-EXPOSE 8000
+EXPOSE 8080
 
 # Run Uvicorn (production: use workers / process manager or your cloud platform)
-CMD ["uvicorn", "groceries_api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "groceries_api:app", "--host", "0.0.0.0", "--port", "8080"]

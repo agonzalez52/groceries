@@ -1,5 +1,6 @@
 groceries-env/
 logs/
+credentials/
 credentials.json
 data.json
 token.pickle
