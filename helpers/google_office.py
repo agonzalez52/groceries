@@ -18,9 +18,14 @@ from email.mime.base import MIMEBase
 import mimetypes
 import base64
 import helpers.color_codes as colors
+from google.cloud import secretmanager
+import google_crc32c
 from dotenv import load_dotenv
 
 load_dotenv()
+LOCAL_ENV = os.getenv("LOCAL_ENV", "True").lower() in ("true","1","t")
+GOOGLE_PROJECT_ID = os.getenv("GOOGLE_PROJECT_ID")
+GOOGLE_TOKEN_SECRET_ID = os.getenv("GOOGLE_TOKEN_SECRET_ID")
 CREDENTIALS_DIR = os.getenv("CREDENTIALS_DIR", "credentials")
 CREDENTIALS_FILE = os.path.join(CREDENTIALS_DIR, "credentials.json")
 TOKEN_FILE = os.path.join(CREDENTIALS_DIR, "token.pickle")
@@ -453,26 +458,56 @@ class GoogleMail:
         except HttpError as error:
             print('An error occurred: %s' % error)
 
+def access_secret_version(
+    project_id: str, secret_id: str, version_id="latest"
+) -> secretmanager.AccessSecretVersionResponse:
+    """
+    Access the payload for the given secret version if one exists. The version
+    can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
+    """
+
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Build the resource name of the secret version.
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+
+    # Access the secret version.
+    response = client.access_secret_version(request={"name": name})
+
+    # Verify payload checksum.
+    crc32c = google_crc32c.Checksum()
+    crc32c.update(response.payload.data)
+    if response.payload.data_crc32c != int(crc32c.hexdigest(), 16):
+        print("Data corruption detected.")
+        return response
+
+    # snippet is showing how to access the secret material.
+    return response.payload.data
 
 def build_services():
     creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists(TOKEN_FILE):
-        with open(TOKEN_FILE, 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                CREDENTIALS_FILE, SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open(TOKEN_FILE, 'wb') as token:
-            pickle.dump(creds, token)
+
+    if LOCAL_ENV:
+        # The file token.pickle stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        if os.path.exists(TOKEN_FILE):
+            with open(TOKEN_FILE, 'rb') as token:
+                creds = pickle.load(token)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    CREDENTIALS_FILE, SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open(TOKEN_FILE, 'wb') as token:
+                pickle.dump(creds, token)
+    else:
+        creds = pickle.loads(access_secret_version(GOOGLE_PROJECT_ID, GOOGLE_TOKEN_SECRET_ID))
 
     doc_service = build('docs', 'v1', credentials=creds)
     sheet_service = build('sheets', 'v4', credentials=creds)
