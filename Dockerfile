@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8000
 
 # Run Uvicorn (production: use workers / process manager or your cloud platform)
-CMD ["uvicorn", "groceries-api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "groceries_api:app", "--host", "0.0.0.0", "--port", "8000"]
