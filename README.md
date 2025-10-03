@@ -30,17 +30,23 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 ## Ways to run
 ### Locally
 **groceries.py**
+
 Open groceries.py and follow the instructions in the comments to modify the necessary variables
+
 Run in terminal
+
 '''
 \$ python groceries.py
 '''
 
 **groceries_api.py**
+
 Start FastAPI server locally
+
 '''
 \$ uvicorn groceries_api:app --reload
 '''
+
 Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
 
 ### Cloud
@@ -59,9 +65,14 @@ Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs
   * Helper shortcut [**Food For Week**]() launches the Google Doc used to manually plan out meals for reference when inputting to the main shortcut
 
 ## Tools used
-* **Google Workspace APIs** (Google Docs, Sheets, Calendar and Mail)
-* **FastAPI** for exposing REST API endpoints
-* **Uvicorn** to run FastAPI app
-* **Docker** to bundle project
-* **Google** Cloud Run for serverless container hosting of Dockerized API
-* **Google Secret Manager** to store and access API credentials
+**Google Workspace APIs** (Google Docs, Sheets, Calendar and Mail)
+
+**FastAPI** for exposing REST API endpoints
+
+**Uvicorn** to run FastAPI app
+
+**Docker** to bundle project
+
+**Google** Cloud Run for serverless container hosting of Dockerized API
+
+**Google Secret Manager** to store and access API credentials
