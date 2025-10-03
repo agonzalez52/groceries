@@ -25,7 +25,7 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 * Use python version 3.9
 * Go to https://console.cloud.google.com/apis/credentials > Navigate to the correct project > Download and save the **OAuth client** under **OAuth 2.0 Client IDs** as credentials.json in working directory/credentials
 * Populate .env.example environment variables and save file and .env
-* Create virtual environmnent in working directory (optional but helpful) and install packages in requirements.txt
+* Create virtual environmnent in working directory (optional but recommended) and install packages in requirements.txt
 
 ## Ways to run
 ### Locally
