@@ -32,14 +32,10 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 **groceries.py**\
 Open groceries.py and follow the instructions in the comments to modify the necessary variables\
 Run in terminal\
-'''\
-\$ python groceries.py\
-'''\
+'\$ python groceries.py'\
 **groceries_api.py**\
 Start FastAPI server locally\
-'''\
-\$ uvicorn groceries_api:app --reload\
-'''\
+'\$ uvicorn groceries_api:app --reload'\
 Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
 
 ### Cloud
