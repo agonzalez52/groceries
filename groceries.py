@@ -4,13 +4,23 @@
 # Created By: Angel Gonzalez
 #
 
+import os
 import sys
 sys.path.append('helpers')
-import groceries_module as grc
-import gdocs_module as gdocs
-import font_colors as fc
+import meal_grocery_updates as grc
+import meal_components as mc
+import google_office as goffice
+import color_codes as colors
 from datetime import date
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
+GDOC_ID_PROD = os.getenv("GDOC_ID_PROD")
+GSHEET_ID_PROD = os.getenv("GSHEET_ID_PROD")
+GDOC_ID_DEV = os.getenv("GDOC_ID_DEV")
+GSHEET_ID_DEV = os.getenv("GSHEET_ID_DEV")
+MY_CALENDAR_GMAIL = os.getenv("MY_CALENDAR_GMAIL")
 
 def greeting():
     curr_hour = datetime.now().hour
@@ -25,22 +35,17 @@ if __name__ == '__main__':
     greeting()
 
     '''
-    STEP 1: UNCOMMENT CORRECT IDS FOR GOOGLE DOC AND SHEET
+    STEP 1: USE CORRECT IDS FOR GOOGLE DOC AND SHEET
     '''
-    doc_id = "1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA"
-    sheet_id = "1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU"
-
-    # doc_id = "13NY4wB-BJ-FasWhN7DaM8rIf7l1RRKgXiK-a-ECIeKs" # Test sheet
-    # sheet_id = "1xd5yKYL3Ri5TWH17hIMApD4C7fOPcRHr2PK-63AsA_E" # Test sheet
-
-    angel_calendar_id = 'angelmg58@gmail.com'
+    doc_id = GDOC_ID_DEV # Test sheet
+    sheet_id = GSHEET_ID_DEV # Test sheet
 
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2024, 9, 16)
-    meal_ids = [3,7,30,44,32,11]
-    font_color = fc.COLOR_PURPLE
+    meal_week = date(2020,5,18)
+    meal_ids = [1,16,0,0,0,0]
+    font_color = colors.FONT_PURPLE
 
     '''
     STEP 3: RUN PROGRAM IN TERMINAL
@@ -48,14 +53,14 @@ if __name__ == '__main__':
     '''
 
 # Build Google services
-    doc_service, sheet_service, calendar_service, mail_service = gdocs.build_services()
-    gdoc = gdocs.GoogleDoc(doc_id, doc_service)
-    gsheet = gdocs.GoogleSheet(sheet_id, sheet_service)
-    gcalendar = gdocs.GoogleCalendar(angel_calendar_id, calendar_service)
-    gmail = gdocs.GoogleMail(mail_service)
-    gapi = gdocs.GoogleAPI(gdoc, gsheet, gcalendar, gmail)
+    doc_service, sheet_service, calendar_service, mail_service = goffice.build_services()
+    gdoc = goffice.GoogleDoc(doc_id, doc_service)
+    gsheet = goffice.GoogleSheet(sheet_id, sheet_service)
+    gcalendar = goffice.GoogleCalendar(MY_CALENDAR_GMAIL, calendar_service)
+    gmail = goffice.GoogleMail(mail_service)
+    gapi = goffice.GoogleAPI(gdoc, gsheet, gcalendar, gmail)
 
-    meal_batch = grc.MealBatch(meal_week, meal_ids)
+    meal_batch = mc.MealBatch(meal_week, meal_ids)
     gapi.gdoc.set_font_color(font_color)
     grc.update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1)
 

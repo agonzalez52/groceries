@@ -6,4 +6,5 @@ data.json
 token.pickle
 .DS_Store
 __pycache__/
+.gitignore
 .env
