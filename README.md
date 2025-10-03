@@ -29,29 +29,31 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 
 ## Ways to run
 ### Locally
-**groceries.py**\
-Open groceries.py and follow the instructions in the comments to modify the necessary variables\
-Run in terminal\
-'\$ python groceries.py'\
-**groceries_api.py**\
-Start FastAPI server locally\
-'\$ uvicorn groceries_api:app --reload'\
-Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
+**groceries.py**
+1. Open groceries.py and follow the instructions in the comments to modify the necessary variables\
+2. Run in terminal\
+`$ python groceries.py`
+
+**groceries_api.py**
+1. Start FastAPI server locally\
+`$ uvicorn groceries_api:app --reload`\
+2. Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
 
 ### Cloud
 * Project is set up to be Dockerized and deployed to Google Cloud Run
 * Guides:
   * https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images#console
   * https://cloud.google.com/run/docs/deploying#console
+* Once deployed, the POST /run endpoint is exposed through the URL provided by Google 
 
 ## Add-ons
 ### iOS Shortcuts
-* [**What's for dinner today?**]() and [**What's for dinner tomorrow?**]()
-  * Siri finds the all day event created by the script and reads out the name of the meal scheduled for that day
-  * If no matching event is found Siri responds with "You don't have anything scheduled for dinner [today/tomorrow]"
-* [**Grocery run**]()
+* [**Grocery run**](https://www.icloud.com/shortcuts/97ba5f62005a4915ba6a7bb721777ee6)
   * If project has been deployed to Google Cloud Run, this shortcut can run the script from your iOS device
-  * Helper shortcut [**Food For Week**]() launches the Google Doc used to manually plan out meals for reference when inputting to the main shortcut
+  * Helper shortcut [**Food For Week**](https://www.icloud.com/shortcuts/02708ba01040472599a96b24da6212e4) launches the Google Doc used to manually plan out meals for reference when inputting to the main shortcut
+* [**What's for dinner today?**](https://www.icloud.com/shortcuts/2a93e5e080404db5b15632075830cc26) and [**What's for dinner tomorrow?**](https://www.icloud.com/shortcuts/d1c97f40705a4068b246e44f98655af0)
+  * Siri finds the all-day event created by the script and reads out the name of the meal scheduled for that day
+  * If no matching event is found, Siri responds with "You don't have anything scheduled for dinner [today/tomorrow]"
 
 ## Tools used
 **Google Workspace APIs** (Google Docs, Sheets, Calendar and Mail)
@@ -62,6 +64,6 @@ Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs
 
 **Docker** to bundle project
 
-**Google** Cloud Run for serverless container hosting of Dockerized API
+**Google Cloud Run** for serverless container hosting of Dockerized API
 
 **Google Secret Manager** to store and access API credentials
