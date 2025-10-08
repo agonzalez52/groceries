@@ -2,13 +2,13 @@
 
 Automates the process of adding items to a grocery list and builds your dinner schedule.
 
-<img width="632" alt="Screen Shot 2021-05-21 at 5 05 21 PM" src="https://user-images.githubusercontent.com/73859721/119208374-c5000a00-ba56-11eb-9566-5e20facd851f.png">
-
 ## Overview
 
-Spreadsheets are managed in Google sheets which contain a record of meals and their corresponding ingredients among other data. The program takes a set of meals and uses Google's Docs/Sheets API to read the ingredients from the Google sheet and write all of those meal's ingredients into the Google doc grocery list. The grocery items are organized in the Google doc grocery list by section (fruits/vegetables, meat, dairy, etc.).
+<img width="685" height="338" alt="groceries-list" src="https://github.com/user-attachments/assets/fd7f68f7-26c2-45b4-96ec-1420dd441a90" />
 
-### Custom features
+Spreadsheets are managed in Google sheets which contain a record of meals and their corresponding ingredients among other data. The script takes in a set of meals, a starting date and uses Google's Docs/Sheets APIs to read the ingredients from the Google sheet and write all of those meal's ingredients into the Google doc grocery list. The grocery items are organized in the Google doc grocery list by section (fruits/vegetables, meat, dairy, etc.). The script will also create calendar events using Google's GMail API to schedule reminders for dinner events and relevant ingredients.
+
+### Features
 * Reminder events are created in Google Calendar for thawing meat in the fridge two days prior to a meal being made, etc.
 <img width="1116" alt="Screen Shot 2022-09-09 at 12 29 50 PM" src="https://user-images.githubusercontent.com/73859721/189429192-a3698ea9-e173-482c-b354-d19878ba6ae1.png">
 
@@ -24,19 +24,19 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 ## First time use
 * Use python version 3.9
 * Go to https://console.cloud.google.com/apis/credentials > Navigate to the correct project > Download and save the **OAuth client** under **OAuth 2.0 Client IDs** as credentials.json in working directory/credentials
-* Populate .env.example environment variables and save file and .env
+* Populate .env.example environment variables and save file as .env
 * Create virtual environmnent in working directory (optional but recommended) and install packages in requirements.txt
 
 ## Ways to run
 ### Locally
 **groceries.py**
-1. Open groceries.py and follow the instructions in the comments to modify the necessary variables\
+1. Open groceries.py and follow the instructions in the comments to modify the necessary variables
 2. Run in terminal\
 `$ python groceries.py`
 
 **groceries_api.py**
 1. Start FastAPI server locally\
-`$ uvicorn groceries_api:app --reload`\
+`$ uvicorn groceries_api:app --reload`
 2. Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
 
 ### Cloud
