@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.errors import HttpError
 from df2gspread import df2gspread as d2g
-from datetime import time
+from datetime import date
 from datetime import timedelta
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
@@ -17,24 +17,33 @@ from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 import mimetypes
 import base64
+import helpers.color_codes as colors
+from google.cloud import secretmanager
+import google_crc32c
+from dotenv import load_dotenv
+
+load_dotenv()
+LOCAL_ENV = os.getenv("LOCAL_ENV", "True").lower() in ("true","1","t")
+GOOGLE_PROJECT_ID = os.getenv("GOOGLE_PROJECT_ID")
+GOOGLE_TOKEN_SECRET_ID = os.getenv("GOOGLE_TOKEN_SECRET_ID")
+CREDENTIALS_DIR = os.getenv("CREDENTIALS_DIR", "credentials")
+CREDENTIALS_FILE = os.path.join(CREDENTIALS_DIR, "credentials.json")
+TOKEN_FILE = os.path.join(CREDENTIALS_DIR, "token.pickle")
+REMINDERS = os.getenv("REMINDERS")
+if REMINDERS:
+    REMINDERS_DICT = json.loads(REMINDERS)
+else:
+    print("REMINDERS env var was not found or is empty")
+DINNER_ATTENDEES = os.getenv("DINNER_ATTENDEES")
+if DINNER_ATTENDEES:
+    DINNER_ATTENDEES_DICT = json.loads(DINNER_ATTENDEES)
+else:
+    print("DINNER_ATTENDEES env var was not found or is empty")
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/calendar',
           'https://www.googleapis.com/auth/gmail.send']
-
-ATTENDEES_DICT = {
-    'Angel': 'angelmg58@gmail.com',
-    'Fernando': 'fgonzalez55555@gmail.com',
-    'Arturo': 'jesusgong333@gmail.com'
-}
-
-REMINDERS_DICT = {
-    '2 hours before as email': ['email', '120'],
-    '2 hours before': ['popup', '120'],
-    '1 hour before': ['popup', '60'],
-    'at time of event': ['popup', '0']
-}
 
 class GoogleAPI:
     def __init__(self, g_doc, g_sheet, g_calendar, g_mail):
@@ -272,12 +281,21 @@ class GoogleCalendar:
           if not page_token:
             break
 
-    def get_attendees(self, attendees):
+    def get_attendees_from_dict(self, attendees):
+        attendee_list = []
+
+        for attendee_email in attendees.values():
+            attendee_dict = {'email': attendee_email}
+            attendee_list.append(attendee_dict)
+
+        return attendee_list
+    
+    def get_attendees_from_name(self, attendees):
         split_attendees = attendees.split(',')
         attendee_list = []
 
         for attendee in split_attendees:
-            attendee_email = ATTENDEES_DICT[attendee.strip()]
+            attendee_email = DINNER_ATTENDEES_DICT[attendee.strip()]
             attendee_dict = {'email': attendee_email}
             attendee_list.append(attendee_dict)
 
@@ -304,7 +322,7 @@ class GoogleCalendar:
         start_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{start_time}' # Format time as yyyy-mm-ddTHH:mm:ss
         end_date_time = f'{meal.day-timedelta(int(ingredient.days_before_action))}T{end_time}' # Format time as yyyy-mm-ddTHH:mm:ss
         # event attendees
-        attendees = self.get_attendees(ingredient.notify_who)
+        attendees = self.get_attendees_from_name(ingredient.notify_who)
         # event reminders
         reminders = self.get_reminders(ingredient.notify_when)
 
@@ -323,7 +341,7 @@ class GoogleCalendar:
                 'useDefault': False,
                 'overrides': reminders,
             },
-            'colorId': '2',
+            'colorId': colors.EVENT_SAGE,
             'guestsCanModify': True,
             'source': { # Source from which the event was created
                 'title': 'Groceries Program',
@@ -341,20 +359,31 @@ class GoogleCalendar:
 
         # event start/end dateTime for dinner reminder
         dinner_start_date = datetime.strptime(f'{meal.day}','%Y-%m-%d').date() # Format date as yyyy-mm-dd
-        dinner_end_date = (datetime.strptime(f'{meal.day}','%Y-%m-%d')+timedelta(days=1)).date() # Format date as yyyy-mm-dd
+        dinner_end_date = (datetime.strptime(f'{meal.day}','%Y-%m-%d')+timedelta(days=1)).date() # end date must be the next day for all-day event
 
+        # helpful reference links for event description
         food_for_week_doc_link = 'https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit'
         ingredients_sheet_link = 'https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=150359050#gid=150359050'
         recipes_doc_link = 'https://docs.google.com/document/d/19m9f15dyRHk8bPnnyu-ieBGuhtir1zZBEUIjHfmYabY/edit'
         # HTML formatted links to helpful docs for event description
-        description_reference_links = (f'<a href={food_for_week_doc_link}>Food For Week</a>\n\n'
-                                       f'<a href={ingredients_sheet_link}>Ingredients Sheet</a>\n\n'
-                                       f'<a href={recipes_doc_link}>Recipes</a>')
+        description_reference_links = (f'<a href={ingredients_sheet_link}>Ingredients Sheet</a> - id: {meal.id}\n\n'
+                                       f'<a href={recipes_doc_link}>Recipes</a>\n\n'
+                                       f'<a href={food_for_week_doc_link}>Food For Week</a>\n\n')
+        # get date (today) event was created for event description
+        event_created_date = date.today().strftime('Event created on %A, %m/%d/%Y') # format date as 'Monday 7/14/2012'
+        
+        # add meal notes to event description if available
+        event_description = description_reference_links
+        if isinstance(meal.notes, str) and meal.notes != 'N/A':
+            event_description += f'Notes:\n{meal.notes}\n\n'+event_created_date
+        else:
+            event_description += event_created_date
+
         # event attendees
-        attendees = self.get_attendees(dinner_attendees)
+        attendees = self.get_attendees_from_dict(dinner_attendees)
         event = {
             'summary': summary,
-            'description': description_reference_links,
+            'description': event_description,
             'start': {
                 'date': f'{dinner_start_date}',
                 'timeZone': 'America/Los_Angeles',
@@ -368,7 +397,7 @@ class GoogleCalendar:
                 'overrides': []  # No reminders
             },
             'attendees': attendees,
-            'colorId': '1',
+            'colorId': colors.EVENT_LAVENDER,
             'guestsCanModify': True,
             'source': { # Source from which the event was created
                 'title': 'Groceries Program',
@@ -429,26 +458,56 @@ class GoogleMail:
         except HttpError as error:
             print('An error occurred: %s' % error)
 
+def access_secret_version(
+    project_id: str, secret_id: str, version_id="latest"
+) -> secretmanager.AccessSecretVersionResponse:
+    """
+    Access the payload for the given secret version if one exists. The version
+    can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
+    """
+
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Build the resource name of the secret version.
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+
+    # Access the secret version.
+    response = client.access_secret_version(request={"name": name})
+
+    # Verify payload checksum.
+    crc32c = google_crc32c.Checksum()
+    crc32c.update(response.payload.data)
+    if response.payload.data_crc32c != int(crc32c.hexdigest(), 16):
+        print("Data corruption detected.")
+        return response
+
+    # snippet is showing how to access the secret material.
+    return response.payload.data
 
 def build_services():
     creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+
+    if LOCAL_ENV:
+        # The file token.pickle stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        if os.path.exists(TOKEN_FILE):
+            with open(TOKEN_FILE, 'rb') as token:
+                creds = pickle.load(token)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    CREDENTIALS_FILE, SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open(TOKEN_FILE, 'wb') as token:
+                pickle.dump(creds, token)
+    else:
+        creds = pickle.loads(access_secret_version(GOOGLE_PROJECT_ID, GOOGLE_TOKEN_SECRET_ID))
 
     doc_service = build('docs', 'v1', credentials=creds)
     sheet_service = build('sheets', 'v4', credentials=creds)
