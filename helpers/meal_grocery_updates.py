@@ -9,6 +9,7 @@
 from datetime import timedelta
 from dotenv import load_dotenv
 import meal_components as mc
+import groceries_api as api
 import pandas as pd
 import numpy as np
 import os
@@ -104,7 +105,7 @@ def email_meal_log(sender, subject, message_text, file_path, gmail):
         gmail.send_message(sender, message)
 
 # add ingredients to google doc given the id's to the meals
-def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
+def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklist=1):
     meal_batch.check_meal_list_size()
     meal_batch.check_start_day()
 
@@ -122,6 +123,11 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
     meals_log_name = meals_log_path.replace('.txt','')
     meals_log = open(meals_log_path,"w")
 
+    if is_api_run:
+        api_response = api.GroceryRunResponse()
+        api_response.start_date = meal_batch.week_date
+        api_response.meal_count = 0
+
     i = 0
     try:
         # loop through meals
@@ -129,9 +135,13 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
             # skip day if meal id in array is given as 0
             if meal_id <= 0:
                 skipped_day = meal_batch.week_date + timedelta(days=i)
-                print('---------------------------------------------------------------')
-                print('Skipping '+skipped_day.strftime("%a %m/%d")+' ...')
-                time.sleep(1)
+                if is_api_run:
+                    skipped_meal = api.GroceryRunResponse.AddedMeal(name='Skipped', meal_date=skipped_day)
+                    api_response.meals.append(skipped_meal)
+                else:
+                    print('---------------------------------------------------------------')
+                    print('Skipping '+skipped_day.strftime("%a %m/%d")+' ...')
+                    time.sleep(1)
             else:
                 # create meal object
                 try:
@@ -157,8 +167,15 @@ def update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1):
 
                 meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
             i+=1
+            if is_api_run:
+                api_response.meal_count+=1
     except KeyboardInterrupt:
         print('\nKeyboarInterrupt: Program terminated by user\n')
 
     meals_log.close()
     email_meal_log(MY_CALENDAR_GMAIL, meals_log_name.replace(os.path.abspath(os.getcwd())+'/logs/',''), '', meals_log_path, gapi.gmail)
+
+    if is_api_run:
+        return api_response
+    else:
+        return None
