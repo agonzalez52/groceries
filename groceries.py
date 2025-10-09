@@ -62,6 +62,6 @@ if __name__ == '__main__':
 
     meal_batch = mc.MealBatch(meal_week, meal_ids)
     gapi.gdoc.set_font_color(font_color)
-    grc.update_grocery_list(meal_batch, gapi, reminders_only=0, checklist=1)
+    grc.update_grocery_list(meal_batch, gapi, False, reminders_only=0, checklist=1)
 
     print('\n\ndone =) \"Have a lovely day!\"\n\n')

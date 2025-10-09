@@ -47,19 +47,8 @@ class GroceryRunResponse(BaseModel):
     meal_count: int = 0
     class AddedMeal(BaseModel):
         name: str
-        meal_date: date
-        ingredients: Optional[dict] = {} # ingredient name(str):ingredient event info(str)
-        extra: Optional[str] = ''
-        event_created: Optional[bool] = False
+        meal_day: str
     meals: List[AddedMeal] = []
-
-# Convert terminal output to API response
-def terminal_to_api_output(update_groceries_func, *args):
-    buffer = io.StringIO()
-    with redirect_stdout(buffer):  # captures everything script prints
-        update_groceries_func(*args)  # run main function
-    logs = buffer.getvalue().splitlines()
-    return logs
 
 app = FastAPI()
 
@@ -89,5 +78,3 @@ def run_grocery_script(data: GroceryRunRequest):
     meal_batch = mc.MealBatch(data.date, data.meal_ids)
     gapi.gdoc.set_font_color(font_color)
     return grc.update_grocery_list(meal_batch, gapi, True, data.options.reminders_only, data.options.checklist)
-    #logs = terminal_to_api_output(grc.update_grocery_list, meal_batch, gapi, data.options.reminders_only, data.options.checklist)
-    #return {"status": "complete", "logs": logs, "message": "done =) \"Have a lovely day!"}

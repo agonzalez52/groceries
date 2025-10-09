@@ -136,7 +136,7 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
             if meal_id <= 0:
                 skipped_day = meal_batch.week_date + timedelta(days=i)
                 if is_api_run:
-                    skipped_meal = api.GroceryRunResponse.AddedMeal(name='Skipped', meal_date=skipped_day)
+                    skipped_meal = api.GroceryRunResponse.AddedMeal(name='Skipped', meal_day=skipped_day.strftime("%A %m/%d"))
                     api_response.meals.append(skipped_meal)
                 else:
                     print('---------------------------------------------------------------')
@@ -151,8 +151,12 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
                     sys.exit(1)
                 meal = create_meal(row_df, meal_batch.week_date, i)
 
-                print('---------------------------------------------------------------')
-                print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
+                if is_api_run:
+                    added_meal = api.GroceryRunResponse.AddedMeal(name=meal.name, meal_day=meal.day.strftime("%A %m/%d"))
+                    api_response.meals.append(added_meal)
+                else:
+                    print('---------------------------------------------------------------')
+                    print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
 
                 # create all day event for dinner
                 gapi.gcalendar.create_dinner_event(meal, DINNER_ATTENDEES_DICT)
