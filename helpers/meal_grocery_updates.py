@@ -69,7 +69,7 @@ def write_meal_date_to_sheet(meals_df, meal, gsheet):
     gsheet.write_data(sheet_range, data)
 
 # write a meal's ingredients to google doc grocery list
-def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0, checklist=1):
+def write_ingredients_to_doc(ingredients_df, meal, gapi, is_api_run, reminders_only=0, checklist=1):
     # get all the ingredients for the meal and write them to doc
     for index,row in ingredients_df[ingredients_df['id']==str(meal.id)].iterrows():
         # create ingredient object
@@ -77,7 +77,7 @@ def write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only=0, check
 
         if (reminders_only <= 0):
             # insert ingredient to google doc
-            start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, True)
+            start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, not is_api_run)
             ingredient_msg = f'{ingredient.name} {meal.abbrev}'
             if (checklist <= 0):
                 gapi.gdoc.insert_text(end_i, ingredient_msg, True)
@@ -163,7 +163,7 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
 
                 write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
-                write_ingredients_to_doc(ingredients_df, meal, gapi, reminders_only, checklist)
+                write_ingredients_to_doc(ingredients_df, meal, gapi, is_api_run, reminders_only, checklist)
 
                 # Only write extras if reminders_only flag is off
                 if (reminders_only <= 0):
