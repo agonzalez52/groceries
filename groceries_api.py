@@ -15,7 +15,7 @@ import color_codes as colors
 from datetime import date
 from fastapi import FastAPI
 from pydantic import BaseModel, field_validator
-from typing import List, Optional
+from typing import List, Optional, Dict
 from contextlib import redirect_stdout
 from dotenv import load_dotenv
 
@@ -45,10 +45,11 @@ class GroceryRunRequest(BaseModel):
 class GroceryRunResponse(BaseModel):
     start_date: date = None
     meal_count: int = 0
-    class AddedMeal(BaseModel):
-        name: str
+    meals: List[str] = []
+    class MealDetails(BaseModel):
+        meal_name: str
         meal_day: str
-    meals: List[AddedMeal] = []
+    meal_details: List[MealDetails] = []
 
 app = FastAPI()
 

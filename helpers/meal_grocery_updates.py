@@ -77,27 +77,27 @@ def write_ingredients_to_doc(ingredients_df, meal, gapi, is_api_run, reminders_o
 
         if (reminders_only <= 0):
             # insert ingredient to google doc
-            start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, not is_api_run)
+            start_i, end_i = gapi.gdoc.get_text_range_idx(ingredient.section, is_api_run)
             ingredient_msg = f'{ingredient.name} {meal.abbrev}'
             if (checklist <= 0):
-                gapi.gdoc.insert_text(end_i, ingredient_msg, True)
+                gapi.gdoc.insert_text(end_i, ingredient_msg, is_api_run)
             else:
-                gapi.gdoc.insert_checklist_item(end_i, ingredient_msg, True)
+                gapi.gdoc.insert_checklist_item(end_i, ingredient_msg, is_api_run)
 
         # create google calendar reminder if ingredient needs a reminder
         if int(ingredient.days_before_action) > 0:
             # days_before is set to 10 in google sheet if reminder is for same day
             if int(ingredient.days_before_action) >= 10:
                 ingredient.days_before_action = 0
-            gapi.gcalendar.create_ingredient_event(meal, ingredient)
+            gapi.gcalendar.create_ingredient_event(meal, ingredient, is_api_run)
 
 # write a meal's extra ingredients to google doc grocery list
-def write_extra_message_to_doc(meal, gdoc):
+def write_extra_message_to_doc(meal, gdoc, is_api_run):
     if isinstance(meal.extra, str) and meal.extra != 'N/A':
             # insert Extras at end of doc
-            start_i, end_i = gdoc.get_text_range_idx('Extra', True)
+            start_i, end_i = gdoc.get_text_range_idx('Extra', is_api_run)
             extra_msg = meal.extra_message()
-            gdoc.insert_text(end_i, extra_msg, True)
+            gdoc.insert_text(end_i, extra_msg, is_api_run)
 
 def email_meal_log(sender, subject, message_text, file_path, gmail):
     for receiver in DINNER_ATTENDEES_DICT.values():
@@ -136,8 +136,10 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
             if meal_id <= 0:
                 skipped_day = meal_batch.week_date + timedelta(days=i)
                 if is_api_run:
-                    skipped_meal = api.GroceryRunResponse.AddedMeal(name='Skipped', meal_day=skipped_day.strftime("%A %m/%d"))
-                    api_response.meals.append(skipped_meal)
+                    skipped_meal_details = api.GroceryRunResponse.MealDetails(meal_name="Skipped",meal_day=skipped_day.strftime("%A %m/%d"))
+                    skipped_meal = skipped_meal_details
+                    api_response.meal_details.append(skipped_meal)
+                    api_response.meals.append("Skipped")
                 else:
                     print('---------------------------------------------------------------')
                     print('Skipping '+skipped_day.strftime("%a %m/%d")+' ...')
@@ -152,14 +154,16 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
                 meal = create_meal(row_df, meal_batch.week_date, i)
 
                 if is_api_run:
-                    added_meal = api.GroceryRunResponse.AddedMeal(name=meal.name, meal_day=meal.day.strftime("%A %m/%d"))
-                    api_response.meals.append(added_meal)
+                    added_meal_details = api.GroceryRunResponse.MealDetails(meal_name=meal.name,meal_day=meal.day.strftime("%A %m/%d"))
+                    added_meal = added_meal_details
+                    api_response.meal_details.append(added_meal)
+                    api_response.meals.append(meal.name)
                 else:
                     print('---------------------------------------------------------------')
                     print('MEAL: '+meal.name+' - '+meal.day.strftime("%a %m/%d"))
 
                 # create all day event for dinner
-                gapi.gcalendar.create_dinner_event(meal, DINNER_ATTENDEES_DICT)
+                gapi.gcalendar.create_dinner_event(meal, DINNER_ATTENDEES_DICT, is_api_run)
 
                 write_meal_date_to_sheet(meals_df, meal, gapi.gsheet)
 
@@ -167,7 +171,7 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
 
                 # Only write extras if reminders_only flag is off
                 if (reminders_only <= 0):
-                    write_extra_message_to_doc(meal, gapi.gdoc)
+                    write_extra_message_to_doc(meal, gapi.gdoc, not is_api_run)
 
                 meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
             i+=1

@@ -43,8 +43,8 @@ if __name__ == '__main__':
     '''
     STEP 2: SET THESE VARIABLES
     '''
-    meal_week = date(2020,5,18)
-    meal_ids = [1,16,0,0,0,0]
+    meal_week = date(2020,10,5)
+    meal_ids = [0,0,1,0,0,0]
     font_color = colors.FONT_PURPLE
 
     '''

@@ -73,7 +73,7 @@ class GoogleDoc:
 
         return doc
 
-    def get_text_range_idx(self, match_text, do_print):
+    def get_text_range_idx(self, match_text, is_api_run):
         """
         Find text and their start and end index.
         """
@@ -98,7 +98,7 @@ class GoogleDoc:
                         content = e.get('textRun').get('content')
                         # added to exactly match section name
                         if match_text == content or match_text == content.strip('\n'):
-                            if do_print:
+                            if not is_api_run:
                                 print(match_text)
                             startIdx = e.get('startIndex')
                             endIdx = e.get('endIndex')
@@ -111,7 +111,7 @@ class GoogleDoc:
 
         return startIdx, endIdx
 
-    def insert_text(self, startIndex, item, do_print):
+    def insert_text(self, startIndex, item, is_api_run):
         """
         Inserts texts followed by newline. Formats text.
         Use case: startIndex should be endIndex of the name of the section
@@ -177,12 +177,12 @@ class GoogleDoc:
 
         result1 = self.service.documents().batchUpdate(documentId=self.id, body={
             'requests': requests_insert}).execute()
-        if do_print:
+        if not is_api_run:
             print('    '+item)
         result2 = self.service.documents().batchUpdate(documentId=self.id, body={
             'requests': requests_format}).execute()
 
-    def insert_checklist_item(self, startIndex, item, do_print):
+    def insert_checklist_item(self, startIndex, item, is_api_run):
         requests = []
         requests.append({
             'insertText': {
@@ -235,7 +235,7 @@ class GoogleDoc:
         })
 
         result = self.service.documents().batchUpdate(documentId=self.id, body={'requests': requests}).execute()
-        if do_print:
+        if not is_api_run:
             print('    '+item)
 
 class GoogleSheet:
@@ -313,7 +313,7 @@ class GoogleCalendar:
 
         return reminder_list
 
-    def create_ingredient_event(self, meal, ingredient):
+    def create_ingredient_event(self, meal, ingredient, is_api_run):
         # event name
         summary = f'{ingredient.action} {ingredient.name} ({meal.name})'
         # event start/end dateTime for ingredient
@@ -351,9 +351,10 @@ class GoogleCalendar:
         }
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
-        print(f"    Event created on {meal.day-timedelta(int(ingredient.days_before_action))} to {ingredient.action} {ingredient.name}")
+        if not is_api_run:
+            print(f"    Event created on {meal.day-timedelta(int(ingredient.days_before_action))} to {ingredient.action} {ingredient.name}")
 
-    def create_dinner_event(self, meal, dinner_attendees):
+    def create_dinner_event(self, meal, dinner_attendees, is_api_run):
         # event name
         summary = f'{meal.name} for dinner'
 
@@ -407,7 +408,8 @@ class GoogleCalendar:
         }
 
         event = self.service.events().insert(calendarId=self.id, body=event).execute()
-        print(f"All day event created for {meal.name} on {meal.day}\n")
+        if not is_api_run:
+            print(f"All day event created for {meal.name} on {meal.day}\n")
 
 class GoogleMail:
     def __init__ (self, gmail_service):
