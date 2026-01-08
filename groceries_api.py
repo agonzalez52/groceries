@@ -1,5 +1,5 @@
 #
-# Version 3.0.0
+# Version 3.0.1
 #
 # Created By: Angel Gonzalez
 #
@@ -15,7 +15,7 @@ import color_codes as colors
 from datetime import date
 from fastapi import FastAPI
 from pydantic import BaseModel, field_validator
-from typing import List, Optional
+from typing import List, Optional, Dict
 from contextlib import redirect_stdout
 from dotenv import load_dotenv
 
@@ -26,8 +26,8 @@ GDOC_ID_DEV = os.getenv("GDOC_ID_DEV")
 GSHEET_ID_DEV = os.getenv("GSHEET_ID_DEV")
 MY_CALENDAR_GMAIL = os.getenv("MY_CALENDAR_GMAIL")
 
-# Input schema for API request
-class GroceryRunInput(BaseModel):
+# API request schema
+class GroceryRunRequest(BaseModel):
     date: date
     meal_ids: List[int]
     @field_validator("meal_ids", mode="before")
@@ -41,19 +41,21 @@ class GroceryRunInput(BaseModel):
         test: bool = False
     options: Optional[Flags] = Flags()
 
-# Convert terminal output to API response
-def terminal_to_api_output(update_groceries_func, *args):
-    buffer = io.StringIO()
-    with redirect_stdout(buffer):  # captures everything script prints
-        update_groceries_func(*args)  # run main function
-    logs = buffer.getvalue().splitlines()
-    return logs
+# API response schema
+class GroceryRunResponse(BaseModel):
+    start_date: date = None
+    meal_count: int = 0
+    meals: List[str] = []
+    class MealDetails(BaseModel):
+        meal_name: str
+        meal_day: str
+    meal_details: List[MealDetails] = []
 
 app = FastAPI()
 
 # FastAPI endpoint to run groceries script
 @app.post("/run")
-def run_grocery_script(data: GroceryRunInput):
+def run_grocery_script(data: GroceryRunRequest):
     if data.options.test is True:
         doc_id = GDOC_ID_DEV # Test sheet
         sheet_id = GSHEET_ID_DEV # Test sheet
@@ -76,5 +78,4 @@ def run_grocery_script(data: GroceryRunInput):
 
     meal_batch = mc.MealBatch(data.date, data.meal_ids)
     gapi.gdoc.set_font_color(font_color)
-    logs = terminal_to_api_output(grc.update_grocery_list, meal_batch, gapi, data.options.reminders_only, data.options.checklist)
-    return {"status": "complete", "logs": logs, "message": "done =) \"Have a lovely day!"}
+    return grc.update_grocery_list(meal_batch, gapi, True, data.options.reminders_only, data.options.checklist)
