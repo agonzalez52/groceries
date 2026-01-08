@@ -171,7 +171,7 @@ def update_grocery_list(meal_batch, gapi, is_api_run, reminders_only=0, checklis
 
                 # Only write extras if reminders_only flag is off
                 if (reminders_only <= 0):
-                    write_extra_message_to_doc(meal, gapi.gdoc, not is_api_run)
+                    write_extra_message_to_doc(meal, gapi.gdoc, is_api_run)
 
                 meals_log.write(meal.day.strftime("%A, %m/%d")+'\n'+meal.name+'\n\n')
             i+=1
