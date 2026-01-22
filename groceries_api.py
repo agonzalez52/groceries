@@ -30,10 +30,22 @@ MY_CALENDAR_GMAIL = os.getenv("MY_CALENDAR_GMAIL")
 class GroceryRunRequest(BaseModel):
     date: date
     meal_ids: List[int]
+
+    @field_validator("date")
+    def validate_monday(cls, v):
+        if v.weekday() != 0: # 0 = Monday
+            raise ValueError(f"Start date must be Monday, got {v.strftime('%A')}")
+
     @field_validator("meal_ids", mode="before")
     def parse_meal_ids(cls, ids_input):
         if isinstance(ids_input, str):
             return [int(id.strip()) for id in ids_input.split(",")]
+        
+    @field_validator("meal_ids")
+    def validate_number_of_meals(cls, v):
+        if len(v) != 6:
+            raise ValueError(f"6 meals must be entered, got {len(v)}")
+        
     first_week: bool
     class Flags(BaseModel):
         reminders_only: bool = False
