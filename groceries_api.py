@@ -14,6 +14,7 @@ import google_office as goffice
 import color_codes as colors
 from datetime import date
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from typing import List, Optional, Dict
 from contextlib import redirect_stdout
@@ -52,6 +53,19 @@ class GroceryRunResponse(BaseModel):
     meal_details: List[MealDetails] = []
 
 app = FastAPI()
+
+# Allows browser to send OPTIONS request to FastAPI endpoint
+# CORS preflight behavior
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",   # local dev frontend
+        "https://YOUR_FRONTEND_DOMAIN",  # production frontend
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],   # allows OPTIONS, POST, etc
+    allow_headers=["*"],
+)
 
 # FastAPI endpoint to run groceries script
 @app.post("/run")
