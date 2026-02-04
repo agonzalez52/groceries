@@ -69,6 +69,8 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 
 **Uvicorn** to run FastAPI app
 
+**Next.js + Typescript** for web UI
+
 **Docker** to bundle project
 
 **Google Cloud Run** for serverless container hosting of Dockerized API
