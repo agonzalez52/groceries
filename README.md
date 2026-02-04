@@ -24,20 +24,27 @@ Spreadsheets are managed in Google sheets which contain a record of meals and th
 ## First time use
 * Use python version 3.9
 * Go to https://console.cloud.google.com/apis/credentials > Navigate to the correct project > Download and save the **OAuth client** under **OAuth 2.0 Client IDs** as credentials.json in working directory/credentials
-* Populate .env.example environment variables and save file as .env
-* Create virtual environmnent in working directory (optional but recommended) and install packages in requirements.txt
+* Populate .env.example environment variables in /groceries-api and /groceries-ui and save file as .env and .env.local respectively
+* Create virtual environmnent in working directory (optional but recommended) and install packages in requirements.txt from /groceries-api
 
 ## Ways to run
 ### Locally
 **groceries.py**
-1. Open groceries.py and follow the instructions in the comments to modify the necessary variables
+1. Open groceries.py withing /groceries-api and follow the instructions in the comments to modify the necessary variables
 2. Run in terminal\
 `$ python groceries.py`
 
 **groceries_api.py**
-1. Start FastAPI server locally\
+1. Navigate to /groceries-api
+2. Start FastAPI server locally\
 `$ uvicorn groceries_api:app --reload`
-2. Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
+3. Send a POST request to http://localhost:8000/run (Use http://localhost:8000/docs to view the schema for the request body)
+
+**Groceries UI**
+1. Navigate to /groceries-ui
+2. Run UI
+`$ npm run dev`
+3. Open http://localhost:3000/ on local browser
 
 ### Cloud
 * Project is set up to be Dockerized and deployed to Google Cloud Run
