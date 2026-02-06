@@ -26,6 +26,7 @@ GSHEET_ID_PROD = os.getenv("GSHEET_ID_PROD")
 GDOC_ID_DEV = os.getenv("GDOC_ID_DEV")
 GSHEET_ID_DEV = os.getenv("GSHEET_ID_DEV")
 MY_CALENDAR_GMAIL = os.getenv("MY_CALENDAR_GMAIL")
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 # API request schema
 class GroceryRunRequest(BaseModel):
@@ -60,7 +61,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",   # local dev frontend
-        "https://YOUR_FRONTEND_DOMAIN",  # production frontend
+        FRONTEND_URL,  # production frontend
     ],
     allow_credentials=True,
     allow_methods=["*"],   # allows OPTIONS, POST, etc
