@@ -14,6 +14,7 @@ import google_office as goffice
 import color_codes as colors
 from datetime import date
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from typing import List, Optional, Dict
 from contextlib import redirect_stdout
@@ -25,6 +26,7 @@ GSHEET_ID_PROD = os.getenv("GSHEET_ID_PROD")
 GDOC_ID_DEV = os.getenv("GDOC_ID_DEV")
 GSHEET_ID_DEV = os.getenv("GSHEET_ID_DEV")
 MY_CALENDAR_GMAIL = os.getenv("MY_CALENDAR_GMAIL")
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 # API request schema
 class GroceryRunRequest(BaseModel):
@@ -52,6 +54,19 @@ class GroceryRunResponse(BaseModel):
     meal_details: List[MealDetails] = []
 
 app = FastAPI()
+
+# Allows browser to send OPTIONS request to FastAPI endpoint
+# CORS preflight behavior
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",   # local dev frontend
+        FRONTEND_URL,  # production frontend
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],   # allows OPTIONS, POST, etc
+    allow_headers=["*"],
+)
 
 # FastAPI endpoint to run groceries script
 @app.post("/run")
