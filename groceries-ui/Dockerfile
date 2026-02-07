@@ -1,27 +1,38 @@
-# Use an official slim Node.js image
-FROM node:20-slim
+# ---------- Build stage ----------
+FROM node:20-slim AS builder
 
-# Set a working directory inside the container
 WORKDIR /app
 
-# Copy dependency definitions first to leverage Docker build cache
+# Copy dependency definitions
 COPY package.json package-lock.json ./
 
-# Install dependencies
+# Install deps (includes dev deps needed to build)
 RUN npm ci
 
-# Copy the rest of the app code
+# Copy source
 COPY . .
 
-# Build-time variable for Docker to accept 
+# Build-time variable
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
-# Build the Next.js app for production
+# Build Next.js
 RUN npm run build
 
-# Cloud Run expects the container to listen on port 8080
+
+# ---------- Runtime stage ----------
+FROM node:20-slim
+
+WORKDIR /app
+
+# Copy only what we need from the build stage
+COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+# Cloud Run port
 EXPOSE 8080
 
-# Start the Next.js production server
+# Start Next.js
 CMD ["npm", "run", "start"]
