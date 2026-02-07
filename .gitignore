@@ -1,9 +1,48 @@
+# Python
 groceries-env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Project files
 logs/
 credentials/
 credentials.json
 data.json
 token.pickle
-.DS_Store
-__pycache__/
+
+# Environment
 .env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+*.pem
+
+# Next.js / UI
+groceries-ui/.next/
+groceries-ui/out/
+groceries-ui/build/
+groceries-ui/node_modules/
+groceries-ui/.pnp
+groceries-ui/.pnp.*
+groceries-ui/.yarn/*
+!groceries-ui/.yarn/patches
+!groceries-ui/.yarn/plugins
+!groceries-ui/.yarn/releases
+!groceries-ui/.yarn/versions
+groceries-ui/coverage/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+groceries-ui/next-env.d.ts
+
+# Vercel
+.vercel
