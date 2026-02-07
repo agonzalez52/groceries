@@ -1,5 +1,5 @@
 #
-# Version 3.3.1
+# Version 4.0.0
 #
 # Created By: Angel Gonzalez
 #
@@ -14,6 +14,7 @@ import google_office as goffice
 import color_codes as colors
 from datetime import date
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from typing import List, Optional, Dict
 from contextlib import redirect_stdout
@@ -25,15 +26,28 @@ GSHEET_ID_PROD = os.getenv("GSHEET_ID_PROD")
 GDOC_ID_DEV = os.getenv("GDOC_ID_DEV")
 GSHEET_ID_DEV = os.getenv("GSHEET_ID_DEV")
 MY_CALENDAR_GMAIL = os.getenv("MY_CALENDAR_GMAIL")
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 # API request schema
 class GroceryRunRequest(BaseModel):
     date: date
     meal_ids: List[int]
+
+    @field_validator("date")
+    def validate_monday(cls, v):
+        if v.weekday() != 0: # 0 = Monday
+            raise ValueError(f"Start date must be Monday, got {v.strftime('%A')}")
+
     @field_validator("meal_ids", mode="before")
     def parse_meal_ids(cls, ids_input):
         if isinstance(ids_input, str):
             return [int(id.strip()) for id in ids_input.split(",")]
+        
+    @field_validator("meal_ids")
+    def validate_number_of_meals(cls, v):
+        if len(v) != 6:
+            raise ValueError(f"6 meals must be entered, got {len(v)}")
+        
     first_week: bool
     class Flags(BaseModel):
         reminders_only: bool = False
@@ -52,6 +66,19 @@ class GroceryRunResponse(BaseModel):
     meal_details: List[MealDetails] = []
 
 app = FastAPI()
+
+# Allows browser to send OPTIONS request to FastAPI endpoint
+# CORS preflight behavior
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",   # local dev frontend
+        FRONTEND_URL,  # production frontend
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],   # allows OPTIONS, POST, etc
+    allow_headers=["*"],
+)
 
 # FastAPI endpoint to run groceries script
 @app.post("/run")
