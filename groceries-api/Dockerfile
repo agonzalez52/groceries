@@ -5,13 +5,13 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy dependency list first to leverage Docker build cache
-COPY requirements.txt .
+COPY groceries-api/requirements.txt .
 
 # Install Python deps
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the app code
-COPY . .
+COPY groceries-api/ .
 
 # Expose the port FastAPI uses
 EXPOSE 8080
