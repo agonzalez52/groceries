@@ -37,16 +37,19 @@ class GroceryRunRequest(BaseModel):
     def validate_monday(cls, v):
         if v.weekday() != 0: # 0 = Monday
             raise ValueError(f"Start date must be Monday, got {v.strftime('%A')}")
+        return v
 
     @field_validator("meal_ids", mode="before")
     def parse_meal_ids(cls, ids_input):
         if isinstance(ids_input, str):
             return [int(id.strip()) for id in ids_input.split(",")]
+        return ids_input
         
     @field_validator("meal_ids")
     def validate_number_of_meals(cls, v):
         if len(v) != 6:
             raise ValueError(f"6 meals must be entered, got {len(v)}")
+        return v
         
     first_week: bool
     class Flags(BaseModel):
@@ -73,6 +76,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",   # local dev frontend
+        "http://localhost:8000",   # local docker frontend
         FRONTEND_URL,  # production frontend
     ],
     allow_credentials=True,
