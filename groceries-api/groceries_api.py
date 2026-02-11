@@ -71,7 +71,7 @@ class GroceryRunResponse(BaseModel):
 app = FastAPI()
 
 # Allows browser to send OPTIONS request to FastAPI endpoint
-# CORS preflight behavior
+# - CORS preflight behavior
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
