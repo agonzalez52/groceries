@@ -54,13 +54,13 @@ export default function Sidebar() {
             color: "var(--accent)",
             letterSpacing: "-1px"
           }}>
-            🛒
+            Grocery Run
           </h2>
         </div>
 
         {/* Navigation */}
         <nav style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          <NavLink href="/">Grocery Run</NavLink>
+          <NavLink href="/">Add Groceries</NavLink>
           <NavLink href="https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit?tab=t.0" external>
             Food For Week
           </NavLink>
@@ -113,19 +113,22 @@ function NavLink({ href, children, external }: NavLinkProps) {
       rel="noopener noreferrer"
       style={{
         padding: "0.75rem 0",
-        paddingLeft: "0",
-        borderRadius: "0",
+        paddingLeft: "1rem",
+        borderRadius: "2px",
         background: "transparent",
         color: "var(--text-primary)",
         transition: "all 0.2s ease",
         border: "none",
-        fontSize: "0.95rem"
+        fontSize: "0.95rem",
+        fontWeight: 500
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.color = "var(--accent)";
+        e.currentTarget.style.color = "var(--text-hover)";
+        e.currentTarget.style.backgroundColor = "var(--bg-tertiary)"
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.color = "var(--text-primary)";
+        e.currentTarget.style.backgroundColor = "var(--bg-secondary)"
       }}
     >
       {children}
@@ -135,22 +138,25 @@ function NavLink({ href, children, external }: NavLinkProps) {
       href={href}
       style={{
         padding: "0.75rem 0",
-        paddingLeft: "0",
+        paddingLeft: "1rem",
         borderRadius: "0",
         background: "transparent",
         color: "var(--text-primary)",
         transition: "all 0.2s ease",
         border: "none",
         fontSize: "0.95rem",
-        display: "block"
+        display: "block",
+        fontWeight: 500
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLAnchorElement;
-        el.style.color = "var(--accent)";
+        el.style.color = "var(--text-hover)";
+        el.style.backgroundColor = "var(--bg-tertiary)";
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLAnchorElement;
         el.style.color = "var(--text-primary)";
+        el.style.backgroundColor = "var(--bg-secondary)"
       }}
     >
       {children}

@@ -115,7 +115,7 @@ export default function Home() {
 
       {/* Header */}
       <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>Grocery Run</h1>
+        <h1 style={{ color: "var(--accent)", fontSize: "2rem", marginBottom: "0.5rem" }}>Add Groceries</h1>
         <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem" }}>
           Prep for your grocery run in seconds
         </p>
@@ -241,7 +241,7 @@ export default function Home() {
                   name="week"
                   checked={firstWeek === week}
                   onChange={() => setFirstWeek(week)}
-                  style={{ cursor: "pointer", accentColor: "var(--accent)" }}
+                  style={{ cursor: "pointer",  accentColor: "var(--bg-tertiary)"}}
                 />
                 <span style={{ fontSize: "0.95rem" }}>
                   {week ? "First week" : "Second week"}
@@ -261,7 +261,7 @@ export default function Home() {
               cursor: "pointer",
               fontSize: "0.95rem",
               padding: "0.5rem 0",
-              color: "var(--accent)",
+              color: "var(--text-primary)",
               fontWeight: 500,
               transition: "color 0.2s ease",
               display: "flex",
@@ -269,10 +269,10 @@ export default function Home() {
               gap: "0.5rem"
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--accent-hover)";
+              e.currentTarget.style.color = "var(--text-hover)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--accent)";
+              e.currentTarget.style.color = "var(--text-primary)";
             }}
           >
             <span
@@ -316,7 +316,7 @@ export default function Home() {
                     type="checkbox"
                     checked={value}
                     onChange={(e) => setter(e.currentTarget.checked)}
-                    style={{ cursor: "pointer", accentColor: "var(--accent)", width: "18px", height: "18px" }}
+                    style={{ cursor: "pointer", accentColor: "var(--bg-tertiary)", width: "18px", height: "18px" }}
                   />
                   <span style={{ fontSize: "0.95rem" }}>{label}</span>
                 </label>
@@ -332,7 +332,7 @@ export default function Home() {
             background: "var(--accent)",
             color: "#000",
             padding: "1rem",
-            borderRadius: "0",
+            borderRadius: "2px",
             border: "none",
             fontSize: "1rem",
             fontWeight: 600,
