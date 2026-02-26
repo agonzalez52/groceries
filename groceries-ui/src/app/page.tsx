@@ -101,130 +101,299 @@ export default function Home() {
   }
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Grocery Run</h1>
+    <main style={{ maxWidth: "600px", margin: "0 auto", width: "100%" }}>
+      <style>{`
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 1.75rem;
+          }
+          .form-container {
+            padding: 1.5rem !important;
+          }
+        }
+      `}</style>
 
-      <br />
-
-      <div>
-        <label>Start Date (Must be a Monday):</label><br />
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
+      {/* Header */}
+      <div style={{ marginBottom: "2rem" }}>
+        <h1 style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>Grocery Run</h1>
+        <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem" }}>
+          Prep for your grocery run in seconds
+        </p>
       </div>
 
-      <br />
-
-      <div>
-        <label>Enter 6 Meal IDs (e.g. 1,2,3,4,5,6):</label><br />
-        <input
-          type="text"
-          value={mealIds}
-          onChange={(e) => setMealIds(e.target.value)}
-        />
-      </div>
-
-      <br />
-
-      <div>
-        <label>
+      {/* Form Container */}
+      <div
+        className="form-container"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.5rem"
+        }}
+      >
+        {/* Date Input */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+              Start Date
+            </label>
+            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0 }}>
+              Must be a Monday
+            </p>
+          </div>
           <input
-            type="radio"
-            name="week"
-            checked={firstWeek === true}
-            onChange={() => setFirstWeek(true)}
-          />
-          First week
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="week"
-            checked={firstWeek === false}
-            onChange={() => setFirstWeek(false)}
-          />
-          Second week
-        </label>
-      </div>
-
-      <br />
-
-      <div>
-        <button
-          onClick={() => setShowOptional(!showOptional)}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1rem",
-            padding: 0,
-            fontWeight: "inherit"
-          }}
-        >
-          <span
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
             style={{
-              display: "inline-block",
-              marginRight: "0.5rem",
-              transform: showOptional ? "rotate(90deg)" : "rotate(0deg)",
-              transition: "transform 0.2s"
+              padding: "0.75rem",
+              background: "transparent",
+              border: "none",
+              borderBottom: "1px solid var(--border)",
+              borderRadius: "0",
+              color: "var(--text-primary)",
+              fontSize: "0.95rem",
+              transition: "all 0.2s ease",
+              outline: "none"
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderBottomColor = "var(--accent)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderBottomColor = "var(--border)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          />
+        </div>
+
+        {/* Meal IDs Input */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+              Enter 6 Meal IDs
+            </label>
+            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0 }}>
+              e.g 1,2,3,4,5,6
+            </p>
+          </div>
+          <input
+            type="text"
+            value={mealIds}
+            onChange={(e) => setMealIds(e.target.value)}
+            style={{
+              padding: "0.75rem",
+              background: "transparent",
+              border: "none",
+              borderBottom: "1px solid var(--border)",
+              borderRadius: "0",
+              color: "var(--text-primary)",
+              fontSize: "0.95rem",
+              transition: "all 0.2s ease",
+              outline: "none",
+              fontFamily: "monospace"
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderBottomColor = "var(--accent)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderBottomColor = "var(--border)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          />
+        </div>
+
+        {/* Week Selection */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+            Select Week
+          </label>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            {[true, false].map((week) => (
+              <label
+                key={week.toString()}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  cursor: "pointer",
+                  padding: "0.75rem 1rem",
+                  borderRadius: "0",
+                  background: firstWeek === week ? "transparent" : "transparent",
+                  border: `none`,
+                  transition: "all 0.2s ease"
+                }}
+                onMouseEnter={(e) => {
+                  if (firstWeek !== week) {
+                    e.currentTarget.style.borderBottomColor = "var(--accent)";
+                    e.currentTarget.style.background = "transparent";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (firstWeek !== week) {
+                    e.currentTarget.style.borderBottomColor = "var(--border)";
+                    e.currentTarget.style.background = "transparent";
+                  }
+                }}
+              >
+                <input
+                  type="radio"
+                  name="week"
+                  checked={firstWeek === week}
+                  onChange={() => setFirstWeek(week)}
+                  style={{ cursor: "pointer", accentColor: "var(--accent)" }}
+                />
+                <span style={{ fontSize: "0.95rem" }}>
+                  {week ? "First week" : "Second week"}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Optional Settings */}
+        <div style={{ paddingTop: "0.5rem", borderTop: "1px solid var(--border)" }}>
+          <button
+            onClick={() => setShowOptional(!showOptional)}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "0.95rem",
+              padding: "0.5rem 0",
+              color: "var(--accent)",
+              fontWeight: 500,
+              transition: "color 0.2s ease",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--accent-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--accent)";
             }}
           >
-            ▶
-          </span>
-          Optional
+            <span
+              style={{
+                display: "inline-block",
+                transform: showOptional ? "rotate(90deg)" : "rotate(0deg)",
+                transition: "transform 0.2s ease"
+              }}
+            >
+              ▶
+            </span>
+            Additional Options
+          </button>
+
+          {showOptional && (
+            <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {[
+                { key: "onlyReminders", label: "Only create calendar events", value: onlyReminders, setter: setOnlyReminders },
+                { key: "checklist", label: "Create checklist", value: checklist, setter: setChecklist },
+                { key: "test", label: "Test mode", value: test, setter: setTest }
+              ].map(({ key, label, value, setter }) => (
+                <label
+                  key={key}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    cursor: "pointer",
+                    padding: "0.5rem 0",
+                    borderRadius: "0",
+                    transition: "background 0.2s ease"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={value}
+                    onChange={(e) => setter(e.currentTarget.checked)}
+                    style={{ cursor: "pointer", accentColor: "var(--accent)", width: "18px", height: "18px" }}
+                  />
+                  <span style={{ fontSize: "0.95rem" }}>{label}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Action Button */}
+        <button
+          onClick={runScript}
+          style={{
+            background: "var(--accent)",
+            color: "#000",
+            padding: "1rem",
+            borderRadius: "0",
+            border: "none",
+            fontSize: "1rem",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+            marginTop: "0.5rem"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--accent-hover)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(107, 182, 35, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--accent)";
+            e.currentTarget.style.boxShadow = "none";
+          }}
+        >
+          Add Groceries
         </button>
-
-        {showOptional && (
-          <div style={{ marginLeft: "1rem", marginTop: "0.5rem" }}>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={onlyReminders}
-                  onChange={(e) => setOnlyReminders(e.target.checked)}
-                />
-                Only create calendar events
-              </label>
-            </div>
-
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={checklist}
-                  onChange={(e) => setChecklist(e.target.checked)}
-                />
-                Checklist
-              </label>
-            </div>
-
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={test}
-                  onChange={(e) => setTest(e.target.checked)}
-                />
-                Test
-              </label>
-            </div>
-          </div>
-        )}
       </div>
 
-      <br />
-
-      <button onClick={runScript}>
-        Run
-      </button>
-
-      <br /><br />
-
+      {/* Result Display */}
       {result && (
-        <pre style={{ color: isError ? "red" : "inherit" }}>{result}</pre>
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "1.5rem 0",
+            borderRadius: "0",
+            background: "transparent",
+            border: `none`,
+            borderTop: `2px solid ${isError ? "rgba(255, 59, 48, 0.5)" : "rgba(107, 182, 35, 0.5)"}`,
+            animation: "slideIn 0.3s ease"
+          }}
+        >
+          <pre
+            style={{
+              color: isError ? "#ff6b6b" : "var(--accent)",
+              fontSize: "0.9rem",
+              fontFamily: "monospace",
+              whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
+              margin: 0,
+              lineHeight: "1.6"
+            }}
+          >
+            {result}
+          </pre>
+        </div>
       )}
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </main>
   );
 }
