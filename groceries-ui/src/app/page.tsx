@@ -146,10 +146,10 @@ export default function Home() {
             onChange={(e) => setDate(e.target.value)}
             style={{
               padding: "0.75rem",
-              background: "transparent",
+              background: "var(--bg-tertiary)",
               border: "none",
               borderBottom: "1px solid var(--border)",
-              borderRadius: "0",
+              borderRadius: "2px",
               color: "var(--text-primary)",
               fontSize: "0.95rem",
               transition: "all 0.2s ease",
@@ -182,10 +182,10 @@ export default function Home() {
             onChange={(e) => setMealIds(e.target.value)}
             style={{
               padding: "0.75rem",
-              background: "transparent",
+              background: "var(--bg-tertiary)",
               border: "none",
               borderBottom: "1px solid var(--border)",
-              borderRadius: "0",
+              borderRadius: "2px",
               color: "var(--text-primary)",
               fontSize: "0.95rem",
               transition: "all 0.2s ease",
