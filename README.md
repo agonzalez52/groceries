@@ -4,13 +4,13 @@ Automates the process of adding items to a grocery list and builds your dinner s
 
 ## Overview
 
-<img width="685" height="338" alt="groceries-list" src="https://github.com/user-attachments/assets/fd7f68f7-26c2-45b4-96ec-1420dd441a90" />
+<img width="830" height="801" alt="Screenshot 2026-06-18 at 3 25 48 PM" src="https://github.com/user-attachments/assets/04cf71b2-50cb-4714-8d67-496b49de377d" />
 
 Spreadsheets are managed in Google sheets which contain a record of meals and their corresponding ingredients among other data. The script takes in a set of meals, a starting date and uses Google's Docs/Sheets APIs to read the ingredients from the Google sheet and write all of those meal's ingredients into the Google doc grocery list. The grocery items are organized in the Google doc grocery list by section (fruits/vegetables, meat, dairy, etc.). The script will also create calendar events using Google's GMail API to schedule reminders for dinner events and relevant ingredients.
 
 ### Features
 * Reminder events are created in Google Calendar for thawing meat in the fridge two days prior to a meal being made, etc.
-<img width="1116" alt="Screen Shot 2022-09-09 at 12 29 50 PM" src="https://user-images.githubusercontent.com/73859721/189429192-a3698ea9-e173-482c-b354-d19878ba6ae1.png">
+<img width="1575" height="677" alt="Screenshot 2026-06-18 at 3 22 04 PM" src="https://github.com/user-attachments/assets/6d87a992-d176-42cd-bc3a-30922f454153" />
 
 * Extra ingredients grocery list section for ingredients that may or may not be needed every time (salt, oil, spices, etc.)
 <img width="633" alt="Screen Shot 2021-05-21 at 4 48 49 PM" src="https://user-images.githubusercontent.com/73859721/119207952-0c859680-ba55-11eb-8b20-a5206b671832.png">
