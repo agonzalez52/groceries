@@ -6,7 +6,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -40,9 +40,24 @@ function formatDate(dateString: string): string {
   return `${dayOfWeek}, ${month} ${day}${suffix} ${year}`;
 }
 
+function isMonday(dateString: string): boolean {
+  if (!dateString) return false;
+  const date = new Date(dateString + "T00:00:00");
+  return date.getDay() === 1;
+}
+
+function getMealBoxDate(startDate: string, index: number): Date | null {
+  if (!startDate) return null;
+  const d = new Date(startDate + "T00:00:00");
+  d.setDate(d.getDate() + index);
+  return d;
+}
+
 export default function Home() {
   const [date, setDate] = useState("");
-  const [mealIds, setMealIds] = useState("");
+  const [mealValues, setMealValues] = useState<string[]>(["0", "0", "0", "0", "0", "0"]);
+  const [activeMeal, setActiveMeal] = useState<boolean[]>([false, false, false, false, false, false]);
+  const mealInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [firstWeek, setFirstWeek] = useState(true);
   const [checklist, setChecklist] = useState(true);
   const [test, setTest] = useState(false);
@@ -50,10 +65,25 @@ export default function Home() {
   const [showOptional, setShowOptional] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [isError, setIsError] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const isStartDateInvalid = date !== "" && !isMonday(date);
+  const isAddGroceriesDisabled = date === "" || isStartDateInvalid;
+
+  function goToMealBox(newIndex: number) {
+    if (newIndex < 0 || newIndex > 5) return;
+    setActiveMeal((prev) => prev.map((_, i) => i === newIndex));
+    const el = mealInputRefs.current[newIndex];
+    if (el) {
+      el.focus();
+      el.select();
+    }
+  }
 
   async function runScript() {
-    setResult("Running...");
+    setResult(null);
     setIsError(false);
+    setIsRunning(true);
 
     try {
       const response = await fetch(
@@ -65,7 +95,7 @@ export default function Home() {
           },
           body: JSON.stringify({
             date: date,
-            meal_ids: mealIds,
+            meal_ids: mealValues.map((v) => v || "0").join(","),
             first_week: firstWeek,
             options: {
               only_reminders: onlyReminders,
@@ -97,6 +127,8 @@ export default function Home() {
       setIsError(true);
       const errorMessage = error instanceof Error ? error.message : String(error);
       setResult(`Network Error: ${errorMessage}`);
+    } finally {
+      setIsRunning(false);
     }
   }
 
@@ -111,14 +143,15 @@ export default function Home() {
             padding: 1.5rem !important;
           }
         }
+        .start-date-input::-webkit-calendar-picker-indicator {
+          filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+          cursor: pointer;
+        }
       `}</style>
 
       {/* Header */}
       <div style={{ marginBottom: "2rem" }}>
         <h1 style={{ color: "var(--accent)", fontSize: "2rem", marginBottom: "0.5rem" }}>Add Groceries</h1>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem" }}>
-          Prep for your grocery run in seconds
-        </p>
       </div>
 
       {/* Form Container */}
@@ -142,6 +175,7 @@ export default function Home() {
           </div>
           <input
             type="date"
+            className="start-date-input"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             style={{
@@ -164,43 +198,106 @@ export default function Home() {
               e.currentTarget.style.boxShadow = "none";
             }}
           />
+          {isStartDateInvalid && (
+            <p style={{ fontSize: "0.8rem", color: "#ff6b6b", margin: 0 }}>
+              Start Date is not Monday
+            </p>
+          )}
         </div>
 
         {/* Meal IDs Input */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
             <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
-              Enter 6 Meal IDs
+              Enter a Meal ID for each day
             </label>
             <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0 }}>
-              e.g 1,2,3,4,5,6
+              0 to skip that day
             </p>
           </div>
-          <input
-            type="text"
-            value={mealIds}
-            onChange={(e) => setMealIds(e.target.value)}
-            style={{
-              padding: "0.75rem",
-              background: "var(--bg-tertiary)",
-              border: "none",
-              borderBottom: "1px solid var(--border)",
-              borderRadius: "2px",
-              color: "var(--text-primary)",
-              fontSize: "0.95rem",
-              transition: "all 0.2s ease",
-              outline: "none",
-              fontFamily: "monospace"
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderBottomColor = "var(--accent)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderBottomColor = "var(--border)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "0.5rem" }}>
+            {mealValues.map((value, index) => {
+              const boxDate = getMealBoxDate(date, index);
+              const weekday = boxDate ? boxDate.toLocaleDateString("en-US", { weekday: "short" }) : "";
+              const dayOfMonth = boxDate ? String(boxDate.getDate()) : "";
+              const isActive = activeMeal[index];
+
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.25rem",
+                    padding: "0.5rem",
+                    background: "var(--bg-tertiary)",
+                    borderBottom: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
+                    borderRadius: "2px",
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  <div style={{ textAlign: "left", fontSize: "0.7rem", color: isStartDateInvalid ? "#ff6b6b" : "gray" }}>
+                    {weekday}
+                  </div>
+                  <div style={{ textAlign: "left", fontSize: "0.8rem", color: isStartDateInvalid ? "#ff6b6b" : "var(--accent)", fontWeight: 600 }}>
+                    {dayOfMonth}
+                  </div>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={value}
+                    ref={(el) => {
+                      mealInputRefs.current[index] = el;
+                    }}
+                    onClick={(e) => {
+                      if (value === "0") {
+                        e.currentTarget.select();
+                      } else {
+                        setActiveMeal((prev) => prev.map((v, i) => (i === index ? true : v)));
+                      }
+                    }}
+                    onChange={(e) => {
+                      const digitsOnly = e.target.value.replace(/\D/g, "");
+                      const clamped = digitsOnly === "" ? "" : String(Math.min(999, parseInt(digitsOnly, 10)));
+                      setMealValues((prev) => prev.map((v, i) => (i === index ? clamped : v)));
+                    }}
+                    onBlur={(e) => {
+                      setActiveMeal((prev) => prev.map((v, i) => (i === index ? false : v)));
+                      if (e.target.value === "") {
+                        setMealValues((prev) => prev.map((v, i) => (i === index ? "0" : v)));
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (index < 5) {
+                          goToMealBox(index + 1);
+                        } else {
+                          e.currentTarget.blur();
+                        }
+                      } else if (e.key === "ArrowRight") {
+                        e.preventDefault();
+                        goToMealBox(index + 1);
+                      } else if (e.key === "ArrowLeft") {
+                        e.preventDefault();
+                        goToMealBox(index - 1);
+                      }
+                    }}
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      background: "transparent",
+                      border: "none",
+                      outline: "none",
+                      color: "white",
+                      fontSize: "1rem",
+                      fontFamily: "monospace"
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Week Selection */}
@@ -328,23 +425,26 @@ export default function Home() {
         {/* Action Button */}
         <button
           onClick={runScript}
+          disabled={isAddGroceriesDisabled}
           style={{
-            background: "var(--accent)",
-            color: "#000",
+            background: isAddGroceriesDisabled ? "var(--bg-tertiary)" : "var(--accent)",
+            color: isAddGroceriesDisabled ? "var(--text-secondary)" : "#000",
             padding: "1rem",
             borderRadius: "2px",
             border: "none",
             fontSize: "1rem",
             fontWeight: 600,
-            cursor: "pointer",
+            cursor: isAddGroceriesDisabled ? "not-allowed" : "pointer",
             transition: "all 0.2s ease",
             marginTop: "0.5rem"
           }}
           onMouseEnter={(e) => {
+            if (isAddGroceriesDisabled) return;
             e.currentTarget.style.background = "var(--accent-hover)";
             e.currentTarget.style.boxShadow = "0 4px 12px rgba(107, 182, 35, 0.3)";
           }}
           onMouseLeave={(e) => {
+            if (isAddGroceriesDisabled) return;
             e.currentTarget.style.background = "var(--accent)";
             e.currentTarget.style.boxShadow = "none";
           }}
@@ -353,8 +453,38 @@ export default function Home() {
         </button>
       </div>
 
+      {/* Running Indicator */}
+      {isRunning && (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "1.5rem 0",
+            borderTop: "2px solid rgba(107, 182, 35, 0.5)",
+            animation: "slideIn 0.3s ease"
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.2rem",
+              color: "var(--accent)",
+              fontSize: "0.9rem",
+              fontFamily: "monospace"
+            }}
+          >
+            Running
+            <span style={{ display: "inline-flex" }}>
+              <span className="bounce-dot" style={{ animationDelay: "0s" }}>.</span>
+              <span className="bounce-dot" style={{ animationDelay: "0.2s" }}>.</span>
+              <span className="bounce-dot" style={{ animationDelay: "0.4s" }}>.</span>
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Result Display */}
-      {result && (
+      {!isRunning && result && (
         <div
           style={{
             marginTop: "2rem",
@@ -392,6 +522,18 @@ export default function Home() {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        @keyframes bounceDot {
+          0%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-4px);
+          }
+        }
+        .bounce-dot {
+          display: inline-block;
+          animation: bounceDot 1s infinite ease-in-out;
         }
       `}</style>
     </main>
