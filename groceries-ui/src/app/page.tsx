@@ -1,12 +1,12 @@
 //
-// Version 4.2.0
+// Version 4.3.0
 //
 // Created By: Angel Gonzalez
 //
 
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -22,6 +22,61 @@ interface ApiResponse {
   meal_details: MealDetail[];
   error?: string;
   message?: string;
+}
+
+interface MealData {
+  id: number;
+  name: string;
+}
+
+interface MealLookupState {
+  visible: boolean;
+  loading: boolean;
+  name: string;
+  error: boolean;
+}
+
+const emptyLookup: MealLookupState = { visible: false, loading: false, name: "", error: false };
+
+// Local (browser-side) cache of the id -> name map, so the app can read it at any
+// time without hitting the /meals endpoint on every lookup. Prod and test sheets
+// are cached separately so switching "Test mode" never shows stale data from the other.
+function getMealsCacheKey(test: boolean) {
+  return test ? "groceries_meals_cache_test" : "groceries_meals_cache_prod";
+}
+
+function wait(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}
+
+function readMealsMapFromStorage(test: boolean): Record<number, string> {
+  try {
+    const raw = localStorage.getItem(getMealsCacheKey(test));
+    return raw ? (JSON.parse(raw) as Record<number, string>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeMealsMapToStorage(test: boolean, map: Record<number, string>) {
+  try {
+    localStorage.setItem(getMealsCacheKey(test), JSON.stringify(map));
+  } catch {
+    // localStorage unavailable (private mode, quota, etc.) - fall back to in-memory only
+  }
+}
+
+async function fetchMealsMap(test: boolean): Promise<Record<number, string>> {
+  const response = await fetch(`${API_URL}/meals?test=${test}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch meals: ${response.status}`);
+  }
+  const data = (await response.json()) as MealData[];
+  const map: Record<number, string> = {};
+  data.forEach((meal) => {
+    map[meal.id] = meal.name;
+  });
+  return map;
 }
 
 function formatDate(dateString: string): string {
@@ -58,6 +113,15 @@ export default function Home() {
   const [mealValues, setMealValues] = useState<string[]>(["0", "0", "0", "0", "0", "0"]);
   const [activeMeal, setActiveMeal] = useState<boolean[]>([false, false, false, false, false, false]);
   const mealInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const mealFocusValueRef = useRef<string[]>(["0", "0", "0", "0", "0", "0"]);
+  const [mealLookups, setMealLookups] = useState<MealLookupState[]>(
+    () => Array(6).fill(null).map(() => ({ ...emptyLookup }))
+  );
+  const [mealIdErrors, setMealIdErrors] = useState<boolean[]>([false, false, false, false, false, false]);
+  const mealLookupSeqRef = useRef<number[]>([0, 0, 0, 0, 0, 0]);
+  const mealsMapRef = useRef<Record<number, string>>({});
+  const mealValuesRef = useRef<string[]>(mealValues);
+  mealValuesRef.current = mealValues;
   const [firstWeek, setFirstWeek] = useState(true);
   const [checklist, setChecklist] = useState(true);
   const [test, setTest] = useState(false);
@@ -68,7 +132,65 @@ export default function Home() {
   const [isRunning, setIsRunning] = useState(false);
 
   const isStartDateInvalid = date !== "" && !isMonday(date);
-  const isAddGroceriesDisabled = date === "" || isStartDateInvalid;
+  const hasMealIdError = mealIdErrors.some((e) => e);
+  const allMealsSkipped = mealValues.every((v) => v === "0" || v === "");
+  const hasMealLookupInProgress = mealLookups.some((l) => l.loading);
+  const isAddGroceriesDisabled = date === "" || isStartDateInvalid || hasMealIdError || allMealsSkipped || hasMealLookupInProgress;
+
+  // Seed from the browser-local cache immediately, then refresh it from the
+  // endpoint on every page load, and again whenever "Test mode" is toggled so
+  // the cache always matches the currently selected sheet (dev vs prod).
+  useEffect(() => {
+    mealsMapRef.current = readMealsMapFromStorage(test);
+
+    fetchMealsMap(test)
+      .then((map) => {
+        mealsMapRef.current = map;
+        writeMealsMapToStorage(test, map);
+        // Re-check every currently filled-in meal id against the sheet that's now active
+        mealValuesRef.current.forEach((v, i) => {
+          const idNum = parseInt(v, 10);
+          if (idNum) {
+            lookupMealName(i, idNum);
+          }
+        });
+      })
+      .catch(() => {
+        // Leave the cache as-is; a per-id lookup miss will retry the fetch.
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [test]);
+
+  async function lookupMealName(index: number, idNum: number) {
+    const seq = ++mealLookupSeqRef.current[index];
+
+    setMealLookups((prev) => prev.map((v, i) => (i === index ? { visible: true, loading: true, name: "", error: false } : v)));
+    setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
+
+    await wait(500);
+    if (mealLookupSeqRef.current[index] !== seq) return; // superseded by a newer lookup
+
+    let name = mealsMapRef.current[idNum];
+
+    if (name === undefined) {
+      try {
+        mealsMapRef.current = await fetchMealsMap(test);
+        writeMealsMapToStorage(test, mealsMapRef.current);
+      } catch {
+        // keep the existing cache; the lookup below will simply miss again
+      }
+      name = mealsMapRef.current[idNum];
+    }
+
+    if (mealLookupSeqRef.current[index] !== seq) return; // superseded by a newer lookup
+
+    if (name !== undefined) {
+      setMealLookups((prev) => prev.map((v, i) => (i === index ? { visible: true, loading: false, name, error: false } : v)));
+    } else {
+      setMealLookups((prev) => prev.map((v, i) => (i === index ? { visible: true, loading: false, name: "No meal found", error: true } : v)));
+      setMealIdErrors((prev) => prev.map((v, i) => (i === index ? true : v)));
+    }
+  }
 
   function goToMealBox(newIndex: number) {
     if (newIndex < 0 || newIndex > 5) return;
@@ -133,26 +255,19 @@ export default function Home() {
   }
 
   return (
-    <main style={{ maxWidth: "600px", margin: "0 auto", width: "100%" }}>
+    <div style={{ maxWidth: "600px", margin: "0 auto", width: "100%" }}>
       <style>{`
-        @media (max-width: 768px) {
-          h1 {
-            font-size: 1.75rem;
-          }
-          .form-container {
-            padding: 1.5rem !important;
-          }
-        }
         .start-date-input::-webkit-calendar-picker-indicator {
           filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
           cursor: pointer;
         }
+        .meal-name-box {
+          scrollbar-width: none;
+        }
+        .meal-name-box::-webkit-scrollbar {
+          display: none;
+        }
       `}</style>
-
-      {/* Header */}
-      <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ color: "var(--accent)", fontSize: "2rem", marginBottom: "0.5rem" }}>Add Groceries</h1>
-      </div>
 
       {/* Form Container */}
       <div
@@ -215,85 +330,145 @@ export default function Home() {
               0 to skip that day
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "0.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {mealValues.map((value, index) => {
               const boxDate = getMealBoxDate(date, index);
               const weekday = boxDate ? boxDate.toLocaleDateString("en-US", { weekday: "short" }) : "";
               const dayOfMonth = boxDate ? String(boxDate.getDate()) : "";
               const isActive = activeMeal[index];
+              const isSkip = value === "0" || value === "";
+              const lookup = mealLookups[index];
 
               return (
                 <div
                   key={index}
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: "0.25rem",
-                    padding: "0.5rem",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    padding: "0.5rem 0.75rem",
                     background: "var(--bg-tertiary)",
                     borderBottom: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
                     borderRadius: "2px",
                     transition: "all 0.2s ease"
                   }}
                 >
-                  <div style={{ textAlign: "left", fontSize: "0.7rem", color: isStartDateInvalid ? "#ff6b6b" : "gray" }}>
-                    {weekday}
-                  </div>
-                  <div style={{ textAlign: "left", fontSize: "0.8rem", color: isStartDateInvalid ? "#ff6b6b" : "var(--accent)", fontWeight: 600 }}>
-                    {dayOfMonth}
-                  </div>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={value}
-                    ref={(el) => {
-                      mealInputRefs.current[index] = el;
-                    }}
-                    onClick={(e) => {
-                      if (value === "0") {
-                        e.currentTarget.select();
-                      } else {
-                        setActiveMeal((prev) => prev.map((v, i) => (i === index ? true : v)));
-                      }
-                    }}
-                    onChange={(e) => {
-                      const digitsOnly = e.target.value.replace(/\D/g, "");
-                      const clamped = digitsOnly === "" ? "" : String(Math.min(999, parseInt(digitsOnly, 10)));
-                      setMealValues((prev) => prev.map((v, i) => (i === index ? clamped : v)));
-                    }}
-                    onBlur={(e) => {
-                      setActiveMeal((prev) => prev.map((v, i) => (i === index ? false : v)));
-                      if (e.target.value === "") {
-                        setMealValues((prev) => prev.map((v, i) => (i === index ? "0" : v)));
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (index < 5) {
-                          goToMealBox(index + 1);
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.35rem", width: "3.5rem", flexShrink: 0 }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "0.35rem" }}>
+                      <span style={{ fontSize: "0.7rem", color: isStartDateInvalid ? "#ff6b6b" : "gray" }}>
+                        {weekday}
+                      </span>
+                      <span style={{ fontSize: "0.8rem", color: isStartDateInvalid ? "#ff6b6b" : "var(--accent)", fontWeight: 600 }}>
+                        {dayOfMonth}
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={value}
+                      ref={(el) => {
+                        mealInputRefs.current[index] = el;
+                      }}
+                      onFocus={(e) => {
+                        mealFocusValueRef.current[index] = e.target.value;
+                      }}
+                      onClick={(e) => {
+                        if (value === "0") {
+                          e.currentTarget.select();
                         } else {
-                          e.currentTarget.blur();
+                          setActiveMeal((prev) => prev.map((v, i) => (i === index ? true : v)));
                         }
-                      } else if (e.key === "ArrowRight") {
-                        e.preventDefault();
-                        goToMealBox(index + 1);
-                      } else if (e.key === "ArrowLeft") {
-                        e.preventDefault();
-                        goToMealBox(index - 1);
-                      }
-                    }}
+                      }}
+                      onChange={(e) => {
+                        const digitsOnly = e.target.value.replace(/\D/g, "");
+                        const clamped = digitsOnly === "" ? "" : String(Math.min(999, parseInt(digitsOnly, 10)));
+                        setMealValues((prev) => prev.map((v, i) => (i === index ? clamped : v)));
+                        if (clamped === "0" || clamped === "") {
+                          mealLookupSeqRef.current[index] += 1;
+                          setMealLookups((prev) => prev.map((v, i) => (i === index ? { ...emptyLookup } : v)));
+                          setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
+                        }
+                      }}
+                      onBlur={(e) => {
+                        setActiveMeal((prev) => prev.map((v, i) => (i === index ? false : v)));
+                        const finalValue = e.target.value === "" ? "0" : e.target.value;
+                        if (e.target.value === "") {
+                          setMealValues((prev) => prev.map((v, i) => (i === index ? "0" : v)));
+                        }
+                        const idNum = parseInt(finalValue, 10);
+                        if (!idNum) {
+                          mealLookupSeqRef.current[index] += 1;
+                          setMealLookups((prev) => prev.map((v, i) => (i === index ? { ...emptyLookup } : v)));
+                          setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
+                        } else {
+                          const unchanged = mealFocusValueRef.current[index] === e.target.value;
+                          const isMatched = !lookup.loading && !lookup.error && lookup.name !== "";
+                          // Skip re-checking an unchanged value that's already matched or mid-flight.
+                          if (!unchanged || (!isMatched && !lookup.loading)) {
+                            lookupMealName(index, idNum);
+                          }
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          if (index < 5) {
+                            goToMealBox(index + 1);
+                          } else {
+                            e.currentTarget.blur();
+                          }
+                        } else if (e.key === "ArrowDown") {
+                          e.preventDefault();
+                          goToMealBox(index + 1);
+                        } else if (e.key === "ArrowUp") {
+                          e.preventDefault();
+                          goToMealBox(index - 1);
+                        }
+                      }}
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        background: "transparent",
+                        border: "none",
+                        outline: "none",
+                        color: mealIdErrors[index] ? "#ff6b6b" : "white",
+                        fontSize: "1rem",
+                        fontFamily: "monospace"
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="meal-name-box"
                     style={{
-                      width: "100%",
-                      textAlign: "center",
-                      background: "transparent",
-                      border: "none",
-                      outline: "none",
-                      color: "white",
-                      fontSize: "1rem",
-                      fontFamily: "monospace"
+                      flex: 1,
+                      minWidth: 0,
+                      padding: "0.65rem 0.75rem",
+                      border: "1px solid var(--border)",
+                      borderRadius: "4px",
+                      fontSize: "0.8rem",
+                      fontFamily: "monospace",
+                      whiteSpace: "nowrap",
+                      overflowX: "auto",
+                      overflowY: "hidden",
+                      WebkitOverflowScrolling: "touch",
+                      color: lookup.error ? "#ff6b6b" : isSkip ? "gray" : "var(--accent)"
                     }}
-                  />
+                  >
+                    {lookup.loading ? (
+                      <span style={{ display: "inline-flex" }}>
+                        <span className="bounce-dot" style={{ animationDelay: "0s" }}>.</span>
+                        <span className="bounce-dot" style={{ animationDelay: "0.2s" }}>.</span>
+                        <span className="bounce-dot" style={{ animationDelay: "0.4s" }}>.</span>
+                      </span>
+                    ) : lookup.error ? (
+                      "No meal found"
+                    ) : isSkip ? (
+                      "Skip"
+                    ) : (
+                      lookup.name
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -536,6 +711,6 @@ export default function Home() {
           animation: bounceDot 1s infinite ease-in-out;
         }
       `}</style>
-    </main>
+    </div>
   );
 }

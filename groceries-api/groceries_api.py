@@ -1,5 +1,5 @@
 #
-# Version 4.2.0
+# Version 4.3.0
 #
 # Created By: Angel Gonzalez
 #
@@ -68,6 +68,11 @@ class GroceryRunResponse(BaseModel):
         meal_day: str
     meal_details: List[MealDetails] = []
 
+# Meal id/name lookup schema
+class MealData(BaseModel):
+    id: int
+    name: str
+
 app = FastAPI()
 
 # Allows browser to send OPTIONS request to FastAPI endpoint
@@ -110,3 +115,22 @@ def run_grocery_script(data: GroceryRunRequest):
     meal_batch = mc.MealBatch(data.date, data.meal_ids)
     gapi.gdoc.set_font_color(font_color)
     return grc.update_grocery_list(meal_batch, gapi, True, data.options.reminders_only, data.options.checklist)
+
+# FastAPI endpoint to pull meal id/name pairs from the Meals sheet
+@app.get("/meals", response_model=List[MealData])
+def get_meals(test: bool = False):
+    sheet_id = GSHEET_ID_DEV if test else GSHEET_ID_PROD
+    _, sheet_service, _, _ = goffice.build_services()
+    gsheet = goffice.GoogleSheet(sheet_id, sheet_service)
+    sheet_rows = gsheet.pull_sheet_data('Meals')
+
+    header = sheet_rows[0]
+    id_idx = header.index('id')
+    name_idx = header.index('name')
+    meals = [
+        MealData(id=int(row[id_idx]), name=row[name_idx])
+        for row in sheet_rows[1:]
+        if len(row) > max(id_idx, name_idx) and row[id_idx] != ""
+    ]
+
+    return meals
