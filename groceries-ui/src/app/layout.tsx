@@ -26,27 +26,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div style={{ display: "flex", minHeight: "100vh", flexDirection: "row" }}>
-          <Sidebar />
-          <main 
-            style={{ 
-              flex: 1, 
-              padding: "2rem",
-              display: "flex",
-              flexDirection: "column",
-              width: "100%"
-            }}
-          >
-            {children}
-          </main>
-        </div>
+        <Sidebar />
+        <main
+          className="main-content"
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            boxSizing: "border-box"
+          }}
+        >
+          {children}
+        </main>
         <style>{`
+          .main-content {
+            padding: 2rem;
+            padding-top: 6rem;
+          }
           @media (max-width: 768px) {
-            div {
-              flex-direction: column;
-            }
-            main {
+            .main-content {
               padding: 1rem;
+              padding-top: 5rem;
             }
           }
         `}</style>

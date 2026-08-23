@@ -1,56 +1,101 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+
+const PAGE_TITLES: Record<string, string> = {
+  "/": "Add Groceries",
+  "/add_meal": "Add Meal"
+};
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const title = PAGE_TITLES[pathname] ?? "";
 
   return (
     <>
-      {/* Mobile Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
+      {/* Fixed Header Bar */}
+      <header
+        className="header-bar"
         style={{
-          display: "none",
           position: "fixed",
-          top: "1rem",
-          left: "1rem",
+          top: 0,
+          left: 0,
+          right: 0,
           zIndex: 1000,
-          background: "var(--accent)",
-          border: "none",
-          color: "#000",
-          padding: "0.5rem 1rem",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontSize: "1rem",
-          fontWeight: 600
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          background: "var(--bg-secondary)",
+          borderBottom: "1px solid var(--border)"
         }}
-        className="mobile-menu-toggle"
       >
-        ☰
-      </button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          style={{
+            width: "2.75rem",
+            height: "2.75rem",
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "var(--accent)",
+            border: "none",
+            color: "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "1.1rem",
+            fontWeight: 600
+          }}
+        >
+          {isOpen ? "✕" : "☰"}
+        </button>
+        <h1 style={{ color: "var(--accent)", margin: 0 }}>{title}</h1>
+      </header>
 
-      {/* Sidebar */}
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          onClick={() => setIsOpen(false)}
+          className="sidebar-backdrop"
+          style={{
+            position: "fixed",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.5)",
+            zIndex: 998
+          }}
+        />
+      )}
+
+      {/* Sidebar Drawer */}
       <aside
+        className="sidebar-drawer"
         style={{
           width: "220px",
-          height: "100vh",
           padding: "2rem 1.5rem",
           borderRight: `1px solid var(--border)`,
           background: "var(--bg-secondary)",
-          position: "relative",
           overflow: "hidden",
-          display: isOpen ? "flex" : "flex",
+          display: "flex",
           flexDirection: "column",
-          gap: "2rem"
+          gap: "2rem",
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          zIndex: 999,
+          transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.3s ease"
         }}
-        className="sidebar"
       >
         {/* Logo/Title */}
         <div style={{ marginBottom: "1rem" }}>
-          <h2 style={{ 
-            fontSize: "1.5rem", 
+          <h2 style={{
+            fontSize: "1.5rem",
             color: "var(--accent)",
             letterSpacing: "-1px"
           }}>
@@ -60,38 +105,41 @@ export default function Sidebar() {
 
         {/* Navigation */}
         <nav style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          <NavLink href="/">Add Groceries</NavLink>
-          <NavLink href="https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit?tab=t.0" external>
+          <NavLink href="/" onNavigate={() => setIsOpen(false)}>Add Groceries</NavLink>
+          <NavLink href="https://docs.google.com/document/d/1j2HUVs1Rwm2eemLie3qiHGDNazYtaXIYsPhcjjaBjrQ/edit?tab=t.0" external onNavigate={() => setIsOpen(false)}>
             Food For Week
           </NavLink>
-          <NavLink href="https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=0#gid=0" external>
+          <NavLink href="https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=0#gid=0" external onNavigate={() => setIsOpen(false)}>
             Meals
           </NavLink>
-          <NavLink href="https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=150359050#gid=150359050" external>
+          <NavLink href="https://docs.google.com/spreadsheets/d/1a4cOzCh81sp19dl3Oww3BkHmRcxAZcigq0Z5cHah0LU/edit?gid=150359050#gid=150359050" external onNavigate={() => setIsOpen(false)}>
             Ingredients
           </NavLink>
-          <NavLink href="https://docs.google.com/document/d/1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA/edit?tab=t.0" external>
+          <NavLink href="https://docs.google.com/document/d/1fzSVQAaERQ938fgjDosOHjsYG6Z9fJltzHMCjTPRMtA/edit?tab=t.0" external onNavigate={() => setIsOpen(false)}>
             Groceries List
           </NavLink>
-          <NavLink href="/add_meal">Add Meal</NavLink>
+          <NavLink href="/add_meal" onNavigate={() => setIsOpen(false)}>Add Meal</NavLink>
         </nav>
       </aside>
 
       <style>{`
+        .header-bar {
+          height: 4rem;
+          padding: 0 2rem;
+        }
+        .header-bar h1 {
+          font-size: 1.75rem;
+        }
+        .sidebar-backdrop,
+        .sidebar-drawer {
+          top: 4rem;
+        }
         @media (max-width: 768px) {
-          .mobile-menu-toggle {
-            display: block !important;
+          .header-bar {
+            padding: 0 1rem;
           }
-          
-          .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 220px;
-            height: 100vh;
-            z-index: 999;
-            transform: ${isOpen ? "translateX(0)" : "translateX(-100%)"};
-            transition: transform 0.3s ease;
+          .header-bar h1 {
+            font-size: 1.5rem;
           }
         }
       `}</style>
@@ -103,14 +151,16 @@ interface NavLinkProps {
   href: string;
   children: React.ReactNode;
   external?: boolean;
+  onNavigate?: () => void;
 }
 
-function NavLink({ href, children, external }: NavLinkProps) {
+function NavLink({ href, children, external, onNavigate }: NavLinkProps) {
   return external ? (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onNavigate}
       style={{
         padding: "0.75rem 0",
         paddingLeft: "1rem",
@@ -136,6 +186,7 @@ function NavLink({ href, children, external }: NavLinkProps) {
   ) : (
     <Link
       href={href}
+      onClick={onNavigate}
       style={{
         padding: "0.75rem 0",
         paddingLeft: "1rem",
