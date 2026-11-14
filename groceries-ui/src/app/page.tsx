@@ -258,7 +258,7 @@ export default function Home() {
     <div style={{ maxWidth: "600px", margin: "0 auto", width: "100%" }}>
       <style>{`
         .start-date-input::-webkit-calendar-picker-indicator {
-          filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+          filter: invert(65%) sepia(60%) saturate(1000%) hue-rotate(88deg) brightness(105%) contrast(101%);
           cursor: pointer;
         }
         .meal-name-box {
@@ -266,6 +266,40 @@ export default function Home() {
         }
         .meal-name-box::-webkit-scrollbar {
           display: none;
+        }
+        .toggle-input {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .toggle-track {
+          width: 40px;
+          height: 24px;
+          border-radius: var(--radius-pill);
+          background: var(--bg-tertiary);
+          border: 1px solid var(--border-strong);
+          position: relative;
+          flex-shrink: 0;
+          transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .toggle-thumb {
+          position: absolute;
+          top: 2px;
+          left: 2px;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: var(--text-secondary);
+          transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .toggle-input:checked + .toggle-track {
+          background: var(--accent-soft);
+          border-color: var(--accent);
+        }
+        .toggle-input:checked + .toggle-track .toggle-thumb {
+          transform: translateX(16px);
+          background: var(--accent);
         }
       `}</style>
 
@@ -275,13 +309,18 @@ export default function Home() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "1.5rem"
+          gap: "1.75rem",
+          background: "var(--bg-secondary)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius-lg)",
+          padding: "1.75rem",
+          boxShadow: "var(--shadow-md)"
         }}
       >
         {/* Date Input */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-            <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+            <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 600 }}>
               Start Date
             </label>
             <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0 }}>
@@ -294,27 +333,26 @@ export default function Home() {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             style={{
-              padding: "0.75rem",
+              padding: "0.75rem 1rem",
               background: "var(--bg-tertiary)",
-              border: "none",
-              borderBottom: "1px solid var(--border)",
-              borderRadius: "2px",
+              border: "1px solid var(--border-strong)",
+              borderRadius: "var(--radius-md)",
               color: "var(--text-primary)",
               fontSize: "0.95rem",
               transition: "all 0.2s ease",
               outline: "none"
             }}
             onFocus={(e) => {
-              e.currentTarget.style.borderBottomColor = "var(--accent)";
-              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = "var(--accent)";
+              e.currentTarget.style.boxShadow = "0 0 0 3px var(--accent-soft)";
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderBottomColor = "var(--border)";
+              e.currentTarget.style.borderColor = "var(--border-strong)";
               e.currentTarget.style.boxShadow = "none";
             }}
           />
           {isStartDateInvalid && (
-            <p style={{ fontSize: "0.8rem", color: "#ff6b6b", margin: 0 }}>
+            <p style={{ fontSize: "0.8rem", color: "var(--danger)", margin: 0 }}>
               Start Date is not Monday
             </p>
           )}
@@ -323,14 +361,14 @@ export default function Home() {
         {/* Meal IDs Input */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-            <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+            <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 600 }}>
               Enter a Meal ID for each day
             </label>
             <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0 }}>
               0 to skip that day
             </p>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
             {mealValues.map((value, index) => {
               const boxDate = getMealBoxDate(date, index);
               const weekday = boxDate ? boxDate.toLocaleDateString("en-US", { weekday: "short" }) : "";
@@ -347,19 +385,20 @@ export default function Home() {
                     flexDirection: "row",
                     alignItems: "center",
                     gap: "0.75rem",
-                    padding: "0.5rem 0.75rem",
+                    padding: "0.6rem 0.85rem",
                     background: "var(--bg-tertiary)",
-                    borderBottom: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
-                    borderRadius: "2px",
+                    border: `1px solid ${isActive ? "var(--accent)" : "var(--border-strong)"}`,
+                    borderRadius: "var(--radius-md)",
+                    boxShadow: isActive ? "0 0 0 3px var(--accent-soft)" : "none",
                     transition: "all 0.2s ease"
                   }}
                 >
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.35rem", width: "3.5rem", flexShrink: 0 }}>
                     <div style={{ display: "flex", alignItems: "baseline", gap: "0.35rem" }}>
-                      <span style={{ fontSize: "0.7rem", color: isStartDateInvalid ? "#ff6b6b" : "gray" }}>
+                      <span style={{ fontSize: "0.7rem", color: isStartDateInvalid ? "var(--danger)" : "var(--text-secondary)" }}>
                         {weekday}
                       </span>
-                      <span style={{ fontSize: "0.8rem", color: isStartDateInvalid ? "#ff6b6b" : "var(--accent)", fontWeight: 600 }}>
+                      <span style={{ fontSize: "0.8rem", color: isStartDateInvalid ? "var(--danger)" : "var(--accent)", fontWeight: 700 }}>
                         {dayOfMonth}
                       </span>
                     </div>
@@ -432,9 +471,11 @@ export default function Home() {
                         background: "transparent",
                         border: "none",
                         outline: "none",
-                        color: mealIdErrors[index] ? "#ff6b6b" : "white",
+                        color: mealIdErrors[index] ? "var(--danger)" : "var(--text-hover)",
                         fontSize: "1rem",
-                        fontFamily: "monospace"
+                        fontWeight: 600,
+                        fontFamily: "var(--font-mono)",
+                        fontVariantNumeric: "tabular-nums"
                       }}
                     />
                   </div>
@@ -443,16 +484,16 @@ export default function Home() {
                     style={{
                       flex: 1,
                       minWidth: 0,
-                      padding: "0.65rem 0.75rem",
+                      padding: "0.65rem 0.85rem",
                       border: "1px solid var(--border)",
-                      borderRadius: "4px",
+                      borderRadius: "var(--radius-sm)",
                       fontSize: "0.8rem",
-                      fontFamily: "monospace",
+                      fontFamily: "var(--font-mono)",
                       whiteSpace: "nowrap",
                       overflowX: "auto",
                       overflowY: "hidden",
                       WebkitOverflowScrolling: "touch",
-                      color: lookup.error ? "#ff6b6b" : isSkip ? "gray" : "var(--accent)"
+                      color: lookup.error ? "var(--danger)" : isSkip ? "var(--text-secondary)" : "var(--accent)"
                     }}
                   >
                     {lookup.loading ? (
@@ -477,71 +518,65 @@ export default function Home() {
 
         {/* Week Selection */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+          <label style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 600 }}>
             Select Week
           </label>
-          <div style={{ display: "flex", gap: "1rem" }}>
-            {[true, false].map((week) => (
-              <label
-                key={week.toString()}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  cursor: "pointer",
-                  padding: "0.75rem 1rem",
-                  borderRadius: "0",
-                  background: firstWeek === week ? "transparent" : "transparent",
-                  border: `none`,
-                  transition: "all 0.2s ease"
-                }}
-                onMouseEnter={(e) => {
-                  if (firstWeek !== week) {
-                    e.currentTarget.style.borderBottomColor = "var(--accent)";
-                    e.currentTarget.style.background = "transparent";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (firstWeek !== week) {
-                    e.currentTarget.style.borderBottomColor = "var(--border)";
-                    e.currentTarget.style.background = "transparent";
-                  }
-                }}
-              >
-                <input
-                  type="radio"
-                  name="week"
-                  checked={firstWeek === week}
-                  onChange={() => setFirstWeek(week)}
-                  style={{ cursor: "pointer",  accentColor: "var(--bg-tertiary)"}}
-                />
-                <span style={{ fontSize: "0.95rem" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.25rem",
+              padding: "0.25rem",
+              background: "var(--bg-tertiary)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-pill)"
+            }}
+          >
+            {[true, false].map((week) => {
+              const selected = firstWeek === week;
+              return (
+                <button
+                  key={week.toString()}
+                  type="button"
+                  onClick={() => setFirstWeek(week)}
+                  style={{
+                    flex: 1,
+                    cursor: "pointer",
+                    padding: "0.6rem 1rem",
+                    borderRadius: "var(--radius-pill)",
+                    background: selected ? "var(--accent)" : "transparent",
+                    color: selected ? "#000" : "var(--text-secondary)",
+                    border: "none",
+                    fontSize: "0.9rem",
+                    fontWeight: selected ? 700 : 500,
+                    transition: "all 0.2s ease"
+                  }}
+                >
                   {week ? "First week" : "Second week"}
-                </span>
-              </label>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Optional Settings */}
-        <div style={{ paddingTop: "0.5rem", borderTop: "1px solid var(--border)" }}>
+        <div style={{ paddingTop: "0.75rem", borderTop: "1px solid var(--border)" }}>
           <button
             onClick={() => setShowOptional(!showOptional)}
             style={{
               background: "none",
               border: "none",
               cursor: "pointer",
-              fontSize: "0.95rem",
+              fontSize: "0.9rem",
               padding: "0.5rem 0",
               color: "var(--text-primary)",
-              fontWeight: 500,
+              fontWeight: 600,
               transition: "color 0.2s ease",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem"
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--text-hover)";
+              e.currentTarget.style.color = "var(--accent)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = "var(--text-primary)";
@@ -550,6 +585,7 @@ export default function Home() {
             <span
               style={{
                 display: "inline-block",
+                fontSize: "0.75rem",
                 transform: showOptional ? "rotate(90deg)" : "rotate(0deg)",
                 transition: "transform 0.2s ease"
               }}
@@ -560,7 +596,7 @@ export default function Home() {
           </button>
 
           {showOptional && (
-            <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               {[
                 { key: "onlyReminders", label: "Only create calendar events", value: onlyReminders, setter: setOnlyReminders },
                 { key: "checklist", label: "Create checklist", value: checklist, setter: setChecklist },
@@ -573,12 +609,12 @@ export default function Home() {
                     alignItems: "center",
                     gap: "0.75rem",
                     cursor: "pointer",
-                    padding: "0.5rem 0",
-                    borderRadius: "0",
+                    padding: "0.6rem 0.75rem",
+                    borderRadius: "var(--radius-md)",
                     transition: "background 0.2s ease"
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.background = "var(--bg-tertiary)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = "transparent";
@@ -586,11 +622,12 @@ export default function Home() {
                 >
                   <input
                     type="checkbox"
+                    className="toggle-input"
                     checked={value}
                     onChange={(e) => setter(e.currentTarget.checked)}
-                    style={{ cursor: "pointer", accentColor: "var(--bg-tertiary)", width: "18px", height: "18px" }}
                   />
-                  <span style={{ fontSize: "0.95rem" }}>{label}</span>
+                  <span className="toggle-track"><span className="toggle-thumb" /></span>
+                  <span style={{ fontSize: "0.9rem" }}>{label}</span>
                 </label>
               ))}
             </div>
@@ -605,10 +642,10 @@ export default function Home() {
             background: isAddGroceriesDisabled ? "var(--bg-tertiary)" : "var(--accent)",
             color: isAddGroceriesDisabled ? "var(--text-secondary)" : "#000",
             padding: "1rem",
-            borderRadius: "2px",
-            border: "none",
+            borderRadius: "var(--radius-pill)",
+            border: isAddGroceriesDisabled ? "1px solid var(--border-strong)" : "none",
             fontSize: "1rem",
-            fontWeight: 600,
+            fontWeight: 700,
             cursor: isAddGroceriesDisabled ? "not-allowed" : "pointer",
             transition: "all 0.2s ease",
             marginTop: "0.5rem"
@@ -616,7 +653,7 @@ export default function Home() {
           onMouseEnter={(e) => {
             if (isAddGroceriesDisabled) return;
             e.currentTarget.style.background = "var(--accent-hover)";
-            e.currentTarget.style.boxShadow = "0 4px 12px rgba(107, 182, 35, 0.3)";
+            e.currentTarget.style.boxShadow = "0 8px 20px var(--accent-glow)";
           }}
           onMouseLeave={(e) => {
             if (isAddGroceriesDisabled) return;
@@ -632,9 +669,11 @@ export default function Home() {
       {isRunning && (
         <div
           style={{
-            marginTop: "2rem",
-            padding: "1.5rem 0",
-            borderTop: "2px solid rgba(107, 182, 35, 0.5)",
+            marginTop: "1.5rem",
+            padding: "1.25rem 1.5rem",
+            background: "var(--bg-secondary)",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius-lg)",
             animation: "slideIn 0.3s ease"
           }}
         >
@@ -645,7 +684,8 @@ export default function Home() {
               gap: "0.2rem",
               color: "var(--accent)",
               fontSize: "0.9rem",
-              fontFamily: "monospace"
+              fontWeight: 600,
+              fontFamily: "var(--font-mono)"
             }}
           >
             Running
@@ -662,20 +702,19 @@ export default function Home() {
       {!isRunning && result && (
         <div
           style={{
-            marginTop: "2rem",
-            padding: "1.5rem 0",
-            borderRadius: "0",
-            background: "transparent",
-            border: `none`,
-            borderTop: `2px solid ${isError ? "rgba(255, 59, 48, 0.5)" : "rgba(107, 182, 35, 0.5)"}`,
+            marginTop: "1.5rem",
+            padding: "1.25rem 1.5rem",
+            borderRadius: "var(--radius-lg)",
+            background: "var(--bg-secondary)",
+            border: `1px solid ${isError ? "var(--danger-soft)" : "var(--accent-soft)"}`,
             animation: "slideIn 0.3s ease"
           }}
         >
           <pre
             style={{
-              color: isError ? "#ff6b6b" : "var(--accent)",
+              color: isError ? "var(--danger)" : "var(--accent)",
               fontSize: "0.9rem",
-              fontFamily: "monospace",
+              fontFamily: "var(--font-mono)",
               whiteSpace: "pre-wrap",
               wordWrap: "break-word",
               margin: 0,
