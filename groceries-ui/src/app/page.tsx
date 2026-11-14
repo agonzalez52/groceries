@@ -1,5 +1,5 @@
 //
-// Version 4.3.0
+// Version 4.4.0
 //
 // Created By: Angel Gonzalez
 //
@@ -37,6 +37,45 @@ interface MealLookupState {
 }
 
 const emptyLookup: MealLookupState = { visible: false, loading: false, name: "", error: false };
+
+interface RunRecord {
+  id: string;
+  ranAt: string; // ISO timestamp of when the run completed
+  startDate: string;
+  test: boolean;
+  mealDetails: MealDetail[];
+  error?: string; // set when the run failed
+}
+
+// Runs are kept for the browser session only (cleared when the tab is closed).
+const RUN_HISTORY_KEY = "groceries_run_history";
+
+function readRunHistory(): RunRecord[] {
+  try {
+    const raw = sessionStorage.getItem(RUN_HISTORY_KEY);
+    return raw ? (JSON.parse(raw) as RunRecord[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeRunHistory(runs: RunRecord[]) {
+  try {
+    sessionStorage.setItem(RUN_HISTORY_KEY, JSON.stringify(runs));
+  } catch {
+    // sessionStorage unavailable - history lives in memory only
+  }
+}
+
+// API sends meal_day as e.g. "Monday 11/16"; split it so the day and date can be styled separately.
+function splitMealDay(mealDay: string): { weekday: string; date: string } {
+  const [weekday, ...rest] = mealDay.split(" ");
+  return { weekday: weekday ?? mealDay, date: rest.join(" ") };
+}
+
+function formatRunTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+}
 
 // Local (browser-side) cache of the id -> name map, so the app can read it at any
 // time without hitting the /meals endpoint on every lookup. Prod and test sheets
@@ -113,7 +152,6 @@ export default function Home() {
   const [mealValues, setMealValues] = useState<string[]>(["0", "0", "0", "0", "0", "0"]);
   const [activeMeal, setActiveMeal] = useState<boolean[]>([false, false, false, false, false, false]);
   const mealInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const mealFocusValueRef = useRef<string[]>(["0", "0", "0", "0", "0", "0"]);
   const [mealLookups, setMealLookups] = useState<MealLookupState[]>(
     () => Array(6).fill(null).map(() => ({ ...emptyLookup }))
   );
@@ -127,9 +165,37 @@ export default function Home() {
   const [test, setTest] = useState(false);
   const [onlyReminders, setOnlyReminders] = useState(false);
   const [showOptional, setShowOptional] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-  const [isError, setIsError] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [runHistory, setRunHistory] = useState<RunRecord[]>([]);
+  const [openRun, setOpenRun] = useState<RunRecord | null>(null);
+  const [showHistoryList, setShowHistoryList] = useState(false);
+  const [showHistoryCta, setShowHistoryCta] = useState(false);
+
+  // Restore this session's runs (e.g. after a refresh). The History CTA is shown
+  // straight away if there are any, since a run's modal was already seen/closed.
+  useEffect(() => {
+    const stored = readRunHistory();
+    if (stored.length > 0) {
+      setRunHistory(stored);
+      setShowHistoryCta(true);
+    }
+  }, []);
+
+  // Escape closes whichever modal is open.
+  useEffect(() => {
+    if (!openRun && !showHistoryList) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") closeModals();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [openRun, showHistoryList]);
+
+  function closeModals() {
+    setOpenRun(null);
+    setShowHistoryList(false);
+    setShowHistoryCta(true);
+  }
 
   const isStartDateInvalid = date !== "" && !isMonday(date);
   const hasMealIdError = mealIdErrors.some((e) => e);
@@ -164,8 +230,18 @@ export default function Home() {
   async function lookupMealName(index: number, idNum: number) {
     const seq = ++mealLookupSeqRef.current[index];
 
+    // Cache hit: show the name instantly so it updates live as the user types.
+    const cachedName = mealsMapRef.current[idNum];
+    if (cachedName !== undefined) {
+      setMealLookups((prev) => prev.map((v, i) => (i === index ? { visible: true, loading: false, name: cachedName, error: false } : v)));
+      setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
+      return;
+    }
+
     setMealLookups((prev) => prev.map((v, i) => (i === index ? { visible: true, loading: true, name: "", error: false } : v)));
     setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
+
+    // Debounce cache misses so a refetch only happens once the user pauses typing.
 
     await wait(500);
     if (mealLookupSeqRef.current[index] !== seq) return; // superseded by a newer lookup
@@ -202,9 +278,22 @@ export default function Home() {
     }
   }
 
+  function recordRun(fields: Pick<RunRecord, "startDate" | "mealDetails" | "error">) {
+    const run: RunRecord = {
+      id: `${Date.now()}`,
+      ranAt: new Date().toISOString(),
+      test: test,
+      ...fields,
+    };
+    setRunHistory((prev) => {
+      const next = [run, ...prev];
+      writeRunHistory(next);
+      return next;
+    });
+    setOpenRun(run);
+  }
+
   async function runScript() {
-    setResult(null);
-    setIsError(false);
     setIsRunning(true);
 
     try {
@@ -229,33 +318,30 @@ export default function Home() {
       );
 
       const data = await response.json() as ApiResponse;
-      
+
       // Handle HTTP errors (4xx, 5xx)
       if (!response.ok) {
-        setIsError(true);
-        const errorMessage = `Error ${response.status}: ${data.error || data.message || JSON.stringify(data)}`;
-        setResult(errorMessage);
-      } else {
-        let displayText = `Done!\n\nStart Date: ${formatDate(data.start_date)}\n\nMeals:\n`;
-        data.meal_details.forEach((meal, index) => {
-          displayText += `${index + 1}. ${meal.meal_name} (${meal.meal_day})\n`;
+        recordRun({
+          startDate: date,
+          mealDetails: [],
+          error: `Error ${response.status}: ${data.error || data.message || JSON.stringify(data)}`,
         });
-        displayText += `\nHave a lovely day! :)`
-        setResult(displayText);
+      } else {
+        recordRun({ startDate: data.start_date, mealDetails: data.meal_details });
       }
-    } 
+    }
     // Handle Network errors (connection refused, timeout,...)
     catch (error) {
-      setIsError(true);
       const errorMessage = error instanceof Error ? error.message : String(error);
-      setResult(`Network Error: ${errorMessage}`);
+      recordRun({ startDate: date, mealDetails: [], error: `Network Error: ${errorMessage}` });
     } finally {
       setIsRunning(false);
     }
   }
 
+
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto", width: "100%" }}>
+    <div style={{ maxWidth: "600px", margin: "0 auto", width: "100%", paddingBottom: "8rem" }}>
       <style>{`
         .start-date-input::-webkit-calendar-picker-indicator {
           filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
@@ -370,9 +456,6 @@ export default function Home() {
                       ref={(el) => {
                         mealInputRefs.current[index] = el;
                       }}
-                      onFocus={(e) => {
-                        mealFocusValueRef.current[index] = e.target.value;
-                      }}
                       onClick={(e) => {
                         if (value === "0") {
                           e.currentTarget.select();
@@ -384,30 +467,20 @@ export default function Home() {
                         const digitsOnly = e.target.value.replace(/\D/g, "");
                         const clamped = digitsOnly === "" ? "" : String(Math.min(999, parseInt(digitsOnly, 10)));
                         setMealValues((prev) => prev.map((v, i) => (i === index ? clamped : v)));
-                        if (clamped === "0" || clamped === "") {
-                          mealLookupSeqRef.current[index] += 1;
-                          setMealLookups((prev) => prev.map((v, i) => (i === index ? { ...emptyLookup } : v)));
-                          setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
-                        }
-                      }}
-                      onBlur={(e) => {
-                        setActiveMeal((prev) => prev.map((v, i) => (i === index ? false : v)));
-                        const finalValue = e.target.value === "" ? "0" : e.target.value;
-                        if (e.target.value === "") {
-                          setMealValues((prev) => prev.map((v, i) => (i === index ? "0" : v)));
-                        }
-                        const idNum = parseInt(finalValue, 10);
+                        if (clamped === value) return;
+                        const idNum = parseInt(clamped, 10);
                         if (!idNum) {
                           mealLookupSeqRef.current[index] += 1;
                           setMealLookups((prev) => prev.map((v, i) => (i === index ? { ...emptyLookup } : v)));
                           setMealIdErrors((prev) => prev.map((v, i) => (i === index ? false : v)));
                         } else {
-                          const unchanged = mealFocusValueRef.current[index] === e.target.value;
-                          const isMatched = !lookup.loading && !lookup.error && lookup.name !== "";
-                          // Skip re-checking an unchanged value that's already matched or mid-flight.
-                          if (!unchanged || (!isMatched && !lookup.loading)) {
-                            lookupMealName(index, idNum);
-                          }
+                          lookupMealName(index, idNum);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        setActiveMeal((prev) => prev.map((v, i) => (i === index ? false : v)));
+                        if (e.target.value === "") {
+                          setMealValues((prev) => prev.map((v, i) => (i === index ? "0" : v)));
                         }
                       }}
                       onKeyDown={(e) => {
@@ -597,93 +670,191 @@ export default function Home() {
           )}
         </div>
 
-        {/* Action Button */}
-        <button
-          onClick={runScript}
-          disabled={isAddGroceriesDisabled}
-          style={{
-            background: isAddGroceriesDisabled ? "var(--bg-tertiary)" : "var(--accent)",
-            color: isAddGroceriesDisabled ? "var(--text-secondary)" : "#000",
-            padding: "1rem",
-            borderRadius: "2px",
-            border: "none",
-            fontSize: "1rem",
-            fontWeight: 600,
-            cursor: isAddGroceriesDisabled ? "not-allowed" : "pointer",
-            transition: "all 0.2s ease",
-            marginTop: "0.5rem"
-          }}
-          onMouseEnter={(e) => {
-            if (isAddGroceriesDisabled) return;
-            e.currentTarget.style.background = "var(--accent-hover)";
-            e.currentTarget.style.boxShadow = "0 4px 12px rgba(107, 182, 35, 0.3)";
-          }}
-          onMouseLeave={(e) => {
-            if (isAddGroceriesDisabled) return;
-            e.currentTarget.style.background = "var(--accent)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
-        >
-          Add Groceries
-        </button>
       </div>
 
-      {/* Running Indicator */}
-      {isRunning && (
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1.5rem 0",
-            borderTop: "2px solid rgba(107, 182, 35, 0.5)",
-            animation: "slideIn 0.3s ease"
-          }}
-        >
-          <div
+      {/* Action Button (pinned to the bottom of the screen) */}
+      <div className="cta-bar">
+        <div style={{ maxWidth: "600px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {isRunning && (
+            <p
+              style={{
+                margin: 0,
+                textAlign: "center",
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+                animation: "slideIn 0.3s ease"
+              }}
+            >
+              Running... This may take a minute or two
+            </p>
+          )}
+          <button
+            onClick={runScript}
+            disabled={isAddGroceriesDisabled || isRunning}
+            aria-label={isRunning ? "Running" : undefined}
+            aria-busy={isRunning}
             style={{
+              position: "relative",
+              width: "100%",
+              height: "3.25rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.2rem",
-              color: "var(--accent)",
-              fontSize: "0.9rem",
-              fontFamily: "monospace"
+              justifyContent: "center",
+              overflow: "hidden",
+              background: isRunning ? "var(--accent)" : isAddGroceriesDisabled ? "var(--bg-tertiary)" : "var(--accent)",
+              color: isRunning ? "#000" : isAddGroceriesDisabled ? "var(--text-secondary)" : "#000",
+              padding: "0 1rem",
+              borderRadius: "2px",
+              border: "none",
+              fontSize: "1rem",
+              fontWeight: 600,
+              cursor: isRunning ? "progress" : isAddGroceriesDisabled ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease"
+            }}
+            onMouseEnter={(e) => {
+              if (isAddGroceriesDisabled || isRunning) return;
+              e.currentTarget.style.background = "var(--accent-hover)";
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(107, 182, 35, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = isAddGroceriesDisabled && !isRunning ? "var(--bg-tertiary)" : "var(--accent)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            Running
-            <span style={{ display: "inline-flex" }}>
-              <span className="bounce-dot" style={{ animationDelay: "0s" }}>.</span>
-              <span className="bounce-dot" style={{ animationDelay: "0.2s" }}>.</span>
-              <span className="bounce-dot" style={{ animationDelay: "0.4s" }}>.</span>
-            </span>
+            {isRunning ? (
+              // Checkbox drawn counterclockwise from its top-right corner, then a line
+              // "written" out to its right (a grocery list item), then it slides away and repeats.
+              <svg
+                className="list-item-anim"
+                width="120"
+                height="24"
+                viewBox="0 0 120 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <g className="list-item-anim__group">
+                  <path
+                    className="list-item-anim__box"
+                    d="M20 4 H4 V20 H20 Z"
+                    pathLength={100}
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    className="list-item-anim__line"
+                    d="M28 12 H116"
+                    pathLength={100}
+                  />
+                </g>
+              </svg>
+            ) : (
+              "Add Groceries"
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* History CTA (top right, over the header) - appears once a run's modal has been closed */}
+      {showHistoryCta && runHistory.length > 0 && (
+        <button
+          className="history-cta"
+          onClick={() => {
+            setOpenRun(null);
+            setShowHistoryList(true);
+          }}
+        >
+          History
+        </button>
+      )}
+
+      {/* Run History List Modal */}
+      {showHistoryList && (
+        <div className="modal-backdrop" onClick={closeModals}>
+          <div
+            className="modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="history-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h2 id="history-title" className="modal-title">History</h2>
+              <button className="modal-close" onClick={closeModals} aria-label="Close">✕</button>
+            </div>
+            <p className="modal-subtitle">Runs from this session</p>
+            <ul className="modal-list">
+              {runHistory.map((run) => {
+                const added = run.mealDetails.filter((m) => m.meal_name !== "Skipped").length;
+                return (
+                  <li key={run.id}>
+                    <button
+                      className={run.error ? "history-row history-row--error" : "history-row"}
+                      onClick={() => {
+                        setShowHistoryList(false);
+                        setOpenRun(run);
+                      }}
+                    >
+                      <span className="history-row__main">
+                        Week of {formatDate(run.startDate)}
+                        {run.test && <span className="test-badge">Test</span>}
+                      </span>
+                      <span className="history-row__meta">
+                        {formatRunTime(run.ranAt)} ·{" "}
+                        {run.error ? "Failed" : `${added} ${added === 1 ? "meal" : "meals"}`}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       )}
 
-      {/* Result Display */}
-      {!isRunning && result && (
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1.5rem 0",
-            borderRadius: "0",
-            background: "transparent",
-            border: `none`,
-            borderTop: `2px solid ${isError ? "rgba(255, 59, 48, 0.5)" : "rgba(107, 182, 35, 0.5)"}`,
-            animation: "slideIn 0.3s ease"
-          }}
-        >
-          <pre
-            style={{
-              color: isError ? "#ff6b6b" : "var(--accent)",
-              fontSize: "0.9rem",
-              fontFamily: "monospace",
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
-              margin: 0,
-              lineHeight: "1.6"
-            }}
+      {/* Run Details Modal */}
+      {openRun && (
+        <div className="modal-backdrop" onClick={closeModals}>
+          <div
+            className={openRun.error ? "modal-panel modal-panel--error" : "modal-panel"}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="run-title"
+            onClick={(e) => e.stopPropagation()}
           >
-            {result}
-          </pre>
+            <div className="modal-header">
+              <h2 id="run-title" className="modal-title">
+                {openRun.error ? "Run failed" : "Done!"}
+                {openRun.test && <span className="test-badge">Test</span>}
+              </h2>
+              <button className="modal-close" onClick={closeModals} aria-label="Close">✕</button>
+            </div>
+            <p className="modal-subtitle">
+              {openRun.startDate ? `Week of ${formatDate(openRun.startDate)}` : "No start date"} · {formatRunTime(openRun.ranAt)}
+            </p>
+            {openRun.error ? (
+              <pre className="modal-error">{openRun.error}</pre>
+            ) : (
+            <ul className="modal-list">
+              {openRun.mealDetails.map((meal, index) => {
+                const { weekday, date: mealDate } = splitMealDay(meal.meal_day);
+                const skipped = meal.meal_name === "Skipped";
+                return (
+                  <li key={index} className="meal-row">
+                    <span className="meal-row__day">
+                      <span>{weekday.slice(0, 3)}</span>
+                      <span className="meal-row__date">{mealDate}</span>
+                    </span>
+                    <span className={skipped ? "meal-row__name meal-row__name--skipped" : "meal-row__name"}>
+                      {meal.meal_name}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            )}
+            {!openRun.error && <p className="modal-footer">Have a lovely day! :)</p>}
+          </div>
         </div>
       )}
 
@@ -709,6 +880,241 @@ export default function Home() {
         .bounce-dot {
           display: inline-block;
           animation: bounceDot 1s infinite ease-in-out;
+        }
+        .cta-bar {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 100;
+          padding: 0.75rem 2rem calc(1rem + env(safe-area-inset-bottom));
+          background: var(--bg-primary);
+          border-top: 1px solid var(--border);
+        }
+        @media (max-width: 768px) {
+          .cta-bar {
+            padding-left: 1rem;
+            padding-right: 1rem;
+          }
+        }
+        .history-cta {
+          position: fixed;
+          top: 0;
+          right: 2rem;
+          height: 4rem;
+          z-index: 1001;
+          display: flex;
+          align-items: center;
+          background: none;
+          border: none;
+          color: var(--accent);
+          font-size: 0.95rem;
+          font-weight: 600;
+          cursor: pointer;
+          animation: fadeIn 0.3s ease;
+        }
+        .history-cta:hover {
+          color: var(--accent-hover);
+        }
+        .modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 2000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          background: rgba(0, 0, 0, 0.6);
+          animation: fadeIn 0.2s ease;
+        }
+        .modal-panel {
+          width: 100%;
+          max-width: 420px;
+          max-height: calc(100vh - 2rem);
+          overflow-y: auto;
+          padding: 1.5rem;
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-top: 2px solid var(--accent);
+          border-radius: 4px;
+          animation: slideIn 0.25s ease;
+        }
+        .modal-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        .modal-title {
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 1.25rem;
+          color: var(--accent);
+        }
+        .modal-close {
+          background: none;
+          border: none;
+          color: var(--text-secondary);
+          font-size: 1rem;
+          cursor: pointer;
+          padding: 0.25rem;
+        }
+        .modal-close:hover {
+          color: var(--text-hover);
+        }
+        .modal-subtitle {
+          margin: 0.25rem 0 1.25rem;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+        .modal-list {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        .modal-list > li + li {
+          border-top: 1px solid var(--border);
+        }
+        .meal-row {
+          display: flex;
+          align-items: baseline;
+          gap: 1rem;
+          padding: 0.7rem 0;
+        }
+        .meal-row__day {
+          display: flex;
+          align-items: baseline;
+          gap: 0.35rem;
+          width: 5.5rem;
+          flex-shrink: 0;
+          font-size: 0.8rem;
+          color: var(--text-secondary);
+        }
+        .meal-row__date {
+          font-family: monospace;
+          color: var(--accent);
+        }
+        .meal-row__name {
+          flex: 1;
+          min-width: 0;
+          font-size: 0.95rem;
+          color: var(--text-primary);
+          overflow-wrap: anywhere;
+        }
+        .meal-row__name--skipped {
+          color: gray;
+        }
+        .modal-footer {
+          margin: 1.25rem 0 0;
+          padding-top: 1rem;
+          border-top: 1px solid var(--border);
+          text-align: center;
+          font-size: 0.9rem;
+          color: var(--accent);
+        }
+        .history-row {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.2rem;
+          padding: 0.75rem 0;
+          background: none;
+          border: none;
+          text-align: left;
+          cursor: pointer;
+          color: var(--text-primary);
+        }
+        .history-row:hover .history-row__main {
+          color: var(--accent);
+        }
+        .history-row__main {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.95rem;
+          transition: color 0.2s ease;
+        }
+        .history-row__meta {
+          font-size: 0.8rem;
+          color: var(--text-secondary);
+        }
+        .modal-panel--error {
+          border-top-color: #ff6b6b;
+        }
+        .modal-panel--error .modal-title {
+          color: #ff6b6b;
+        }
+        .modal-error {
+          margin: 0;
+          padding: 0.75rem;
+          background: var(--bg-tertiary);
+          border-radius: 2px;
+          color: #ff6b6b;
+          font-family: monospace;
+          font-size: 0.85rem;
+          line-height: 1.6;
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+        }
+        .history-row--error .history-row__main,
+        .history-row--error .history-row__meta,
+        .history-row--error:hover .history-row__main {
+          color: #ff6b6b;
+        }
+        .test-badge {
+          font-size: 0.65rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          padding: 0.1rem 0.4rem;
+          border: 1px solid var(--border);
+          border-radius: 2px;
+          color: var(--text-secondary);
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+          .history-cta {
+            right: 1rem;
+          }
+        }
+        .list-item-anim__group {
+          animation: listItemDismiss 2.4s infinite;
+        }
+        .list-item-anim__box,
+        .list-item-anim__line {
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+        }
+        .list-item-anim__box {
+          animation: listItemDrawBox 2.4s infinite;
+        }
+        .list-item-anim__line {
+          animation: listItemDrawLine 2.4s infinite;
+        }
+        @keyframes listItemDrawBox {
+          0% { stroke-dashoffset: 100; animation-timing-function: ease-in-out; }
+          30%, 100% { stroke-dashoffset: 0; }
+        }
+        @keyframes listItemDrawLine {
+          0%, 30% { stroke-dashoffset: 100; animation-timing-function: ease-out; }
+          62%, 100% { stroke-dashoffset: 0; }
+        }
+        @keyframes listItemDismiss {
+          0%, 74% { transform: translateY(0); opacity: 1; animation-timing-function: ease-in; }
+          94%, 100% { transform: translateY(-24px); opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .list-item-anim__group,
+          .list-item-anim__box,
+          .list-item-anim__line {
+            animation-duration: 4.8s;
+          }
         }
       `}</style>
     </div>
